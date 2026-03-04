@@ -1,0 +1,109 @@
+---
+const pages = [
+  { title: 'Overview', desc: 'Introduction', href: '/' },
+  { title: 'The Shift', desc: 'Philosophy', href: '/philosophy/' },
+  { title: 'Operating Model', desc: 'The Model', href: '/model/operating-model/' },
+  { title: 'Applied Flow', desc: 'The Model', href: '/model/applied-flow/' },
+  { title: 'Dual Backlogs', desc: 'In Practice', href: '/practice/backlogs/' },
+  { title: 'Engagement Shape', desc: 'In Practice', href: '/practice/engagement/' },
+  { title: 'Implementation', desc: 'In Practice', href: '/practice/implementation/' },
+  { title: 'Glossary & Constraints', desc: 'Reference', href: '/reference/' },
+];
+
+const glossaryTerms = [
+  { term: 'Evidence Work', def: 'The continuous practice of reducing product uncertainty through measurable signal.' },
+  { term: 'Confidence Gate', def: 'A decision point where work is evaluated based on whether uncertainty has been sufficiently reduced.' },
+  { term: 'Evidence Ledger', def: 'The single source of truth for uncertainty reduction.' },
+  { term: 'Spike', def: 'A time-boxed experiment designed to test a specific assumption.' },
+  { term: 'Evidence Backlog', def: 'Work focused on testing assumptions and reducing uncertainty.' },
+  { term: 'Commitment Backlog', def: 'Work focused on delivering durable capability.' },
+  { term: 'Signal', def: 'Measurable evidence generated through experiments or testing.' },
+  { term: 'Promotion Protocol', def: 'The explicit process for transitioning work from Evidence to Commitment.' },
+  { term: 'Commitment State', def: 'The level of irreversible investment in a capability.' },
+  { term: 'Investment Intensity', def: 'The relative level of production effort applied to a capability.' },
+  { term: 'Capability', def: 'A durable, production-grade behavior or system outcome.' },
+  { term: 'Hypothesis', def: 'A testable assumption about value, usability, feasibility, or viability.' },
+  { term: 'Confidence Threshold', def: 'The predefined level of validated signal required to justify increased investment.' },
+  { term: 'Irreversibility', def: 'The degree to which decisions become difficult or costly to undo.' },
+];
+---
+
+<div class="cmd-palette-overlay" id="cmdPalette">
+  <div class="cmd-palette">
+    <div class="cmd-palette-input-wrap">
+      <svg class="cmd-palette-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input class="cmd-palette-input" id="cmdInput" type="text" placeholder="Search pages and terms..." autocomplete="off" />
+    </div>
+    <div class="cmd-palette-results" id="cmdResults">
+      <div class="cmd-palette-group-label">Pages</div>
+      {pages.map((p) => (
+        <a class="cmd-palette-item cmd-item-page" href={p.href} data-title={p.title.toLowerCase()} data-desc={p.desc.toLowerCase()}>
+          <span class="cmd-palette-item-title">{p.title}</span>
+          <span class="cmd-palette-item-desc">{p.desc}</span>
+        </a>
+      ))}
+      <div class="cmd-palette-group-label" style="margin-top:8px">Glossary</div>
+      {glossaryTerms.map((g) => (
+        <a class="cmd-palette-item cmd-item-glossary" href="/reference/" data-title={g.term.toLowerCase()} data-desc={g.def.toLowerCase()}>
+          <span class="cmd-palette-item-title">{g.term}</span>
+          <span class="cmd-palette-item-desc" style="max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{g.def}</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</div>
+
+<script>
+  const overlay = document.getElementById('cmdPalette')!;
+  const input = document.getElementById('cmdInput') as HTMLInputElement;
+  const results = document.getElementById('cmdResults')!;
+  const trigger = document.getElementById('cmdKTrigger');
+
+  function open() {
+    overlay.classList.add('open');
+    input.value = '';
+    filterItems('');
+    requestAnimationFrame(() => input.focus());
+  }
+
+  function close() {
+    overlay.classList.remove('open');
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      overlay.classList.contains('open') ? close() : open();
+    }
+    if (e.key === 'Escape') close();
+  });
+
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) close();
+  });
+
+  trigger?.addEventListener('click', open);
+
+  function filterItems(query: string) {
+    const q = query.toLowerCase().trim();
+    const items = results.querySelectorAll('.cmd-palette-item') as NodeListOf<HTMLElement>;
+    const groups = results.querySelectorAll('.cmd-palette-group-label') as NodeListOf<HTMLElement>;
+    let pageVisible = 0, glossaryVisible = 0;
+
+    items.forEach((item) => {
+      const title = item.dataset.title || '';
+      const desc = item.dataset.desc || '';
+      const match = !q || title.includes(q) || desc.includes(q);
+      item.style.display = match ? '' : 'none';
+      if (match) {
+        if (item.classList.contains('cmd-item-page')) pageVisible++;
+        else glossaryVisible++;
+      }
+    });
+
+    if (groups[0]) groups[0].style.display = pageVisible ? '' : 'none';
+    if (groups[1]) groups[1].style.display = glossaryVisible ? '' : 'none';
+  }
+
+  input.addEventListener('input', () => filterItems(input.value));
+</script>

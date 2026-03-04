@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageNav from '../components/PageNav.astro';
+import FunnelDiagram from '../components/FunnelDiagram.astro';
+---
+
+<BaseLayout title="The Shift">
+    <div class="page-header">
+        <h1>The Shift</h1>
+        <p class="page-header-desc">
+            From time-boxed discovery to continuous uncertainty reduction. Traditional delivery
+            advances by calendar position. Evidence-Driven Delivery advances by confidence.
+        </p>
+        <div class="page-meta">
+            <span class="page-reading-time">3 min read</span>
+        </div>
+    </div>
+
+    <section>
+        <figure id="fig-1a">
+            <div class="fig-label">Fig. 1A — Traditional Time-Boxed Discovery</div>
+            <div class="diagram">
+                <div class="timeline">
+                    <div class="timeline-track">
+                        <div class="timeline-line"></div>
+                        <div class="timeline-arrow"></div>
+                        <div class="timeline-points">
+                            <div class="timeline-point"><div class="timeline-dot"></div></div>
+                            <div class="timeline-point"><div class="timeline-dot"></div></div>
+                            <div class="timeline-point"><div class="timeline-dot"></div></div>
+                            <div class="timeline-point"><div class="timeline-dot"></div></div>
+                            <div class="timeline-point"><div class="timeline-dot handoff"></div></div>
+                            <div class="timeline-point"><div class="timeline-dot"></div></div>
+                        </div>
+                    </div>
+                    <div class="timeline-labels">
+                        <div class="timeline-label-item"><div class="timeline-label">Workshops</div><div class="timeline-sub">2 wk</div></div>
+                        <div class="timeline-label-item"><div class="timeline-label">Research</div><div class="timeline-sub">2 wk</div></div>
+                        <div class="timeline-label-item"><div class="timeline-label">Definition</div><div class="timeline-sub">2 wk</div></div>
+                        <div class="timeline-label-item"><div class="timeline-label">Finalization</div><div class="timeline-sub">2 wk</div></div>
+                        <div class="timeline-label-item"><div class="timeline-label" style="color:var(--accent)">Handoff</div></div>
+                        <div class="timeline-label-item"><div class="timeline-label">Build</div><div class="timeline-sub">X wk</div></div>
+                    </div>
+                    <div class="timeline-pitfalls">
+                        Assumptions defined before validation, evidence accumulates late, decisions locked without build feedback, risk discovered during build.
+                    </div>
+                </div>
+            </div>
+        </figure>
+
+        <FunnelDiagram />
+    </section>
+
+    <PageNav
+        prev={{ href: "/", title: "Overview" }}
+        next={{ href: "/model/operating-model/", title: "Operating Model" }}
+    />
+</BaseLayout>

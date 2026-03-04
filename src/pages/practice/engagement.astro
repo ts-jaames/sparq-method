@@ -1,0 +1,447 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageNav from '../../components/PageNav.astro';
+---
+
+<BaseLayout title="Engagement Shape">
+    <div class="page-header">
+        <h1>Engagement Shape</h1>
+        <p class="page-header-desc">
+            Same SOW. Same deliverables. Same timeline. Evidence-gated promotion replaces
+            calendar-driven commitment. This section shows how Evidence-Driven Delivery
+            works inside a contracted 8-week engagement.
+        </p>
+        <div class="page-meta">
+            <span class="page-reading-time">5 min read</span>
+        </div>
+    </div>
+
+    <section>
+        <figure id="fig-4a" style="position:relative;">
+            <div class="fig-label">Fig. 4A — 8-Week Discovery + Delivery Engagement</div>
+            <div class="flow-toggles">
+                <div class="flow-toggle active" id="flowToggle" onclick="this.classList.toggle('active');document.getElementById('deliveryFlowSvg').classList.toggle('hidden')">
+                    <span>Signal flow</span><div class="flow-toggle-track"></div>
+                </div>
+                <div class="flow-toggle" id="throughFlowToggle" onclick="this.classList.toggle('active');document.getElementById('throughFlowSvg').classList.toggle('hidden')">
+                    <span>Through-flow</span><div class="flow-toggle-track"></div>
+                </div>
+                <div class="flow-toggle traditional-toggle" id="traditionalToggle">
+                    <span>Traditional</span><div class="flow-toggle-track"></div>
+                </div>
+            </div>
+
+            <div class="delivery-timeline">
+                <div class="delivery-weeks">
+                    <div></div>
+                    <div class="delivery-weeks-track">
+                        <div class="delivery-week-marker"><div class="delivery-week-num">1</div></div>
+                        <div class="delivery-week-marker"><div class="delivery-week-num">2</div></div>
+                        <div class="delivery-week-marker"><div class="delivery-week-num">3</div></div>
+                        <div class="delivery-week-marker"><div class="delivery-week-num">4</div></div>
+                        <div class="delivery-week-marker"><div class="delivery-week-num">5</div></div>
+                        <div class="delivery-week-marker"><div class="delivery-week-num">6</div></div>
+                        <div class="delivery-week-marker"><div class="delivery-week-num">7</div></div>
+                        <div class="delivery-week-marker"><div class="delivery-week-num">8</div></div>
+                    </div>
+                </div>
+
+                <div class="delivery-track evidence-track">
+                    <div class="delivery-track-label">
+                        <div class="delivery-track-name" style="color:var(--accent)">Evidence Work</div>
+                        <div class="delivery-track-desc">Risk → Signal → Confidence</div>
+                    </div>
+                    <div class="delivery-track-bar">
+                        <div class="delivery-bar evidence-bar"><div class="delivery-bar-fill evidence-fill"></div></div>
+                    </div>
+                </div>
+
+                <div class="delivery-track">
+                    <div class="delivery-track-label">
+                        <div class="delivery-track-name" style="color:#2563eb">Experience</div>
+                        <div class="delivery-track-desc">Integrates validated constraints</div>
+                    </div>
+                    <div class="delivery-track-bar">
+                        <div class="delivery-bar demo-bar"><div class="delivery-bar-fill demo-fill"></div></div>
+                    </div>
+                </div>
+
+                <div class="delivery-track" id="opsTrack">
+                    <div class="delivery-track-label">
+                        <div class="delivery-track-name ops-track-name" style="color:var(--green)">Operations
+                            <span class="vera-toggle" id="veraToggle">
+                                <span class="vera-v">V</span>
+                                <div class="flow-toggle-track"></div>
+                            </span>
+                        </div>
+                        <div class="delivery-track-desc" id="opsTrackDesc">Arch · Roadmap · Backlog · Cost</div>
+                    </div>
+                    <div class="delivery-track-bar">
+                        <div class="delivery-bar deliverables-bar">
+                            <div class="delivery-bar-fill deliverables-fill-left"></div>
+                            <div class="delivery-bar-fill deliverables-fill-right"></div>
+                        </div>
+                        <canvas class="vera-particles-canvas" id="veraParticles"></canvas>
+                    </div>
+                </div>
+
+                <svg class="delivery-flow-svg" id="deliveryFlowSvg" preserveAspectRatio="none">
+                    <defs>
+                        <linearGradient id="evidenceToExperience" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#E75437"/><stop offset="50%" stop-color="#E75437"/><stop offset="100%" stop-color="#2563eb"/></linearGradient>
+                        <linearGradient id="evidenceToExperience2" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#E75437"/><stop offset="50%" stop-color="#E75437"/><stop offset="100%" stop-color="#2563eb"/></linearGradient>
+                        <linearGradient id="evidenceToExperience3" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#E75437"/><stop offset="50%" stop-color="#E75437"/><stop offset="100%" stop-color="#2563eb"/></linearGradient>
+                    </defs>
+                    <path id="flowPath" fill="none" stroke="url(#evidenceToExperience)" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+                    <circle class="flow-dot flow-group-1" r="3" opacity="0"/><circle class="flow-dot flow-group-1" r="3" opacity="0"/><circle class="flow-dot flow-group-1" r="3" opacity="0"/>
+                    <path id="flowPath2" fill="none" stroke="url(#evidenceToExperience2)" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+                    <circle class="flow-dot flow-group-2" r="3" opacity="0"/><circle class="flow-dot flow-group-2" r="3" opacity="0"/><circle class="flow-dot flow-group-2" r="3" opacity="0"/>
+                    <path id="flowPath3" fill="none" stroke="url(#evidenceToExperience3)" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+                    <circle class="flow-dot flow-group-3" r="3" opacity="0"/><circle class="flow-dot flow-group-3" r="3" opacity="0"/><circle class="flow-dot flow-group-3" r="3" opacity="0"/>
+                </svg>
+
+                <svg class="delivery-flow-svg hidden" id="throughFlowSvg" preserveAspectRatio="none">
+                    <defs id="throughDefs"></defs>
+                    <g id="throughFlowGroup"></g>
+                </svg>
+            </div>
+
+            <div class="vera-key" id="veraKey">
+                <div class="vera-key-section will">
+                    <h4><span class="vera-v" style="margin-right:6px;">V</span> What Vera Will Do</h4>
+                    <ol>
+                        <li>Convert validated constraints into architecture scaffolding.</li>
+                        <li>Convert capabilities + constraints into epic skeletons.</li>
+                        <li>Sequence roadmap based on confidence and dependency.</li>
+                        <li>Track cost model inputs tied to validated assumptions.</li>
+                        <li>Highlight missing validation dependencies.</li>
+                        <li>Maintain consistency between artifacts.</li>
+                    </ol>
+                </div>
+                <div class="vera-key-section wont">
+                    <h4>What Vera Will Not Do</h4>
+                    <ol>
+                        <li>Assume feasibility.</li>
+                        <li>Fill gaps in evidence.</li>
+                        <li>Generalize demo behavior.</li>
+                        <li>Promote capabilities.</li>
+                        <li>Decide commitment.</li>
+                        <li>Replace engineering judgment.</li>
+                    </ol>
+                </div>
+                <div class="vera-key-footer">Vera accelerates operational artifacts — she does not replace the humans who validate them.</div>
+            </div>
+
+            <figcaption>
+                Same SOW. Same deliverables. Same timeline. Evidence-gated promotion replaces
+                calendar-driven commitment. The Evidence track runs high-intensity experiments early,
+                generating signal that feeds both the Experience prototype and Operations track.
+                As confidence increases, evidence intensity decreases while delivery precision increases.
+            </figcaption>
+        </figure>
+
+        <figure id="fig-4b">
+            <div class="fig-label">Fig. 4B — Three Collapse-Level Risks, Traced</div>
+            <p class="risk-examples-intro">Each risk flows through the same sequence: identify → decompose → test → measure → promote.</p>
+            <div class="risk-top-rule"></div>
+            <div class="risk-examples-grid">
+                <div class="risk-example-card">
+                    <h3 class="risk-example-title">AR Measurement Accuracy</h3>
+                    <div class="risk-step"><div class="risk-step-label">Risk</div><div class="risk-step-text">AR distance measurement may be <strong>too inaccurate</strong> for the core use case.</div></div>
+                    <div class="risk-step"><div class="risk-step-label">Assumption</div><div class="risk-step-text">LiDAR achieves <strong>±2cm at 3m</strong> on standard surfaces.</div></div>
+                    <div class="risk-step"><div class="risk-step-label">Thin Slice</div><div class="risk-step-text">AR marker test rig — 50 measurements, 5 surfaces, 3 lighting conditions.</div></div>
+                    <div class="risk-step"><div class="risk-step-label">Signal</div><div class="risk-step-text">±4cm raw → <strong>±2.5cm with Kalman filter</strong>. Gate met.</div></div>
+                    <div class="risk-step"><div class="risk-step-label">Impact</div><div class="risk-step-text"><strong>Arch:</strong> filter in pipeline. <strong>Backlog:</strong> calibration epic. <strong>Cost:</strong> +1 sprint priced.</div></div>
+                </div>
+                <div class="risk-example-card">
+                    <h3 class="risk-example-title">AI Prompt-to-Geometry Reliability</h3>
+                    <div class="risk-step"><div class="risk-step-label">Risk</div><div class="risk-step-text">AI-generated geometry may be <strong>too unreliable</strong> for production.</div></div>
+                    <div class="risk-step"><div class="risk-step-label">Assumption</div><div class="risk-step-text">Models produce <strong>≥80% fidelity</strong> on standardized prompts.</div></div>
+                    <div class="risk-step"><div class="risk-step-label">Thin Slice</div><div class="risk-step-text">10 prompt→mesh trials across 3 providers, scored vs. reference.</div></div>
+                    <div class="risk-step"><div class="risk-step-label">Signal</div><div class="risk-step-text">62% baseline → 78% tuned → <strong>81% fine-tuned</strong>. Gate met at iteration 2.</div></div>
+                    <div class="risk-step"><div class="risk-step-label">Impact</div><div class="risk-step-text"><strong>Arch:</strong> fine-tune pipeline. <strong>Backlog:</strong> prompt library epic. <strong>Cost:</strong> compute costs included.</div></div>
+                </div>
+                <div class="risk-example-card">
+                    <h3 class="risk-example-title">3D Rendering Performance</h3>
+                    <div class="risk-step"><div class="risk-step-label">Risk</div><div class="risk-step-text">Real-time rendering may <strong>not meet performance targets</strong> on target devices.</div></div>
+                    <div class="risk-step"><div class="risk-step-label">Assumption</div><div class="risk-step-text">WebGL sustains <strong>60fps at 500K polygons</strong> on mid-range mobile.</div></div>
+                    <div class="risk-step"><div class="risk-step-label">Thin Slice</div><div class="risk-step-text">WebGL stress test — escalating polygon counts on 4 devices.</div></div>
+                    <div class="risk-step"><div class="risk-step-label">Signal</div><div class="risk-step-text">45fps raw → <strong>58fps with LOD</strong>. Gate met conditionally.</div></div>
+                    <div class="risk-step"><div class="risk-step-label">Impact</div><div class="risk-step-text"><strong>Arch:</strong> LOD + adaptive quality. <strong>Backlog:</strong> device profiling. <strong>Cost:</strong> perf sprint added.</div></div>
+                </div>
+            </div>
+            <figcaption>
+                Each risk is traced from identification through to its impact on architecture, backlog, and cost.
+                This is the evidence chain that replaces opinion-driven scoping — every deliverable is anchored
+                in measured signal, not assumed requirements.
+            </figcaption>
+        </figure>
+    </section>
+
+    <PageNav
+        prev={{ href: "/practice/backlogs/", title: "Dual Backlogs" }}
+        next={{ href: "/practice/implementation/", title: "Implementation" }}
+    />
+</BaseLayout>
+
+<script is:inline>
+// All the engagement timeline interactive JS
+(function() {
+    var svg = document.getElementById('deliveryFlowSvg');
+    if (!svg) return;
+    var timeline = svg.parentElement;
+    var evidenceBar = timeline.querySelectorAll('.delivery-bar')[0];
+    var experienceBar = timeline.querySelectorAll('.delivery-bar')[1];
+
+    var paths = [
+        { el: document.getElementById('flowPath'),  grad: document.getElementById('evidenceToExperience'),  dots: svg.querySelectorAll('.flow-group-1'), startPct: 0.38, endPct: 0.55, dur: 3 },
+        { el: document.getElementById('flowPath2'), grad: document.getElementById('evidenceToExperience2'), dots: svg.querySelectorAll('.flow-group-2'), startPct: 0.52, endPct: 0.69, dur: 3 },
+        { el: document.getElementById('flowPath3'), grad: document.getElementById('evidenceToExperience3'), dots: svg.querySelectorAll('.flow-group-3'), startPct: 0.65, endPct: 0.82, dur: 3 }
+    ];
+
+    function makePath(cfg) {
+        var tRect = timeline.getBoundingClientRect();
+        var eRect = evidenceBar.getBoundingClientRect();
+        var xRect = experienceBar.getBoundingClientRect();
+        var startX = eRect.left - tRect.left + eRect.width * cfg.startPct;
+        var startY = eRect.top - tRect.top + eRect.height / 2;
+        var endX = xRect.left - tRect.left + xRect.width * cfg.endPct;
+        var endY = xRect.top - tRect.top + xRect.height / 2;
+        var midX = (startX + endX) / 2;
+        var d = 'M' + startX + ',' + startY + ' C' + midX + ',' + startY + ' ' + midX + ',' + endY + ' ' + endX + ',' + endY;
+        cfg.el.setAttribute('d', d);
+        cfg.grad.setAttribute('x1', startX); cfg.grad.setAttribute('y1', startY);
+        cfg.grad.setAttribute('x2', endX); cfg.grad.setAttribute('y2', endY);
+        return d;
+    }
+
+    function setupDots(cfg, d) {
+        var stagger = cfg.dur / cfg.dots.length;
+        for (var i = 0; i < cfg.dots.length; i++) {
+            (function(dot, idx) {
+                while (dot.firstChild) dot.removeChild(dot.firstChild);
+                var motion = document.createElementNS('http://www.w3.org/2000/svg', 'animateMotion');
+                motion.setAttribute('dur', cfg.dur + 's'); motion.setAttribute('repeatCount', 'indefinite');
+                motion.setAttribute('begin', (idx * stagger) + 's'); motion.setAttribute('path', d);
+                dot.appendChild(motion);
+                var opAnim = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+                opAnim.setAttribute('attributeName', 'opacity'); opAnim.setAttribute('values', '0;0.7;0.8;0.7;0');
+                opAnim.setAttribute('dur', cfg.dur + 's'); opAnim.setAttribute('repeatCount', 'indefinite');
+                opAnim.setAttribute('begin', (idx * stagger) + 's'); dot.appendChild(opAnim);
+                var colorAnim = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+                colorAnim.setAttribute('attributeName', 'fill'); colorAnim.setAttribute('values', '#E75437;#E75437;#7c5acc;#2563eb;#2563eb');
+                colorAnim.setAttribute('dur', cfg.dur + 's'); colorAnim.setAttribute('repeatCount', 'indefinite');
+                colorAnim.setAttribute('begin', (idx * stagger) + 's'); dot.appendChild(colorAnim);
+            })(cfg.dots[i], i);
+        }
+    }
+
+    for (var p = 0; p < paths.length; p++) { var d = makePath(paths[p]); setupDots(paths[p], d); }
+    window.addEventListener('resize', function() {
+        for (var p = 0; p < paths.length; p++) {
+            var newD = makePath(paths[p]);
+            for (var i = 0; i < paths[p].dots.length; i++) {
+                var m = paths[p].dots[i].querySelector('animateMotion');
+                if (m) m.setAttribute('path', newD);
+            }
+        }
+    });
+
+    var throughSvg = document.getElementById('throughFlowSvg');
+    var throughG = document.getElementById('throughFlowGroup');
+    var opsBar = timeline.querySelectorAll('.delivery-bar')[2];
+    var NS = 'http://www.w3.org/2000/svg';
+    var THROUGH_DUR = 4;
+    var TOTAL_WEEKS = 8;
+    var LAST_WEEK = 7;
+    var throughDefs = document.getElementById('throughDefs');
+
+    function buildThroughFlow() {
+        while (throughG.firstChild) throughG.removeChild(throughG.firstChild);
+        while (throughDefs.firstChild) throughDefs.removeChild(throughDefs.firstChild);
+        var tRect = timeline.getBoundingClientRect();
+        var eRect = evidenceBar.getBoundingClientRect();
+        var xRect = experienceBar.getBoundingClientRect();
+        var oRect = opsBar.getBoundingClientRect();
+        var evToExpOffset = 0.17;
+        var xTop = xRect.top - tRect.top - 4;
+        var xBot = xRect.top - tRect.top + xRect.height + 4;
+        for (var w = 0; w < LAST_WEEK; w++) {
+            var pct = (w + 0.5) / TOTAL_WEEKS;
+            var sx = eRect.left - tRect.left + eRect.width * pct;
+            var sy = eRect.top - tRect.top + eRect.height / 2;
+            var ex = oRect.left - tRect.left + oRect.width * (pct + evToExpOffset);
+            var ey = oRect.top - tRect.top + oRect.height / 2;
+            var midX = (sx + ex) / 2;
+            var fullD = 'M' + sx + ',' + sy + ' C' + midX + ',' + sy + ' ' + midX + ',' + ey + ' ' + ex + ',' + ey;
+            var gradId = 'throughGrad' + w;
+            var grad = document.createElementNS(NS, 'linearGradient');
+            grad.setAttribute('id', gradId); grad.setAttribute('gradientUnits', 'userSpaceOnUse');
+            grad.setAttribute('x1', sx); grad.setAttribute('y1', sy); grad.setAttribute('x2', sx); grad.setAttribute('y2', ey);
+            var s0 = document.createElementNS(NS, 'stop'); s0.setAttribute('offset', '0%'); s0.setAttribute('stop-color', '#E75437');
+            var s1 = document.createElementNS(NS, 'stop'); s1.setAttribute('offset', '50%'); s1.setAttribute('stop-color', '#2563eb');
+            var s2 = document.createElementNS(NS, 'stop'); s2.setAttribute('offset', '100%'); s2.setAttribute('stop-color', '#22c55e');
+            grad.appendChild(s0); grad.appendChild(s1); grad.appendChild(s2); throughDefs.appendChild(grad);
+            var measPath = document.createElementNS(NS, 'path'); measPath.setAttribute('d', fullD); throughG.appendChild(measPath);
+            var totalLen = measPath.getTotalLength();
+            var gapStart = 0, gapEnd = 0;
+            for (var t = 0; t <= 100; t++) { var pt = measPath.getPointAtLength(totalLen * t / 100); if (gapStart === 0 && pt.y >= xTop) gapStart = totalLen * t / 100; if (pt.y >= xBot) { gapEnd = totalLen * t / 100; break; } }
+            if (gapEnd === 0) gapEnd = gapStart;
+            throughG.removeChild(measPath);
+            var dashArray = (gapStart) + ' ' + (gapEnd - gapStart) + ' ' + (totalLen - gapEnd);
+            var path = document.createElementNS(NS, 'path'); path.setAttribute('d', fullD); path.setAttribute('fill', 'none');
+            path.setAttribute('stroke', 'url(#' + gradId + ')'); path.setAttribute('stroke-width', '1.5');
+            path.setAttribute('stroke-linecap', 'round'); path.setAttribute('opacity', '0.2');
+            path.setAttribute('stroke-dasharray', dashArray); path.setAttribute('data-full-d', fullD); throughG.appendChild(path);
+            for (var j = 0; j < 3; j++) {
+                var dot = document.createElementNS(NS, 'circle'); dot.setAttribute('r', '2.5'); dot.setAttribute('opacity', '0');
+                var stagger = THROUGH_DUR / 3; var begin = (w * 0.4 + j * stagger) + 's';
+                var motion = document.createElementNS(NS, 'animateMotion'); motion.setAttribute('dur', THROUGH_DUR + 's');
+                motion.setAttribute('repeatCount', 'indefinite'); motion.setAttribute('begin', begin); motion.setAttribute('path', fullD); dot.appendChild(motion);
+                var opAnim = document.createElementNS(NS, 'animate'); opAnim.setAttribute('attributeName', 'opacity');
+                opAnim.setAttribute('values', '0;0.45;0.5;0.45;0'); opAnim.setAttribute('dur', THROUGH_DUR + 's');
+                opAnim.setAttribute('repeatCount', 'indefinite'); opAnim.setAttribute('begin', begin); dot.appendChild(opAnim);
+                var colAnim = document.createElementNS(NS, 'animate'); colAnim.setAttribute('attributeName', 'fill');
+                colAnim.setAttribute('values', '#E75437;#E75437;#2563eb;#2563eb;#22c55e'); colAnim.setAttribute('dur', THROUGH_DUR + 's');
+                colAnim.setAttribute('repeatCount', 'indefinite'); colAnim.setAttribute('begin', begin); dot.appendChild(colAnim);
+                throughG.appendChild(dot);
+            }
+        }
+    }
+    buildThroughFlow();
+    window.addEventListener('resize', buildThroughFlow);
+
+    // Vera toggle
+    var veraToggle = document.getElementById('veraToggle');
+    var veraKey = document.getElementById('veraKey');
+    var opsTrack = document.getElementById('opsTrack');
+    var opsTrackDesc = document.getElementById('opsTrackDesc');
+    var veraOn = false;
+    var veraCanvas = document.getElementById('veraParticles');
+    var vCtx = veraCanvas.getContext('2d');
+    var veraParticles = [];
+    var PARTICLE_COUNT = 800;
+    var veraRafId = null;
+
+    function initVeraParticles() {
+        var w = veraCanvas.offsetWidth; var h = veraCanvas.offsetHeight;
+        var dpr = window.devicePixelRatio || 1;
+        veraCanvas.width = w * dpr; veraCanvas.height = h * dpr;
+        vCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        veraParticles = [];
+        var barY = h / 2; var barH = 3;
+        for (var i = 0; i < PARTICLE_COUNT; i++) {
+            veraParticles.push({ x: Math.random() * w, y: barY + (Math.random() - 0.5) * barH * 2, r: 0.5 + Math.random() * 1.2, vx: (Math.random() - 0.5) * 1.0, vy: (Math.random() - 0.5) * 0.8, alpha: 0.2 + Math.random() * 0.5, homeY: barY, spread: barH });
+        }
+    }
+
+    function tickVeraParticles() {
+        if (!veraOn) { veraRafId = null; return; }
+        var w = veraCanvas.offsetWidth; var h = veraCanvas.offsetHeight;
+        vCtx.clearRect(0, 0, w, h);
+        for (var i = 0; i < veraParticles.length; i++) {
+            var p = veraParticles[i];
+            p.vx += (Math.random() - 0.5) * 0.25; p.vy += (Math.random() - 0.5) * 0.25;
+            p.vy += (p.homeY - p.y) * 0.05;
+            var speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+            if (speed > 1.0) { p.vx = (p.vx / speed) * 1.0; p.vy = (p.vy / speed) * 1.0; }
+            p.x += p.vx; p.y += p.vy;
+            if (p.x > w + 2) p.x = -2; if (p.x < -2) p.x = w + 2;
+            var distFromCenter = Math.abs(p.y - p.homeY) / p.spread;
+            var edgeAlpha = Math.max(0, 1 - distFromCenter * 0.6);
+            vCtx.beginPath(); vCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            vCtx.fillStyle = 'rgba(236,72,153,' + (p.alpha * edgeAlpha).toFixed(3) + ')'; vCtx.fill();
+        }
+        veraRafId = requestAnimationFrame(tickVeraParticles);
+    }
+
+    function setVeraState(on) {
+        veraOn = on;
+        veraToggle.classList.toggle('active', on);
+        opsTrack.classList.toggle('vera-active', on);
+        veraKey.classList.toggle('visible', on);
+        opsTrackDesc.textContent = on ? 'Vera-led · Arch · Roadmap · Backlog · Cost' : 'Arch · Roadmap · Backlog · Cost';
+        buildThroughFlow();
+        if (on) { initVeraParticles(); if (!veraRafId) tickVeraParticles(); }
+        else { if (veraRafId) { cancelAnimationFrame(veraRafId); veraRafId = null; } vCtx.clearRect(0, 0, veraCanvas.width, veraCanvas.height); }
+    }
+
+    window.addEventListener('resize', function() { if (veraOn) initVeraParticles(); });
+    veraToggle.addEventListener('click', function(e) { e.stopPropagation(); setVeraState(!veraOn); });
+
+    var _origBuildThroughFlow = buildThroughFlow;
+    buildThroughFlow = function() {
+        _origBuildThroughFlow();
+        if (!veraOn) return;
+        var tPaths = throughG.querySelectorAll('path');
+        for (var i = 0; i < tPaths.length; i++) { tPaths[i].setAttribute('stroke', '#ec4899'); tPaths[i].setAttribute('opacity', '0.18'); }
+        var grads = throughDefs.querySelectorAll('linearGradient');
+        for (var i = 0; i < grads.length; i++) { var stops = grads[i].querySelectorAll('stop'); stops[0].setAttribute('stop-color', '#ec4899'); stops[1].setAttribute('stop-color', '#ec4899'); stops[2].setAttribute('stop-color', '#ec4899'); }
+        var oldDots = throughG.querySelectorAll('circle');
+        for (var i = oldDots.length - 1; i >= 0; i--) oldDots[i].parentNode.removeChild(oldDots[i]);
+
+        var glowFilter = document.createElementNS(NS, 'filter'); glowFilter.setAttribute('id', 'veraShotGlow');
+        glowFilter.setAttribute('x', '-50%'); glowFilter.setAttribute('y', '-50%'); glowFilter.setAttribute('width', '200%'); glowFilter.setAttribute('height', '200%');
+        var blur = document.createElementNS(NS, 'feGaussianBlur'); blur.setAttribute('stdDeviation', '2'); blur.setAttribute('result', 'glow'); glowFilter.appendChild(blur);
+        var merge = document.createElementNS(NS, 'feMerge');
+        var m1 = document.createElementNS(NS, 'feMergeNode'); m1.setAttribute('in', 'glow');
+        var m2 = document.createElementNS(NS, 'feMergeNode'); m2.setAttribute('in', 'SourceGraphic');
+        merge.appendChild(m1); merge.appendChild(m2); glowFilter.appendChild(merge); throughDefs.appendChild(glowFilter);
+
+        var svgRect = throughSvg.getBoundingClientRect(); var tRect2 = timeline.getBoundingClientRect();
+        var xRect2 = experienceBar.getBoundingClientRect();
+        var clipXTop = xRect2.top - tRect2.top - 4; var clipXBot = xRect2.top - tRect2.top + xRect2.height + 4;
+        var svgW = svgRect.width; var svgH = svgRect.height;
+        var clip = document.createElementNS(NS, 'clipPath'); clip.setAttribute('id', 'veraBehindClip');
+        var r1 = document.createElementNS(NS, 'rect'); r1.setAttribute('x', '0'); r1.setAttribute('y', '0'); r1.setAttribute('width', svgW); r1.setAttribute('height', clipXTop); clip.appendChild(r1);
+        var r2 = document.createElementNS(NS, 'rect'); r2.setAttribute('x', '0'); r2.setAttribute('y', clipXBot); r2.setAttribute('width', svgW); r2.setAttribute('height', svgH - clipXBot); clip.appendChild(r2);
+        throughDefs.appendChild(clip);
+        var shotsG = document.createElementNS(NS, 'g'); shotsG.setAttribute('clip-path', 'url(#veraBehindClip)');
+        var pathEls = throughG.querySelectorAll('path');
+        for (var pp = 0; pp < pathEls.length; pp++) {
+            var fullD = pathEls[pp].getAttribute('data-full-d') || pathEls[pp].getAttribute('d');
+            for (var s = 0; s < 5; s++) {
+                var shot = document.createElementNS(NS, 'rect'); shot.setAttribute('width', '6'); shot.setAttribute('height', '2'); shot.setAttribute('rx', '1');
+                shot.setAttribute('fill', '#ec4899'); shot.setAttribute('opacity', '0'); shot.setAttribute('filter', 'url(#veraShotGlow)');
+                var begin = (pp * 0.3 + s * (2.5 / 5)) + 's';
+                var mot = document.createElementNS(NS, 'animateMotion'); mot.setAttribute('dur', '0.8s'); mot.setAttribute('repeatCount', 'indefinite');
+                mot.setAttribute('begin', begin); mot.setAttribute('path', fullD); mot.setAttribute('rotate', 'auto'); shot.appendChild(mot);
+                var oA = document.createElementNS(NS, 'animate'); oA.setAttribute('attributeName', 'opacity'); oA.setAttribute('values', '0;0.9;1;0.9;0');
+                oA.setAttribute('keyTimes', '0;0.1;0.5;0.9;1'); oA.setAttribute('dur', '0.8s'); oA.setAttribute('repeatCount', 'indefinite'); oA.setAttribute('begin', begin); shot.appendChild(oA);
+                shotsG.appendChild(shot);
+            }
+        }
+        throughG.appendChild(shotsG);
+    };
+
+    // Traditional toggle
+    var traditionalToggle = document.getElementById('traditionalToggle');
+    var flowToggle = document.getElementById('flowToggle');
+    var throughFlowToggleEl = document.getElementById('throughFlowToggle');
+    var traditionalOn = false;
+    var savedFlowState = true; var savedThroughState = false;
+
+    traditionalToggle.addEventListener('click', function() {
+        traditionalOn = !traditionalOn;
+        traditionalToggle.classList.toggle('active', traditionalOn);
+        var tl = document.querySelector('#fig-4a .delivery-timeline');
+        if (traditionalOn) {
+            savedFlowState = flowToggle.classList.contains('active');
+            savedThroughState = throughFlowToggleEl.classList.contains('active');
+            if (savedFlowState) { flowToggle.classList.remove('active'); document.getElementById('deliveryFlowSvg').classList.add('hidden'); }
+            if (savedThroughState) { throughFlowToggleEl.classList.remove('active'); document.getElementById('throughFlowSvg').classList.add('hidden'); }
+            flowToggle.classList.add('disabled-by-traditional');
+            throughFlowToggleEl.classList.add('disabled-by-traditional');
+            if (veraOn) setVeraState(false);
+            veraToggle.style.pointerEvents = 'none'; veraToggle.style.opacity = '0.3';
+            tl.classList.add('traditional-mode');
+        } else {
+            tl.classList.remove('traditional-mode');
+            flowToggle.classList.remove('disabled-by-traditional');
+            throughFlowToggleEl.classList.remove('disabled-by-traditional');
+            veraToggle.style.pointerEvents = ''; veraToggle.style.opacity = '';
+            if (savedFlowState) { flowToggle.classList.add('active'); document.getElementById('deliveryFlowSvg').classList.remove('hidden'); }
+            if (savedThroughState) { throughFlowToggleEl.classList.add('active'); document.getElementById('throughFlowSvg').classList.remove('hidden'); }
+        }
+    });
+})();
+</script>

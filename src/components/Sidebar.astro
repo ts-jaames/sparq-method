@@ -1,0 +1,76 @@
+---
+const { currentPath } = Astro.props;
+
+const navGroups = [
+  {
+    label: 'Introduction',
+    links: [
+      { href: '/', title: 'Overview' },
+    ],
+  },
+  {
+    label: 'Philosophy',
+    links: [
+      { href: '/philosophy/', title: 'The Shift' },
+    ],
+  },
+  {
+    label: 'The Model',
+    links: [
+      { href: '/model/operating-model/', title: 'Operating Model' },
+      { href: '/model/applied-flow/', title: 'Applied Flow' },
+    ],
+  },
+  {
+    label: 'In Practice',
+    links: [
+      { href: '/practice/backlogs/', title: 'Dual Backlogs' },
+      { href: '/practice/engagement/', title: 'Engagement Shape' },
+      { href: '/practice/implementation/', title: 'Implementation' },
+    ],
+  },
+  {
+    label: 'Reference',
+    links: [
+      { href: '/reference/', title: 'Glossary & Constraints' },
+    ],
+  },
+];
+
+function isActive(href: string, current: string) {
+  if (href === '/') return current === '/';
+  return current.startsWith(href);
+}
+---
+
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <a href="/" class="sidebar-logo">Evidence-Driven<br>Delivery</a>
+    <div class="sidebar-version">Specification v1.0</div>
+  </div>
+
+  <nav class="sidebar-nav">
+    {navGroups.map((group) => (
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">{group.label}</div>
+        {group.links.map((link) => (
+          <a
+            href={link.href}
+            class:list={['sidebar-link', { active: isActive(link.href, currentPath) }]}
+          >
+            {link.title}
+          </a>
+        ))}
+      </div>
+    ))}
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="sidebar-kbd-hint" id="cmdKTrigger">
+      <svg class="sidebar-kbd-hint-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      Search
+      <kbd>⌘</kbd><kbd>K</kbd>
+    </div>
+    <div class="sidebar-footer-text" style="margin-top:12px;">Sparq — Internal</div>
+  </div>
+</aside>

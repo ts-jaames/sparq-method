@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageNav from '../components/PageNav.astro';
+---
+
+<BaseLayout title="Glossary & Constraints">
+    <div class="page-header">
+        <h1>Glossary & Constraints</h1>
+        <p class="page-header-desc">
+            Operating model terms and the boundaries of what this specification does and does not define.
+        </p>
+        <div class="page-meta">
+            <span class="page-reading-time">3 min read</span>
+        </div>
+    </div>
+
+    <section>
+        <h2>Operational Constraints</h2>
+        <div class="constraints">
+            <div class="constraint-column does-not">
+                <h3>This model does not:</h3>
+                <ul>
+                    <li>Replace SDLC execution</li>
+                    <li>Eliminate planning or documentation</li>
+                    <li>Remove role accountability</li>
+                    <li>Change how code is shipped</li>
+                    <li>Define workshop formats or artifact templates</li>
+                    <li>Require full MVP definition before production work begins</li>
+                </ul>
+            </div>
+            <div class="constraint-column defines">
+                <h3>It defines:</h3>
+                <ul>
+                    <li>How assumptions are prioritized by risk</li>
+                    <li>When work transitions from Evidence to Commitment</li>
+                    <li>How confidence gates control investment scale</li>
+                    <li>How the <code style="font-size:10px;color:#E75437;background:none;padding:0;">Evidence Ledger</code> governs progression</li>
+                    <li>How investment scales with confidence</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="glossary">
+        <h2>Glossary — Operating Model Terms</h2>
+        <div class="glossary">
+            <div class="glossary-grid">
+                <div class="glossary-term"><div class="glossary-term-title">Evidence Work</div><div class="glossary-term-def">The continuous practice of reducing product uncertainty through measurable signal. It governs when and how we scale build effort.</div></div>
+                <div class="glossary-term"><div class="glossary-term-title">Confidence Gate</div><div class="glossary-term-def">A decision point where work is evaluated based on whether uncertainty has been sufficiently reduced. Gates determine: Promote | Iterate | Pivot.</div></div>
+                <div class="glossary-term"><div class="glossary-term-title">Evidence Ledger</div><div class="glossary-term-def">The single source of truth for uncertainty reduction, containing: Assumptions, Signals, Decisions, and Confidence State.</div></div>
+                <div class="glossary-term"><div class="glossary-term-title">Spike</div><div class="glossary-term-def">A time-boxed experiment designed to test a specific assumption. Not production-grade, but instrumented to generate usable signal.</div></div>
+                <div class="glossary-term"><div class="glossary-term-title">Evidence Backlog</div><div class="glossary-term-def">Work focused on testing assumptions and reducing uncertainty. Time-boxed, flexible scope, not delivery commitments.</div></div>
+                <div class="glossary-term"><div class="glossary-term-title">Commitment Backlog</div><div class="glossary-term-def">Work focused on delivering durable capability. Scoped features, production quality, release-bound, SLA-governed.</div></div>
+                <div class="glossary-term"><div class="glossary-term-title">Signal</div><div class="glossary-term-def">Measurable evidence generated through experiments, user validation, or technical testing that informs assumption evaluation.</div></div>
+                <div class="glossary-term"><div class="glossary-term-title">Promotion Protocol</div><div class="glossary-term-def">The explicit process for transitioning work from Evidence Backlog to Commitment Backlog based on validated confidence.</div></div>
+                <div class="glossary-term"><div class="glossary-term-title">Commitment State</div><div class="glossary-term-def">The level of irreversible investment in a capability. Defined by architecture hardening, operational ownership, and production obligations. Commitment increases only when confidence thresholds are exceeded.</div></div>
+                <div class="glossary-term"><div class="glossary-term-title">Investment Intensity</div><div class="glossary-term-def">The relative level of production effort applied to a capability. Increases as confidence grows. Independent from time or phase.</div></div>
+                <div class="glossary-term"><div class="glossary-term-title">Capability</div><div class="glossary-term-def">A durable, production-grade behavior or system outcome derived from validated hypotheses. Not synonymous with a feature or UI element.</div></div>
+                <div class="glossary-term"><div class="glossary-term-title">Hypothesis</div><div class="glossary-term-def">A testable assumption about value, usability, feasibility, or viability that must be validated before commitment.</div></div>
+                <div class="glossary-term"><div class="glossary-term-title">Confidence Threshold</div><div class="glossary-term-def">The predefined level of validated signal required to justify increased investment or promotion to a higher commitment state.</div></div>
+                <div class="glossary-term"><div class="glossary-term-title">Irreversibility</div><div class="glossary-term-def">The degree to which architectural, operational, or financial decisions become difficult or costly to undo. Increases with commitment state.</div></div>
+            </div>
+        </div>
+    </section>
+
+    <footer style="margin-top:40px;padding-top:20px;border-top:1px solid var(--border);">
+        <div class="version-history" style="margin-top:0;padding-top:0;border-top:none;">
+            <h4>Version History</h4>
+            <p>v1.0 — Initial specification (February 2026)</p>
+        </div>
+    </footer>
+
+    <PageNav
+        prev={{ href: "/practice/implementation/", title: "Implementation" }}
+    />
+</BaseLayout>

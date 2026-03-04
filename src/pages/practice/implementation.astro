@@ -1,0 +1,190 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageNav from '../../components/PageNav.astro';
+---
+
+<BaseLayout title="Implementation">
+    <div class="page-header">
+        <h1>Implementation</h1>
+        <p class="page-header-desc">
+            How the Evidence-Driven Delivery model maps to Jira's native structures.
+            Capabilities become Epics, Assumptions become Stories, and Slices become Subtasks.
+        </p>
+        <div class="page-meta">
+            <span class="page-reading-time">5 min read</span>
+        </div>
+    </div>
+
+    <section>
+        <figure id="fig-5a">
+            <div class="fig-label">Fig. 5A — Evidence Work Hierarchy</div>
+            <div class="hierarchy-grid">
+                <div class="hierarchy-card">
+                    <div class="hierarchy-card-type">Capability</div>
+                    <div class="hierarchy-card-title">Durable product outcome</div>
+                    <p>Not a feature — a behavioral or systemic outcome the product achieves. Progresses when confidence threshold is exceeded, not when time passes.</p>
+                    <div class="hierarchy-contains">Contains 2–3 Risks →</div>
+                    <div class="hierarchy-arrow"></div>
+                </div>
+                <div class="hierarchy-card">
+                    <div class="hierarchy-card-type">Risk</div>
+                    <div class="hierarchy-card-title">Uncertainty with consequence</div>
+                    <p>Categories: Value, Usability, Feasibility, Viability, Operational.</p>
+                    <p>Prioritized by: <em>impact if wrong × degree of uncertainty × cost to test</em>.</p>
+                    <div class="hierarchy-contains">Contains 1–3 Assumptions →</div>
+                    <div class="hierarchy-arrow"></div>
+                </div>
+                <div class="hierarchy-card">
+                    <div class="hierarchy-card-type">Assumption</div>
+                    <div class="hierarchy-card-title">Testable behavioral statement</div>
+                    <p>A specific, falsifiable claim derived from a Risk.</p>
+                    <div class="hierarchy-contains">Contains 1–3 Slices →</div>
+                    <div class="hierarchy-arrow"></div>
+                </div>
+                <div class="hierarchy-card">
+                    <div class="hierarchy-card-type">Slice</div>
+                    <div class="hierarchy-card-title">Smallest buildable artifact</div>
+                    <p>Generates signal for one assumption. Time-boxed, instrumented, disposable unless promoted.</p>
+                    <div class="hierarchy-statuses">
+                        <span class="hierarchy-status-pill">Planned</span>
+                        <span class="hierarchy-status-pill">Active</span>
+                        <span class="hierarchy-status-pill">Done</span>
+                        <span class="hierarchy-status-pill">Invalidated</span>
+                        <span class="hierarchy-status-pill">Blocked</span>
+                    </div>
+                </div>
+            </div>
+            <figcaption>
+                Evidence Work decomposes capabilities into testable units. Risks group related
+                uncertainties. Assumptions make them falsifiable. Slices generate the signal that
+                moves confidence.
+            </figcaption>
+        </figure>
+
+        <figure id="fig-5b">
+            <div class="fig-label">Fig. 5B — Jira Implementation Reference</div>
+            <table class="jira-mapping">
+                <thead><tr><th>Jira Type</th><th>Maps To</th><th>Key Configuration</th></tr></thead>
+                <tbody>
+                    <tr>
+                        <td><span class="jira-badge jira-badge-epic">Epic</span></td>
+                        <td><strong style="color:var(--text)">Capability</strong></td>
+                        <td>Custom field: <code>Commitment State</code><br><span class="jira-field-tag">Concept</span><span class="jira-field-tag">Validation</span><span class="jira-field-tag">Committed</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="jira-badge jira-badge-story">Story</span></td>
+                        <td><strong style="color:var(--text)">Assumption</strong></td>
+                        <td>Label for risk category:<br><span class="jira-field-tag">risk:value</span><span class="jira-field-tag">risk:usability</span><span class="jira-field-tag">risk:feasibility</span><span class="jira-field-tag">risk:viability</span><span class="jira-field-tag">risk:operational</span><div class="hierarchy-callout" style="margin-top:8px">Risk is not a Jira object — it is represented as label metadata on the Story.</div></td>
+                    </tr>
+                    <tr>
+                        <td><span class="jira-badge jira-badge-subtask">Subtask</span></td>
+                        <td><strong style="color:var(--text)">Slice</strong></td>
+                        <td>Statuses:<br><span class="jira-field-tag">Planned</span><span class="jira-field-tag">Active</span><span class="jira-field-tag">Done</span><span class="jira-field-tag">Invalidated</span><span class="jira-field-tag">Blocked</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="lifecycle-section">
+                <div class="lifecycle-section-title">Assumption <span class="jira-badge jira-badge-story" style="font-size:9px;padding:1px 6px;vertical-align:1px">Story</span> Lifecycle — Board Columns</div>
+                <div class="lifecycle-section-desc">Each Assumption (Story) moves left-to-right through five states. This is the column structure for the Jira board.</div>
+                <div class="lifecycle-columns">
+                    <div class="lifecycle-col">
+                        <div class="lifecycle-col-header"><div class="lifecycle-col-num">1</div>Concept</div>
+                        <div class="lifecycle-col-body"><ul><li>Assumption defined</li><li>Risk labeled</li><li>Success + failure criteria written</li><li>No slice started yet</li></ul></div>
+                    </div>
+                    <div class="lifecycle-col">
+                        <div class="lifecycle-col-header"><div class="lifecycle-col-num">2</div>In Validation</div>
+                        <div class="lifecycle-col-body"><ul><li>At least one Slice subtask is Active</li><li>Signal is being generated</li></ul></div>
+                    </div>
+                    <div class="lifecycle-col">
+                        <div class="lifecycle-col-header"><div class="lifecycle-col-num">3</div>Signal Captured</div>
+                        <div class="lifecycle-col-body"><ul><li>All planned slices Done or Invalidated</li><li>Data collected</li><li>Ready for interpretation</li></ul></div>
+                    </div>
+                    <div class="lifecycle-col">
+                        <div class="lifecycle-col-header"><div class="lifecycle-col-num">4</div>Decision Gate</div>
+                        <div class="lifecycle-col-body"><ul><li>Signal reviewed</li><li>Decision recorded:</li></ul><ul class="lifecycle-outcomes"><li>Promote / Iterate / Pivot / Stop</li></ul></div>
+                    </div>
+                    <div class="lifecycle-col">
+                        <div class="lifecycle-col-header"><div class="lifecycle-col-num">5</div>Done</div>
+                        <div class="lifecycle-col-body">
+                            <p>Requires a field at transition:</p>
+                            <p style="font-weight:500;color:var(--text-secondary);margin-bottom:4px">Resolution Type</p>
+                            <ul><li>Promoted</li><li>Invalidated</li><li>Pivoted</li></ul>
+                            <div style="margin-top:10px;padding:8px 10px;background:var(--bg);border-radius:3px;font-size:11px;font-family:var(--mono);color:var(--text-secondary);line-height:1.6">Status: <strong>Done</strong><br>Resolution Type: <strong>Promoted</strong></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="lifecycle-footnote">Epic Commitment State is updated separately — it reflects the aggregate confidence across all its Assumptions.</div>
+            </div>
+
+            <div class="template-grid">
+                <div class="template-card">
+                    <div class="template-card-header"><span class="jira-badge jira-badge-epic">Epic</span><span class="template-card-header-title">Capability</span></div>
+                    <div class="template-card-body">
+                        <div class="template-field"><div class="template-field-label">Title</div><div class="template-field-value">The capability or outcome we are working toward.</div></div>
+                        <div class="template-field"><div class="template-field-label">Commitment State</div><div class="template-field-value">Current level of confidence in this capability.<br><span style="font-style:italic;color:var(--text-tertiary)">Exploration / Validation / Committed</span></div></div>
+                        <div class="template-field"><div class="template-field-label">Risk Categories</div><div class="template-field-value">Primary risk domains represented by its assumptions.<br><span style="font-style:italic;color:var(--text-tertiary)">value / usability / feasibility / viability</span></div></div>
+                        <div class="template-field"><div class="template-field-label">Confidence Threshold</div><div class="template-field-value">Clear conditions required to promote this capability to Committed.</div></div>
+                    </div>
+                </div>
+                <div class="template-card">
+                    <div class="template-card-header"><span class="jira-badge jira-badge-story">Story</span><span class="template-card-header-title">Assumption</span></div>
+                    <div class="template-card-body">
+                        <div class="template-field"><div class="template-field-label">Title (Testable Assumption)</div><div class="template-field-value">A falsifiable belief about this capability.</div></div>
+                        <div class="template-field"><div class="template-field-label">Risk Label</div><div class="template-field-value">Primary risk category this assumption addresses.</div></div>
+                        <div class="template-field"><div class="template-field-label">Signal Definition</div><div class="template-field-value">What observable evidence will validate or invalidate this assumption?</div></div>
+                        <div class="template-field"><div class="template-field-label">Pass / Fail Criteria</div><div class="template-field-value">Clear, measurable conditions for decision-making.</div></div>
+                    </div>
+                </div>
+                <div class="template-card">
+                    <div class="template-card-header"><span class="jira-badge jira-badge-subtask">Subtask</span><span class="template-card-header-title">Slice</span></div>
+                    <div class="template-card-body">
+                        <div class="template-field"><div class="template-field-label">Signal to Capture</div><div class="template-field-value">What specific observable evidence will this slice produce?</div></div>
+                        <div class="template-field"><div class="template-field-label">Method</div><div class="template-field-value">How the signal will be generated.<br><span style="font-style:italic;color:var(--text-tertiary)">Spike / Interview / Prototype Test / Instrumentation</span></div></div>
+                        <div class="template-field"><div class="template-field-label">Timebox</div><div class="template-field-value">Expected duration. Slices are intentionally bounded.</div></div>
+                        <div class="template-field"><div class="template-field-label">Notes (Optional)</div><div class="template-field-value">Setup context or constraints.</div></div>
+                        <div class="template-field" style="margin-top:4px;padding-top:10px;border-top:1px solid var(--border)"><div class="template-field-label">Outcome (Required at Close)</div><div class="template-field-value"><span class="jira-field-tag">Supports</span><span class="jira-field-tag">Weak Support</span><span class="jira-field-tag">Invalidates</span><span class="jira-field-tag">Inconclusive</span></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lifecycle-section">
+                <div class="lifecycle-section-title"><span class="jira-badge jira-badge-epic" style="font-size:9px;padding:1px 6px;vertical-align:1px">Epic</span> Commitment State</div>
+                <div class="lifecycle-section-desc">Updated separately from Assumption lifecycle. Reflects aggregate confidence across all Assumptions under the Epic.</div>
+                <div class="state-cards">
+                    <div class="state-card">
+                        <div class="state-card-name">Concept</div>
+                        <div class="state-card-row"><span class="state-card-label">Investment</span><span class="state-card-value">Low</span></div>
+                        <div class="state-card-row"><span class="state-card-label">Backlog</span><span class="state-card-value">Evidence</span></div>
+                        <div class="state-card-done"><strong>Done =</strong> Assumptions identified and prioritized by risk</div>
+                    </div>
+                    <div class="state-card">
+                        <div class="state-card-name">Validation</div>
+                        <div class="state-card-row"><span class="state-card-label">Investment</span><span class="state-card-value">Medium</span></div>
+                        <div class="state-card-row"><span class="state-card-label">Backlog</span><span class="state-card-value">Evidence</span></div>
+                        <div class="state-card-done"><strong>Done =</strong> Confidence threshold exceeded at gate</div>
+                    </div>
+                    <div class="state-card">
+                        <div class="state-card-name">Committed</div>
+                        <div class="state-card-row"><span class="state-card-label">Investment</span><span class="state-card-value">High</span></div>
+                        <div class="state-card-row"><span class="state-card-label">Backlog</span><span class="state-card-value">Commitment</span></div>
+                        <div class="state-card-done"><strong>Done =</strong> Production capability shipped and operational</div>
+                    </div>
+                </div>
+            </div>
+
+            <figcaption>
+                This mapping preserves the conceptual model while working within Jira's native structures.
+                Risk is not a Jira object — it lives as label metadata on Assumption stories.
+                Each Assumption follows a clean, linear lifecycle from Concept through Decision Gate
+                to Done. Commitment State on Epics is updated separately as aggregate confidence
+                shifts — it replaces traditional priority as the primary governance signal.
+            </figcaption>
+        </figure>
+    </section>
+
+    <PageNav
+        prev={{ href: "/practice/engagement/", title: "Engagement Shape" }}
+        next={{ href: "/reference/", title: "Glossary & Constraints" }}
+    />
+</BaseLayout>

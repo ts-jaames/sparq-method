@@ -1,0 +1,173 @@
+---
+---
+
+<figure id="fig-1b">
+    <div class="fig-label">Fig. 1B — Continuous Uncertainty Reduction</div>
+    <div class="diagram">
+        <div class="funnel-container">
+            <svg class="funnel-svg" viewBox="0 0 760 270" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20,15 Q350,15 530,118" fill="none" stroke="#e5e5e5" stroke-width="1"/>
+                <path d="M20,255 Q350,255 530,152" fill="none" stroke="#e5e5e5" stroke-width="1"/>
+                <line x1="545" y1="105" x2="545" y2="165" stroke="#4a4a4a" stroke-width="2.5"/>
+                <line x1="535" y1="105" x2="555" y2="105" stroke="#4a4a4a" stroke-width="2"/>
+                <line x1="535" y1="165" x2="555" y2="165" stroke="#4a4a4a" stroke-width="2"/>
+                <text x="528" y="131" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="9" font-weight="600" letter-spacing="0.05em" fill="#4a4a4a">CONFIDENCE</text>
+                <text x="528" y="141" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="9" font-weight="600" letter-spacing="0.05em" fill="#4a4a4a">GATE</text>
+                <text x="20" y="12" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="10" font-weight="500" letter-spacing="0.05em" fill="#a3a3a3">HIGH UNCERTAINTY</text>
+                <text x="20" y="268" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="10" font-weight="500" letter-spacing="0.05em" fill="#a3a3a3">HIGH UNCERTAINTY</text>
+                <text x="630" y="68" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="10" font-weight="500" letter-spacing="0.05em" fill="#a3a3a3">COMMITTED CAPABILITY</text>
+            </svg>
+            <canvas class="funnel-signal-canvas" id="funnelSignalCanvas"></canvas>
+            <canvas class="funnel-core-canvas" id="funnelCoreCanvas"></canvas>
+        </div>
+    </div>
+    <figcaption>
+        Traditional discovery advances by time and ends in handoff. Evidence often accumulates late.
+        Our approach advances by confidence. Distributed signal narrows through evidence into a single governed gate. Only what passes becomes commitment.
+    </figcaption>
+</figure>
+
+<script>
+(function() {
+    const canvas = document.getElementById('funnelCoreCanvas');
+    if (!canvas) return;
+    const ctx = (canvas as HTMLCanvasElement).getContext('2d')!;
+    const PARTICLE_COUNT = 500;
+    const COLOR = '#E75437';
+    const particles: any[] = [];
+
+    function initParticles() {
+        particles.length = 0;
+        for (let i = 0; i < PARTICLE_COUNT; i++) {
+            let x, y;
+            do { x = (Math.random() - 0.5) * 2; y = (Math.random() - 0.5) * 2; }
+            while (x * x + y * y > 1);
+            const speed = 0.002 + Math.random() * 0.005;
+            const angle = Math.random() * Math.PI * 2;
+            particles.push({ x, y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, r: 0.5 + Math.random() * 1.8, opacity: 0.25 + Math.random() * 0.7 });
+        }
+    }
+
+    function resize() {
+        const rect = (canvas as HTMLCanvasElement).getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+        (canvas as HTMLCanvasElement).width = rect.width * dpr;
+        (canvas as HTMLCanvasElement).height = rect.height * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function tick() {
+        const rect = (canvas as HTMLCanvasElement).getBoundingClientRect();
+        const cx = rect.width / 2, cy = rect.height / 2;
+        const radius = Math.min(cx, cy);
+        ctx.clearRect(0, 0, rect.width, rect.height);
+        for (const p of particles) {
+            p.x += p.vx; p.y += p.vy;
+            p.x *= 0.9997; p.y *= 0.9997;
+            p.x += (Math.random() - 0.5) * 0.002;
+            p.y += (Math.random() - 0.5) * 0.002;
+            const dist = Math.sqrt(p.x * p.x + p.y * p.y);
+            if (dist > 0.95) {
+                const nx = p.x / dist, ny = p.y / dist;
+                const dot = p.vx * nx + p.vy * ny;
+                p.vx -= 2 * dot * nx; p.vy -= 2 * dot * ny;
+                p.x *= 0.94 / dist; p.y *= 0.94 / dist;
+            }
+            ctx.beginPath();
+            ctx.arc(cx + p.x * radius, cy + p.y * radius, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = COLOR;
+            ctx.globalAlpha = p.opacity;
+            ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+        requestAnimationFrame(tick);
+    }
+
+    initParticles(); resize();
+    window.addEventListener('resize', resize);
+    requestAnimationFrame(tick);
+})();
+
+(function() {
+    const canvas = document.getElementById('funnelSignalCanvas');
+    if (!canvas) return;
+    const ctx = (canvas as HTMLCanvasElement).getContext('2d')!;
+    const COLOR = '#E75437';
+    const SIGNAL_COUNT = 40;
+    const signals: any[] = [];
+
+    function funnelY(progress: number) {
+        var topY = 0.056 + progress * (0.437 - 0.056);
+        var botY = 0.944 - progress * (0.944 - 0.563);
+        return { top: topY, bot: botY };
+    }
+
+    function spawnSignal() {
+        var px = Math.random() * 0.05;
+        var bounds = funnelY(px);
+        var py = bounds.top + Math.random() * (bounds.bot - bounds.top);
+        var speed = 0.0004 + Math.random() * 0.0006;
+        var baseOpacity = Math.random() < 0.5 ? (0.6 + Math.random() * 0.4) : (0.2 + Math.random() * 0.3);
+        return { x: px, y: py, speed, r: 1.5 + Math.random() * 2.5, opacity: baseOpacity, baseOpacity, drift: (Math.random() - 0.5) * 0.0003 };
+    }
+
+    function init() {
+        signals.length = 0;
+        for (var i = 0; i < SIGNAL_COUNT; i++) {
+            var s = spawnSignal();
+            s.x = Math.random() * 0.95;
+            var bounds = funnelY(s.x);
+            var center = (bounds.top + bounds.bot) / 2;
+            var halfH = (bounds.bot - bounds.top) / 2;
+            s.y = center + (Math.random() - 0.5) * 2 * halfH * 0.9;
+            s.opacity = s.baseOpacity * (1 - s.x * 0.6);
+            signals.push(s);
+        }
+    }
+
+    function resize() {
+        var rect = (canvas as HTMLCanvasElement).getBoundingClientRect();
+        var dpr = window.devicePixelRatio || 1;
+        (canvas as HTMLCanvasElement).width = rect.width * dpr;
+        (canvas as HTMLCanvasElement).height = rect.height * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function tick() {
+        var rect = (canvas as HTMLCanvasElement).getBoundingClientRect();
+        var w = rect.width, h = rect.height;
+        ctx.clearRect(0, 0, w, h);
+        for (var i = 0; i < signals.length; i++) {
+            var s = signals[i];
+            s.x += s.speed;
+            s.y += s.drift;
+            s.drift += (Math.random() - 0.5) * 0.00005;
+            s.drift *= 0.99;
+            var bounds = funnelY(s.x);
+            if (s.y < bounds.top + 0.02) { s.y = bounds.top + 0.02; s.drift = Math.abs(s.drift); }
+            if (s.y > bounds.bot - 0.02) { s.y = bounds.bot - 0.02; s.drift = -Math.abs(s.drift); }
+            var fadeStart = 0.75;
+            if (s.x > fadeStart) {
+                s.opacity = s.baseOpacity * (1 - s.x * 0.6) * (1 - (s.x - fadeStart) / (1 - fadeStart));
+            } else {
+                s.opacity = s.baseOpacity * (1 - s.x * 0.6);
+            }
+            if (s.opacity > 0.005) {
+                var screenR = s.r * (1 - s.x * 0.3);
+                ctx.beginPath();
+                ctx.arc(s.x * w, s.y * h, Math.max(screenR, 0.5), 0, Math.PI * 2);
+                ctx.fillStyle = COLOR;
+                ctx.globalAlpha = Math.max(s.opacity, 0);
+                ctx.fill();
+            }
+            if (s.x > 1 || s.opacity <= 0.005) { signals[i] = spawnSignal(); }
+        }
+        ctx.globalAlpha = 1;
+        requestAnimationFrame(tick);
+    }
+
+    init(); resize();
+    window.addEventListener('resize', resize);
+    requestAnimationFrame(tick);
+})();
+</script>

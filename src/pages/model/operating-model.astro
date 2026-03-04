@@ -1,0 +1,168 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageNav from '../../components/PageNav.astro';
+---
+
+<BaseLayout title="Operating Model">
+    <div class="page-header">
+        <h1>Operating Model</h1>
+        <p class="page-header-desc">
+            Evidence Work, Build Lifecycle, and SDLC are independent dimensions — not sequential phases.
+            At any moment, work exists at a coordinate defined by confidence earned and investment depth.
+        </p>
+        <div class="page-meta">
+            <span class="page-reading-time">4 min read</span>
+        </div>
+    </div>
+
+    <section>
+        <figure id="fig-2a">
+            <div class="fig-label">Fig. 2A — Multi-Dimensional Operating Model</div>
+            <div class="diagram">
+                <svg viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+                    <style>
+                        @keyframes sdlcSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+                        .sdlc-ring { animation: sdlcSpin 12s linear infinite; }
+                    </style>
+                    <defs>
+                        <pattern id="dotGrid" patternUnits="userSpaceOnUse" width="10" height="10">
+                            <circle cx="5" cy="5" r="1.2" fill="#c5c5c5"/>
+                        </pattern>
+                        <radialGradient id="cornerBR" cx="680" cy="310" r="420" gradientUnits="userSpaceOnUse">
+                            <stop offset="0%" stop-color="white" stop-opacity="0.55"/>
+                            <stop offset="30%" stop-color="white" stop-opacity="0.4"/>
+                            <stop offset="55%" stop-color="white" stop-opacity="0.18"/>
+                            <stop offset="72%" stop-color="white" stop-opacity="0.04"/>
+                            <stop offset="82%" stop-color="white" stop-opacity="0"/>
+                        </radialGradient>
+                        <radialGradient id="cornerTL" cx="120" cy="60" r="380" gradientUnits="userSpaceOnUse">
+                            <stop offset="0%" stop-color="white" stop-opacity="0.55"/>
+                            <stop offset="30%" stop-color="white" stop-opacity="0.4"/>
+                            <stop offset="55%" stop-color="white" stop-opacity="0.18"/>
+                            <stop offset="72%" stop-color="white" stop-opacity="0.04"/>
+                            <stop offset="82%" stop-color="white" stop-opacity="0"/>
+                        </radialGradient>
+                        <mask id="zoneMask">
+                            <rect x="120" y="60" width="570" height="250" fill="url(#cornerBR)"/>
+                            <rect x="120" y="60" width="570" height="250" fill="url(#cornerTL)"/>
+                        </mask>
+                    </defs>
+                    <rect x="120" y="60" width="570" height="250" fill="url(#dotGrid)" mask="url(#zoneMask)"/>
+                    <text x="585" y="290" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="9" font-weight="500" fill="#dc2626" style="paint-order:stroke;stroke:white;stroke-width:4px;stroke-linejoin:round;">Invalid State — Investment Exceeds Confidence</text>
+                    <text x="229" y="76" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="9" font-style="italic" fill="#a3a3a3" style="paint-order:stroke;stroke:white;stroke-width:4px;stroke-linejoin:round;">Threshold Exceeded — Promotion Required</text>
+                    <circle cx="120" cy="310" r="4" fill="#4a4a4a"/>
+                    <line x1="120" y1="310" x2="120" y2="60" stroke="#4a4a4a" stroke-width="1.5"/>
+                    <polygon points="116,64 120,52 124,64" fill="#4a4a4a"/>
+                    <line x1="114" y1="280" x2="126" y2="280" stroke="#d4d4d4" stroke-width="1"/>
+                    <line x1="114" y1="185" x2="126" y2="185" stroke="#d4d4d4" stroke-width="1"/>
+                    <line x1="114" y1="90" x2="126" y2="90" stroke="#d4d4d4" stroke-width="1"/>
+                    <text x="108" y="284" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="9" fill="#a3a3a3">Low Confidence</text>
+                    <text x="108" y="189" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="9" fill="#a3a3a3">Medium Confidence</text>
+                    <text x="108" y="94" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="9" fill="#a3a3a3">High Confidence</text>
+                    <text x="120" y="32" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="10" font-weight="600" letter-spacing="0.05em" fill="#4a4a4a">EVIDENCE WORK</text>
+                    <text x="120" y="44" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="9" fill="#a3a3a3">Confidence Earned</text>
+                    <line x1="120" y1="310" x2="680" y2="310" stroke="#4a4a4a" stroke-width="1.5"/>
+                    <polygon points="676,306 688,310 676,314" fill="#4a4a4a"/>
+                    <line x1="260" y1="304" x2="260" y2="316" stroke="#d4d4d4" stroke-width="1"/>
+                    <line x1="400" y1="304" x2="400" y2="316" stroke="#d4d4d4" stroke-width="1"/>
+                    <line x1="540" y1="304" x2="540" y2="316" stroke="#d4d4d4" stroke-width="1"/>
+                    <text x="260" y="332" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="9" fill="#a3a3a3">Concept</text>
+                    <text x="400" y="332" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="9" fill="#a3a3a3">Validation</text>
+                    <text x="540" y="332" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="9" fill="#a3a3a3">Commitment</text>
+                    <text x="700" y="305" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="10" font-weight="600" letter-spacing="0.05em" fill="#4a4a4a">BUILD LIFECYCLE</text>
+                    <text x="700" y="317" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="9" fill="#a3a3a3">Investment Intensity</text>
+                    <g>
+                        <circle cx="260" cy="370" r="16" fill="none" stroke="#737373" stroke-width="1" stroke-dasharray="3 2">
+                            <animateTransform attributeName="transform" type="rotate" from="0 260 370" to="360 260 370" dur="12s" repeatCount="indefinite"/>
+                        </circle>
+                        <text x="260" y="373" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="9" font-weight="500" fill="#525252">SDLC</text>
+                        <text x="260" y="398" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="9" fill="#737373">Plan, Build,</text>
+                        <text x="260" y="409" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="9" fill="#737373">Test, Release</text>
+                    </g>
+                    <g>
+                        <circle cx="400" cy="370" r="16" fill="none" stroke="#737373" stroke-width="1" stroke-dasharray="3 2">
+                            <animateTransform attributeName="transform" type="rotate" from="0 400 370" to="360 400 370" dur="12s" repeatCount="indefinite"/>
+                        </circle>
+                        <text x="400" y="373" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="9" font-weight="500" fill="#525252">SDLC</text>
+                        <text x="400" y="398" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="9" fill="#737373">Plan, Build,</text>
+                        <text x="400" y="409" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="9" fill="#737373">Test, Release</text>
+                    </g>
+                    <g>
+                        <circle cx="540" cy="370" r="16" fill="none" stroke="#737373" stroke-width="1" stroke-dasharray="3 2">
+                            <animateTransform attributeName="transform" type="rotate" from="0 540 370" to="360 540 370" dur="12s" repeatCount="indefinite"/>
+                        </circle>
+                        <text x="540" y="373" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="9" font-weight="500" fill="#525252">SDLC</text>
+                        <text x="540" y="398" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="9" fill="#737373">Plan, Build,</text>
+                        <text x="540" y="409" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="9" fill="#737373">Test, Release</text>
+                    </g>
+                    <circle cx="400" cy="185" r="6" fill="#E75437" opacity="0.9"/>
+                    <line x1="400" y1="185" x2="400" y2="310" stroke="#E75437" stroke-width="0.75" stroke-dasharray="4 4" opacity="0.3"/>
+                    <line x1="400" y1="185" x2="120" y2="185" stroke="#E75437" stroke-width="0.75" stroke-dasharray="4 4" opacity="0.3"/>
+                    <text x="415" y="181" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="9" font-weight="500" fill="#E75437">Current Work Coordinate</text>
+                    <text x="415" y="193" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="9" fill="#a3a3a3">Confidence × Investment</text>
+                    <text x="895" y="28" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="9" font-weight="500" letter-spacing="0.03em" fill="#a3a3a3">MULTI-DIMENSIONAL, NOT HIERARCHICAL</text>
+                    <line x1="660" y1="34" x2="895" y2="34" stroke="#e5e5e5" stroke-width="0.5"/>
+                    <text x="895" y="50" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="9" fill="#a3a3a3">Evidence Work →  <tspan font-weight="500" fill="#525252">governs confidence thresholds</tspan></text>
+                    <text x="895" y="66" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="9" fill="#a3a3a3">Build Lifecycle →  <tspan font-weight="500" fill="#525252">defines investment depth</tspan></text>
+                    <text x="895" y="82" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="9" fill="#a3a3a3">SDLC →  <tspan font-weight="500" fill="#525252">cycles execution within each stage</tspan></text>
+                </svg>
+            </div>
+            <figcaption>
+                These are dimensions, not layers. Evidence Work governs confidence. The Build Lifecycle
+                defines investment depth. SDLC cycles within each stage — it is the execution engine,
+                not a progression path. At any moment, work exists at a coordinate defined by confidence
+                earned and investment depth.
+            </figcaption>
+        </figure>
+
+        <figure id="fig-2b">
+            <div class="fig-label">Fig. 2B — Build Lifecycle Intensity Model</div>
+            <div class="diagram">
+                <div class="mixing-board-container">
+                    <div class="mixing-board">
+                        <div></div>
+                        <div class="mixing-column-header">Concept</div>
+                        <div class="mixing-column-header">Validation</div>
+                        <div class="mixing-column-header">Commitment</div>
+
+                        <div class="mixing-label">Defining Strategy</div>
+                        <div class="mixing-column"><div class="mixing-bar-wrapper"><div class="mixing-bar-track"><div class="mixing-bar-fill" style="width:80%;color:#E75437"></div></div></div><div class="mixing-intensity" style="color:#E75437">High</div></div>
+                        <div class="mixing-column"><div class="mixing-bar-wrapper"><div class="mixing-bar-track"><div class="mixing-bar-fill" style="width:50%"></div></div></div><div class="mixing-intensity">Med</div></div>
+                        <div class="mixing-column"><div class="mixing-bar-wrapper"><div class="mixing-bar-track"><div class="mixing-bar-fill" style="width:50%"></div></div></div><div class="mixing-intensity">Med</div></div>
+
+                        <div class="mixing-label">Designing User Experience</div>
+                        <div class="mixing-column"><div class="mixing-bar-wrapper"><div class="mixing-bar-track"><div class="mixing-bar-fill" style="width:70%;color:#E75437"></div></div></div><div class="mixing-intensity" style="color:#E75437">High</div></div>
+                        <div class="mixing-column"><div class="mixing-bar-wrapper"><div class="mixing-bar-track"><div class="mixing-bar-fill" style="width:50%"></div></div></div><div class="mixing-intensity">Med</div></div>
+                        <div class="mixing-column"><div class="mixing-bar-wrapper"><div class="mixing-bar-track"><div class="mixing-bar-fill" style="width:50%"></div></div></div><div class="mixing-intensity">Med</div></div>
+
+                        <div class="mixing-label">Experimenting with Spikes</div>
+                        <div class="mixing-column"><div class="mixing-bar-wrapper"><div class="mixing-bar-track"><div class="mixing-bar-fill" style="width:60%"></div></div></div><div class="mixing-intensity">Med</div></div>
+                        <div class="mixing-column"><div class="mixing-bar-wrapper"><div class="mixing-bar-track"><div class="mixing-bar-fill" style="width:40%"></div></div></div><div class="mixing-intensity">Med</div></div>
+                        <div class="mixing-column"><div class="mixing-bar-wrapper"><div class="mixing-bar-track"><div class="mixing-bar-fill" style="width:20%"></div></div></div><div class="mixing-intensity">Low</div></div>
+
+                        <div class="mixing-label">Engineering for Production</div>
+                        <div class="mixing-column"><div class="mixing-bar-wrapper"><div class="mixing-bar-track"><div class="mixing-bar-fill" style="width:20%"></div></div></div><div class="mixing-intensity">Low</div></div>
+                        <div class="mixing-column"><div class="mixing-bar-wrapper"><div class="mixing-bar-track"><div class="mixing-bar-fill" style="width:60%"></div></div></div><div class="mixing-intensity">Med</div></div>
+                        <div class="mixing-column"><div class="mixing-bar-wrapper"><div class="mixing-bar-track"><div class="mixing-bar-fill" style="width:90%;color:#E75437"></div></div></div><div class="mixing-intensity" style="color:#E75437">High</div></div>
+
+                        <div class="mixing-label">Generating Active Evidence</div>
+                        <div class="mixing-column"><div class="mixing-bar-wrapper"><div class="mixing-bar-track"><div class="mixing-bar-fill" style="width:90%;color:#E75437"></div></div></div><div class="mixing-intensity" style="color:#E75437">High</div></div>
+                        <div class="mixing-column"><div class="mixing-bar-wrapper"><div class="mixing-bar-track"><div class="mixing-bar-fill" style="width:60%"></div></div></div><div class="mixing-intensity">Med</div></div>
+                        <div class="mixing-column"><div class="mixing-bar-wrapper"><div class="mixing-bar-track"><div class="mixing-bar-fill" style="width:40%"></div></div></div><div class="mixing-intensity">Med</div></div>
+                    </div>
+                </div>
+            </div>
+            <figcaption>
+                Capabilities remain present throughout the lifecycle; only their intensity shifts.
+                Evidence Work governs these shifts. Strategy and design de-escalate, engineering
+                transitions from spike to production, and active evidence generation decreases but
+                never reaches zero.
+            </figcaption>
+        </figure>
+    </section>
+
+    <PageNav
+        prev={{ href: "/philosophy/", title: "The Shift" }}
+        next={{ href: "/model/applied-flow/", title: "Applied Flow" }}
+    />
+</BaseLayout>
