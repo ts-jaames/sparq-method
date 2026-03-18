@@ -1,0 +1,392 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageNav from '../../components/PageNav.astro';
+---
+
+<BaseLayout title="Copay Finder — Operating Model">
+    <div class="page-header">
+        <h1>Aedificare Evidence-Driven Delivery Model</h1>
+        <p class="page-header-desc">
+            Operating model for AI-accelerated, confidence-driven product delivery
+        </p>
+        <div class="page-meta">
+            <span class="page-reading-time">Copay Finder Platform</span>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════
+         ECOSYSTEM MAP — DELIVERY OPERATING SYSTEM
+         ═══════════════════════════════════════════════════════ -->
+    <section>
+        <figure class="om-section" style="padding:40px 24px;">
+            <div class="fig-label">Copay Finder Delivery System</div>
+            <svg viewBox="0 0 500 820" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:520px;height:auto;display:block;margin:0 auto;">
+                <defs>
+                    <marker id="flowArrow" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto"><path d="M0,0 L7,2.5 L0,5" fill="#a3a3a3"/></marker>
+                    <marker id="feedbackArrow" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto"><path d="M0,0 L7,2.5 L0,5" fill="#E75437"/></marker>
+                </defs>
+
+                <!-- ══════ EVIDENCE TRACK BANNER ══════ -->
+                <rect x="100" y="0" width="300" height="44" rx="6" fill="var(--accent-bg,rgba(231,84,55,0.04))" stroke="rgba(231,84,55,0.15)" stroke-width="1"/>
+                <text x="250" y="19" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="11" font-weight="700" letter-spacing="0.06em" fill="#E75437">EVIDENCE TRACK</text>
+                <text x="250" y="35" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="10" fill="#737373">Reduce Uncertainty</text>
+
+                <!-- Connector -->
+                <line x1="250" y1="44" x2="250" y2="70" stroke="#a3a3a3" stroke-width="1" marker-end="url(#flowArrow)"/>
+
+                <!-- Step 1: Assumption -->
+                <rect x="140" y="76" width="220" height="36" rx="4" fill="#ffffff" stroke="#e5e5e5" stroke-width="1"/>
+                <text x="250" y="99" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="12" font-weight="600" fill="#171717">Assumption</text>
+
+                <line x1="250" y1="112" x2="250" y2="132" stroke="#a3a3a3" stroke-width="1" marker-end="url(#flowArrow)"/>
+
+                <!-- Step 2: Experiment -->
+                <rect x="120" y="138" width="260" height="36" rx="4" fill="#ffffff" stroke="#e5e5e5" stroke-width="1"/>
+                <text x="250" y="161" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="12" font-weight="600" fill="#171717">Experiment / Thin Slice</text>
+
+                <line x1="250" y1="174" x2="250" y2="194" stroke="#a3a3a3" stroke-width="1" marker-end="url(#flowArrow)"/>
+
+                <!-- Step 3: Signal -->
+                <rect x="140" y="200" width="220" height="36" rx="4" fill="#ffffff" stroke="#e5e5e5" stroke-width="1"/>
+                <text x="250" y="223" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="12" font-weight="600" fill="#171717">Signal / Data</text>
+
+                <line x1="250" y1="236" x2="250" y2="256" stroke="#a3a3a3" stroke-width="1" marker-end="url(#flowArrow)"/>
+
+                <!-- Step 4: Confidence -->
+                <rect x="115" y="262" width="270" height="36" rx="4" fill="#ffffff" stroke="#e5e5e5" stroke-width="1"/>
+                <text x="250" y="285" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="12" font-weight="600" fill="#171717">Confidence Assessment</text>
+
+                <line x1="250" y1="298" x2="250" y2="318" stroke="#a3a3a3" stroke-width="1" marker-end="url(#flowArrow)"/>
+
+                <!-- ══════ PROMOTION GATE ══════ -->
+                <line x1="70" y1="336" x2="430" y2="336" stroke="#374151" stroke-width="1.5"/>
+                <rect x="155" y="322" width="190" height="28" rx="14" fill="#374151"/>
+                <text x="250" y="341" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="10" font-weight="700" letter-spacing="0.06em" fill="#ffffff">PROMOTION DECISION</text>
+                <text x="250" y="366" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="9.5" font-style="italic" fill="#a3a3a3">If confidence sufficient</text>
+
+                <line x1="250" y1="376" x2="250" y2="402" stroke="#a3a3a3" stroke-width="1" marker-end="url(#flowArrow)"/>
+
+                <!-- ══════ DELIVERY TRACK BANNER ══════ -->
+                <rect x="100" y="408" width="300" height="44" rx="6" fill="rgba(34,197,94,0.04)" stroke="rgba(34,197,94,0.15)" stroke-width="1"/>
+                <text x="250" y="427" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="11" font-weight="700" letter-spacing="0.06em" fill="#16a34a">DELIVERY TRACK</text>
+                <text x="250" y="443" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="10" fill="#737373">Production Capability</text>
+
+                <line x1="250" y1="452" x2="250" y2="478" stroke="#a3a3a3" stroke-width="1" marker-end="url(#flowArrow)"/>
+
+                <!-- Step 5: Build -->
+                <rect x="120" y="484" width="260" height="36" rx="4" fill="#ffffff" stroke="#e5e5e5" stroke-width="1"/>
+                <text x="250" y="507" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="12" font-weight="600" fill="#171717">Build Service / Feature</text>
+
+                <line x1="250" y1="520" x2="250" y2="540" stroke="#a3a3a3" stroke-width="1" marker-end="url(#flowArrow)"/>
+
+                <!-- Step 6: Integration -->
+                <rect x="120" y="546" width="260" height="36" rx="4" fill="#ffffff" stroke="#e5e5e5" stroke-width="1"/>
+                <text x="250" y="569" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="12" font-weight="600" fill="#171717">Integration + Testing</text>
+
+                <line x1="250" y1="582" x2="250" y2="602" stroke="#a3a3a3" stroke-width="1" marker-end="url(#flowArrow)"/>
+
+                <!-- Step 7: Deploy -->
+                <rect x="140" y="608" width="220" height="36" rx="4" fill="#ffffff" stroke="#e5e5e5" stroke-width="1"/>
+                <text x="250" y="631" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="12" font-weight="600" fill="#171717">Deploy + Operate</text>
+
+                <line x1="250" y1="644" x2="250" y2="664" stroke="#a3a3a3" stroke-width="1" marker-end="url(#flowArrow)"/>
+
+                <!-- Step 8: Delivered -->
+                <rect x="105" y="670" width="290" height="40" rx="6" fill="#f0fdf4" stroke="rgba(34,197,94,0.2)" stroke-width="1"/>
+                <text x="250" y="695" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="12" font-weight="700" fill="#16a34a">System Capability Delivered</text>
+
+                <!-- ══════ FEEDBACK LOOP ══════ -->
+                <path d="M250,710 L250,750 Q250,770 230,770 L60,770 Q40,770 40,750 L40,90 Q40,70 60,70 L134,70" stroke="#E75437" stroke-width="1" stroke-dasharray="6 4" fill="none" marker-end="url(#feedbackArrow)"/>
+                <text x="32" y="430" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="9" font-weight="500" letter-spacing="0.06em" fill="#E75437" transform="rotate(-90,32,430)">CONTINUOUS FEEDBACK</text>
+                <text x="250" y="796" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="10.5" font-style="italic" fill="#a3a3a3">Continuous Feedback → New Assumptions</text>
+            </svg>
+            <figcaption>
+                Work flows from assumption through evidence to confidence. Only what earns sufficient confidence
+                is promoted to the delivery track. Delivered capabilities generate new assumptions that
+                feed back into the evidence track.
+            </figcaption>
+        </figure>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════
+         SECTION 1 — WHY THIS MODEL
+         ═══════════════════════════════════════════════════════ -->
+    <section>
+        <figure class="om-section">
+            <div class="fig-label">Why This Model</div>
+            <div class="om-why-grid">
+                <div class="om-why-card">
+                    <div class="om-why-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                    </div>
+                    <div class="om-why-title">AI Accelerates Execution</div>
+                    <div class="om-why-desc">Code generation, scaffolding, testing, and infrastructure setup happen faster than ever. Implementation speed is no longer the constraint.</div>
+                </div>
+                <div class="om-why-card">
+                    <div class="om-why-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                    </div>
+                    <div class="om-why-title">Bottlenecks Shift Upstream</div>
+                    <div class="om-why-desc">The real risks move to architecture, domain modeling, integrations, and scaling the wrong design. Decision quality becomes the critical path.</div>
+                </div>
+                <div class="om-why-card">
+                    <div class="om-why-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                    </div>
+                    <div class="om-why-title">Learn Before Scaling</div>
+                    <div class="om-why-desc">Delivery must be evidence-driven, not assumption-driven. The team validates constraints and reduces uncertainty before committing to production scale.</div>
+                </div>
+            </div>
+            <figcaption>
+                Because AI reduces the cost of implementation, the biggest project risks are no longer coding speed —
+                they are scaling the wrong architecture, domain model, or integrations. This operating model prioritizes
+                learning before scaling.
+            </figcaption>
+        </figure>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════
+         SECTION 2 — CORE OPERATING LOOP
+         ═══════════════════════════════════════════════════════ -->
+    <section>
+        <figure class="om-section">
+            <div class="fig-label">Core Operating Loop</div>
+            <p style="font-size:12.5px;color:var(--text-muted);line-height:1.6;margin-bottom:28px;max-width:640px;">
+                The primary engine of the delivery model. Every capability begins as an assumption
+                and must earn its way to production through evidence, not opinion.
+            </p>
+            <div class="om-loop">
+                <div class="om-loop-node om-loop-node--assumption">
+                    <div class="om-loop-node-label">Assumption</div>
+                    <div class="om-loop-node-sub">Untested hypothesis about architecture, domain, or integration</div>
+                </div>
+                <div class="om-loop-arrow">
+                    <svg width="32" height="12" viewBox="0 0 32 12"><path d="M0 6h26" stroke="var(--border)" stroke-width="1.5" fill="none"/><path d="M24 2l6 4-6 4" stroke="var(--text-tertiary)" stroke-width="1.5" fill="none" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="om-loop-node om-loop-node--experiment">
+                    <div class="om-loop-node-label">Thin Slice</div>
+                    <div class="om-loop-node-sub">Narrowly scoped experiment to test the assumption</div>
+                    <div class="om-loop-ai-badge">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                        AI-Accelerated
+                    </div>
+                </div>
+                <div class="om-loop-arrow">
+                    <svg width="32" height="12" viewBox="0 0 32 12"><path d="M0 6h26" stroke="var(--border)" stroke-width="1.5" fill="none"/><path d="M24 2l6 4-6 4" stroke="var(--text-tertiary)" stroke-width="1.5" fill="none" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="om-loop-node om-loop-node--signal">
+                    <div class="om-loop-node-label">Signal</div>
+                    <div class="om-loop-node-sub">Measurable learning from real testing, not opinions</div>
+                </div>
+                <div class="om-loop-arrow">
+                    <svg width="32" height="12" viewBox="0 0 32 12"><path d="M0 6h26" stroke="var(--border)" stroke-width="1.5" fill="none"/><path d="M24 2l6 4-6 4" stroke="var(--text-tertiary)" stroke-width="1.5" fill="none" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="om-loop-node om-loop-node--confidence">
+                    <div class="om-loop-gate-marker">Decision Gate</div>
+                    <div class="om-loop-node-label">Confidence</div>
+                    <div class="om-loop-node-sub">Evidence threshold met — ready for production commitment</div>
+                </div>
+                <div class="om-loop-arrow">
+                    <svg width="32" height="12" viewBox="0 0 32 12"><path d="M0 6h26" stroke="var(--border)" stroke-width="1.5" fill="none"/><path d="M24 2l6 4-6 4" stroke="var(--green)" stroke-width="1.5" fill="none" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="om-loop-node om-loop-node--scale">
+                    <div class="om-loop-node-label">Delivery / Scale</div>
+                    <div class="om-loop-node-sub">Build, deploy, and scale with validated foundations</div>
+                    <div class="om-loop-ai-badge">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                        AI-Accelerated
+                    </div>
+                </div>
+            </div>
+            <div class="om-loop-feedback">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+                <span>New assumptions surface during delivery and re-enter the loop</span>
+            </div>
+            <figcaption>
+                "Confidence" is the governance threshold. Work does not scale to production until evidence demonstrates
+                the approach is sound. AI accelerates experiment execution and delivery implementation, but the
+                confidence gate requires human judgment.
+            </figcaption>
+        </figure>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════
+         SECTION 3 — TWO-TRACK DELIVERY MODEL
+         ═══════════════════════════════════════════════════════ -->
+    <section>
+        <figure class="om-section">
+            <div class="fig-label">Two-Track Delivery Model</div>
+            <p style="font-size:12.5px;color:var(--text-muted);line-height:1.6;margin-bottom:28px;max-width:640px;">
+                Work runs in parallel across two complementary tracks. Evidence reduces uncertainty;
+                delivery builds production capabilities. The tracks are distinct but tightly coupled.
+            </p>
+            <div class="om-tracks">
+                <div class="om-track om-track--evidence">
+                    <div class="om-track-header">
+                        <div class="om-track-badge om-track-badge--evidence">Track 1</div>
+                        <div class="om-track-title">Evidence Track</div>
+                    </div>
+                    <div class="om-track-purpose">Reduce uncertainty before committing</div>
+                    <div class="om-track-section-label">Activities</div>
+                    <ul class="om-track-list">
+                        <li>Validate catalog ingestion</li>
+                        <li>Test eligibility rule modeling</li>
+                        <li>Evaluate coupon capture reliability</li>
+                        <li>Test event throughput and latency</li>
+                        <li>Assess reuse of existing dev environment</li>
+                    </ul>
+                    <div class="om-track-section-label">Outputs</div>
+                    <ul class="om-track-list om-track-list--outputs">
+                        <li>Validated constraints</li>
+                        <li>Architectural insights</li>
+                        <li>Confidence updates</li>
+                        <li>Promotion decisions to delivery</li>
+                    </ul>
+                </div>
+
+                <div class="om-tracks-connector">
+                    <div class="om-connector-line"></div>
+                    <div class="om-connector-label om-connector-label--right">Evidence informs delivery</div>
+                    <div class="om-connector-label om-connector-label--left">Delivery surfaces assumptions</div>
+                    <div class="om-connector-line"></div>
+                </div>
+
+                <div class="om-track om-track--delivery">
+                    <div class="om-track-header">
+                        <div class="om-track-badge om-track-badge--delivery">Track 2</div>
+                        <div class="om-track-title">Delivery Track</div>
+                    </div>
+                    <div class="om-track-purpose">Build production capabilities</div>
+                    <div class="om-track-section-label">Activities</div>
+                    <ul class="om-track-list">
+                        <li>Production APIs and services</li>
+                        <li>Infrastructure automation</li>
+                        <li>Frontend workflows</li>
+                        <li>Monitoring and reliability</li>
+                        <li>Pharmacy and partner integrations</li>
+                    </ul>
+                    <div class="om-track-section-label">Outputs</div>
+                    <ul class="om-track-list om-track-list--outputs">
+                        <li>Deployable capabilities</li>
+                        <li>Working product increments</li>
+                        <li>Scalable system components</li>
+                    </ul>
+                </div>
+            </div>
+            <figcaption>
+                These tracks are not isolated swimlanes. Evidence work directly informs what gets built in the delivery track,
+                and delivery work routinely surfaces new assumptions that feed back into evidence work.
+            </figcaption>
+        </figure>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════
+         SECTION 4 — AI-INFUSED ENGINEERING
+         ═══════════════════════════════════════════════════════ -->
+    <section>
+        <figure class="om-section">
+            <div class="fig-label">AI-Infused Engineering</div>
+            <p style="font-size:12.5px;color:var(--text-muted);line-height:1.6;margin-bottom:28px;max-width:640px;">
+                AI is an enabling layer across the model — an amplifier, not a replacement for engineering judgment.
+            </p>
+            <div class="om-ai-layer">
+                <div class="om-ai-col">
+                    <div class="om-ai-col-header">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                        AI Accelerates
+                    </div>
+                    <div class="om-ai-tags">
+                        <span class="om-ai-tag">API / service scaffolding</span>
+                        <span class="om-ai-tag">Terraform templates</span>
+                        <span class="om-ai-tag">Test generation</span>
+                        <span class="om-ai-tag">Documentation</span>
+                        <span class="om-ai-tag">Frontend scaffolding</span>
+                        <span class="om-ai-tag">Refactoring</span>
+                    </div>
+                </div>
+                <div class="om-ai-divider"></div>
+                <div class="om-ai-col">
+                    <div class="om-ai-col-header om-ai-col-header--human">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        Engineers Own
+                    </div>
+                    <div class="om-ai-tags">
+                        <span class="om-ai-tag om-ai-tag--human">Architecture decisions</span>
+                        <span class="om-ai-tag om-ai-tag--human">Domain modeling</span>
+                        <span class="om-ai-tag om-ai-tag--human">Integration validation</span>
+                        <span class="om-ai-tag om-ai-tag--human">Reliability</span>
+                    </div>
+                </div>
+            </div>
+            <figcaption>
+                AI handles the repetitive, pattern-based work at high speed. Human engineers remain fully accountable
+                for the decisions that determine whether the system is correct, maintainable, and resilient.
+            </figcaption>
+        </figure>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════
+         SECTION 5 — TEAM + CADENCE
+         ═══════════════════════════════════════════════════════ -->
+    <section>
+        <figure class="om-section">
+            <div class="fig-label">Team + Cadence</div>
+            <div class="om-team-cadence">
+                <div class="om-team-col">
+                    <div class="om-team-col-title">Team Roles</div>
+                    <div class="om-role-tags">
+                        <span class="om-role-tag">Cloud Architect / Coach</span>
+                        <span class="om-role-tag">Backend Engineer</span>
+                        <span class="om-role-tag">Frontend Engineer</span>
+                        <span class="om-role-tag">QA / Reliability Engineer</span>
+                        <span class="om-role-tag">BA / Domain Analyst</span>
+                        <span class="om-role-tag">Product Owner</span>
+                        <span class="om-role-tag">Delivery Manager</span>
+                    </div>
+                </div>
+                <div class="om-cadence-col">
+                    <div class="om-team-col-title">2-Week Cycle</div>
+                    <div class="om-cadence-steps">
+                        <div class="om-cadence-step">
+                            <div class="om-cadence-num">1</div>
+                            <div class="om-cadence-content">
+                                <div class="om-cadence-step-title">Plan</div>
+                                <div class="om-cadence-step-desc">Define slices and experiments</div>
+                            </div>
+                        </div>
+                        <div class="om-cadence-step">
+                            <div class="om-cadence-num">2</div>
+                            <div class="om-cadence-content">
+                                <div class="om-cadence-step-title">Build</div>
+                                <div class="om-cadence-step-desc">Run experiments, build increments</div>
+                            </div>
+                        </div>
+                        <div class="om-cadence-step">
+                            <div class="om-cadence-num">3</div>
+                            <div class="om-cadence-content">
+                                <div class="om-cadence-step-title">Integrate</div>
+                                <div class="om-cadence-step-desc">Validate and connect outputs</div>
+                            </div>
+                        </div>
+                        <div class="om-cadence-step">
+                            <div class="om-cadence-num">4</div>
+                            <div class="om-cadence-content">
+                                <div class="om-cadence-step-title">Review</div>
+                                <div class="om-cadence-step-desc">Working capability + learning</div>
+                            </div>
+                        </div>
+                        <div class="om-cadence-step">
+                            <div class="om-cadence-num">5</div>
+                            <div class="om-cadence-content">
+                                <div class="om-cadence-step-title">Decide</div>
+                                <div class="om-cadence-step-desc">What has enough confidence to scale</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </figure>
+    </section>
+
+    <PageNav prev={{ href: "/projects/", title: "Projects" }} />
+</BaseLayout>
