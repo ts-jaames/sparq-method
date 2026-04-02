@@ -8,7 +8,7 @@ import '../../styles/global.css';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Big Thing — AI-Enabled Engagement System</title>
+    <title>Sparq OS — AI-Enabled Engagement System</title>
     <ViewTransitions />
 </head>
 <body>
@@ -19,32 +19,24 @@ import '../../styles/global.css';
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
             Evidence-Driven Delivery
         </a>
-        <h1>Big Thing</h1>
-        <p>The engagement system defines what work exists.<br>AI governance defines where AI participates.<br>Work loops define how work happens.<br>Capability maturity determines how advanced AI usage is within each capability.</p>
+        <h1>Sparq OS</h1>
     </header>
 
     <figure class="sos-diagram">
         <!-- Title + Engagement Lifecycle label -->
         <svg viewBox="0 0 880 56" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
             <style>.st{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}</style>
-            <text class="st" x="440" y="22" text-anchor="middle" font-size="26" font-weight="600" fill="#171717">Layers of the Big Thing</text>
+            <text class="st" x="440" y="22" text-anchor="middle" font-size="26" font-weight="600" fill="#171717">Layers of the Sparq OS</text>
             <text class="st" x="440" y="48" text-anchor="middle" font-size="10.5" fill="#737373">An AI-enabled system for discovering, building, and scaling software.</text>
         </svg>
 
-        <div class="sos-section-label" style="margin-top:40px;margin-bottom:8px;">Engagement System</div>
+        <div class="sos-section-label" style="margin-top:40px;margin-bottom:4px;">Engagement System</div>
+        <div class="sos-nucleus-captions">Nothing that matters to a client happens outside of here.</div>
 
-        <!-- Nucleus: particle sphere replaces linear flow -->
+        <!-- Nucleus: particle sphere with labels above -->
         <div class="sos-nucleus-section">
-            <div class="sos-nucleus-entry">
-                <div class="sos-nucleus-sales">Sales / Pre-Sales</div>
-                <svg class="sos-nucleus-arrow" width="40" height="14" viewBox="0 0 40 14"><path d="M0,7 L34,7 M30,3 L36,7 L30,11" stroke="#d4d4d4" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
             <div class="sos-nucleus-wrap">
                 <canvas id="nucleusCanvas" aria-hidden="true"></canvas>
-            </div>
-            <div class="sos-nucleus-labels">
-                <span>Evidence, Scaling,</span>
-                <span>Production Learning</span>
             </div>
         </div>
 
@@ -71,7 +63,7 @@ import '../../styles/global.css';
                         <span class="sos-miniloop-lbl-sub">Build to Validate</span>
                     </div>
                     <div class="sos-miniloop-lbl sos-miniloop-lbl--right">
-                        <span class="sos-miniloop-lbl-title">Scale</span>
+                        <span class="sos-miniloop-lbl-title">Commitment</span>
                         <span class="sos-miniloop-lbl-sub">Build to Operate</span>
                     </div>
                 </div>
@@ -106,16 +98,74 @@ import '../../styles/global.css';
         <p class="sos-intro">These layers are intentionally separated. Each represents a different type of decision and should be discussed independently.</p>
 
         <section class="sos-section">
-            <h2>Engagement System</h2>
-            <p>This layer defines the types of work that exist within an engagement and how they relate. It is not a sequence or process, but the structure within which work happens.</p>
-            <div class="sos-tags">
-                <span>Sales / Pre-Sales</span>
-                <span>Evidence</span>
-                <span>Scaling</span>
-                <span>Production Learning</span>
-            </div>
-            <p>Work does not move linearly. Different types of work can occur in parallel, and capabilities shift between them based on confidence, not phase progression.</p>
-            <p>This layer is stable, not AI-dependent, and acts as the container for everything else. It is also the level clients experience most directly.</p>
+            <h2>SparqOS Engagement System</h2>
+            <p class="sos-version">Version 0.3 — Working draft. Confidence tags applied where applicable.</p>
+
+            <h3>The Anchor <span class="sos-confidence sos-confidence--high">High</span></h3>
+            <p><strong>Nothing that matters to a client happens outside of here.</strong></p>
+            <p>The Engagement System is not a layer of SparqOS. It is what SparqOS contains. It is the complete operating container for everything that touches a client relationship — from the first conversation a sales person has about a problem, through the signal that comes back from a live system in production. Every commitment decision, every evidence loop, every staffing call, every commercial promise lives inside it.</p>
+            <p>This is not a process. It is a boundary statement. And the boundary is total.</p>
+
+            <h3>The Governing Question <span class="sos-confidence sos-confidence--high">High</span></h3>
+            <p>At all times, across all work: <em>What must be proven — technically, behaviorally, or operationally — before we can responsibly commit further?</em></p>
+            <p>If this question is not being answered, the Engagement System of the SparqOS is not being followed.</p>
+
+            <h3>The Three Types of Work <span class="sos-confidence sos-confidence--medium-high">Medium-High</span></h3>
+            <p>These are not phases. They are not sequential. They do not belong to any single function, role, or moment in an engagement. They are the only three things that can be happening inside the Engagement System, at any point, by anyone, in any context. A sales conversation is work. A scoping call is work. A staffing decision is work. A sprint is work. A live system generating signal is work. All of it falls into one of these three types.</p>
+
+            <h4>Evidence: Build to Validate</h4>
+            <p>Active uncertainty reduction through measurable signal. Evidence is the work of reducing the cost of being wrong before committing further. It begins in the first conversation about a problem, before a contract exists, before scope is defined, before a team is staffed. The assumptions a salesperson carries into a first call are evidence opportunities. The scope commitments written into a SOW are acts of commitment made on top of whatever evidence existed at that moment. The earlier evidence discipline is applied, the more responsibly the system can commit.</p>
+            <p>Evidence continues through every stage of an engagement and into live systems. It never fully stops. The questions change. The discipline doesn't. Evidence is not discovery. It is not a phase. It is not owned by any single role. It is the continuous practice of asking: what are we assuming, and what would it cost us to be wrong?</p>
+
+            <h4>Commitment: Build to Operate</h4>
+            <p>Deepening investment where confidence has been earned. Commitment is what happens to anything — not just a product capability — once Evidence has done its job sufficiently. A signed SOW is a commitment. A staffing decision is a commitment. An architectural choice is a commitment. A commercial promise made in presales is a commitment. All of these increase irreversibility. All of them should be preceded by enough evidence to justify the investment they represent.</p>
+            <p>Rare is it that anything enters Commitment automatically. Confidence earned through Evidence is what governs the transition. That transition is explicit and recorded — never assumed, never scheduled, never driven by calendar pressure alone.</p>
+
+            <h4>Production Learning</h4>
+            <p>Signal generation from what is live. Not just live software — any commitment that has been made and is now operating in the real world generates signals. A client relationship, a staffing model, a commercial structure, a product in production. All of it surfaces new assumptions, new risks, and new things worth testing.</p>
+            <p>Production Learning closes the loop back into Evidence. It is not a retrospective. It is an active discipline. The system does not end when something ships or a contract closes. It continues as long as there is a signal worth capturing and commitment worth governing.</p>
+
+            <h3>How the Types Relate <span class="sos-confidence sos-confidence--high">High</span></h3>
+            <p>All three types can be active simultaneously across different capabilities within the same engagement. A new capability enters through Evidence. Another is in Commitment. A third is already generating Production Learning. This is expected, not exceptional.</p>
+            <p>The initiative does not move as a block. Capabilities progress independently as confidence is earned. That is the structural difference between SparqOS and a phase-based model.</p>
+
+            <h3>The Full Span of the System <span class="sos-confidence sos-confidence--low">Low</span></h3>
+            <p>The Engagement System begins before a contract is signed. The conversations that happen during presales, the assumptions a solution consultant carries into a scoping call, the scope commitments embedded in a SOW — these are all acts inside the Engagement System. They shape the conditions that Evidence, Commitment, and Production Learning operate within. Commitments made early constrain what is possible later.</p>
+            <p>This is not a flaw. It is a reason to apply evidence discipline from the first conversation about a problem — not from the first sprint inside a contract.</p>
+            <p>It also means no function operates outside the system. Sales, solution consulting, staffing, delivery, engineering — all of it is inside. Autonomous decisions made by any of these functions without acknowledging the system create ripple effects that are invisible until they become problems. The Engagement System exists to make those connections visible before changes create downstream damage.</p>
+
+            <h3>What This Does Not Replace</h3>
+            <p>The Engagement System does not replace SOWs, delivery timelines, client commitments, or existing contracts. It operates underneath all of those. Clients do not need to understand or adopt it to benefit from it. The evolution is internal. The outcome is better decisions about what to build, when to commit, and what can honestly be promised.</p>
+
+            <h3>The Three Lenses <span class="sos-confidence sos-confidence--medium-high">Medium-High</span></h3>
+            <p>Inside the Engagement System, there are three lenses for understanding how it operates. These are not sub-layers. They are different ways of looking at the same system.</p>
+
+            <h4>AI Enablement &amp; Governance</h4>
+            <p>How intelligence is embedded across every capability domain and what governance means in each.</p>
+
+            <h4>Work Loops</h4>
+            <p>How work actually moves. The Evidence loop and the Commitment loop. The SDLC lives inside the loops. It is not the loops.</p>
+
+            <h4>AI Capability Maturity</h4>
+            <p>How teams develop the capacity to operate inside the system, and what that looks like at different maturity levels across every practice.</p>
+
+            <p>These lenses are described in their own documentation. The Engagement System is what they all describe.</p>
+
+            <h3>What This Is Not</h3>
+            <p>This is not a timeline, a sprint structure, or a phase sequence. It does not define execution mechanics. It does not prescribe ceremonies, templates, or tooling. It defines the boundary of all work that matters to a client, the types of work that exist inside that boundary, and the single question that governs when investment is justified.</p>
+
+            <table class="sos-table">
+                <thead>
+                    <tr><th>Section</th><th>Confidence</th><th>Basis</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Anchor Statement</td><td>High</td><td>Stress-tested conceptually; consistent with all doctrine</td></tr>
+                    <tr><td>Three Types of Work</td><td>Medium-High</td><td>Validated in engagement practice; Commitment replaces Scaling per latest alignment</td></tr>
+                    <tr><td>How the Types Relate</td><td>High</td><td>Consistent with Evidence Work doctrine across multiple engagements</td></tr>
+                    <tr><td>Full Span of System</td><td>Low</td><td>Validated conceptually and through observed SC/presales patterns; not yet formally piloted as defined system input</td></tr>
+                    <tr><td>Three Lenses</td><td>Medium-High</td><td>Architecture resolved; individual lens docs are working drafts</td></tr>
+                </tbody>
+            </table>
         </section>
 
         <section class="sos-section">
@@ -285,6 +335,12 @@ function initNucleus() {
     });
   }
 
+  var LINK_DIST = 0.35;
+  var linkNodes = [];
+  for (var li = 0; li < 100; li++) {
+    linkNodes.push(particles[Math.floor(Math.random() * COUNT)]);
+  }
+
   function tick() {
     if (!document.body.contains(el)) return;
     ctx.clearRect(0, 0, SIZE, SIZE);
@@ -314,7 +370,28 @@ function initNucleus() {
         p.x *= 0.94 / dist;
         p.y *= 0.94 / dist;
       }
+    }
 
+    ctx.strokeStyle = '#F4845F';
+    ctx.lineWidth = 0.6;
+    for (var a = 0; a < linkNodes.length; a++) {
+      var pi = linkNodes[a];
+      for (var b = a + 1; b < linkNodes.length; b++) {
+        var pj = linkNodes[b];
+        var dx = pi.x - pj.x, dy = pi.y - pj.y;
+        var d = Math.sqrt(dx * dx + dy * dy);
+        if (d < LINK_DIST) {
+          ctx.globalAlpha = (1 - d / LINK_DIST) * 0.7;
+          ctx.beginPath();
+          ctx.moveTo(cx + pi.x * radius, cy + pi.y * radius);
+          ctx.lineTo(cx + pj.x * radius, cy + pj.y * radius);
+          ctx.stroke();
+        }
+      }
+    }
+
+    for (var j = 0; j < particles.length; j++) {
+      var p = particles[j];
       ctx.beginPath();
       ctx.arc(cx + p.x * radius, cy + p.y * radius, p.r, 0, Math.PI * 2);
       ctx.fillStyle = COLOR;
@@ -973,45 +1050,27 @@ document.addEventListener('astro:page-load', initFigure8);
     /* ── Nucleus section ── */
     .sos-nucleus-section {
         display: flex;
+        flex-direction: column;
         align-items: center;
-        justify-content: center;
-        gap: 20px;
         padding: 12px 24px 24px;
     }
-    .sos-nucleus-entry {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        flex-shrink: 0;
-    }
-    .sos-nucleus-sales {
+    .sos-nucleus-captions {
         font-size: 13px;
         font-weight: 400;
         color: #171717;
-        white-space: nowrap;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        text-align: center;
+        margin-bottom: 0;
     }
-    .sos-nucleus-arrow { flex-shrink: 0; }
     .sos-nucleus-wrap {
         position: relative;
         width: 120px;
         height: 120px;
-        flex-shrink: 0;
     }
     #nucleusCanvas {
         width: 120px;
         height: 120px;
         display: block;
-    }
-    .sos-nucleus-labels {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-        font-size: 13px;
-        font-weight: 400;
-        color: #171717;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        white-space: nowrap;
     }
 
     /* ── Mesh gradient ── */
@@ -1176,12 +1235,55 @@ document.addEventListener('astro:page-load', initFigure8);
     .sos-section:first-child { border-top: none; padding-top: 0; }
 
     .sos-section h2 {
-        font-size: 20px; font-weight: 700; letter-spacing: -0.015em;
+        font-size: 22px; font-weight: 700; letter-spacing: -0.015em;
         color: var(--text); margin-bottom: 12px;
+    }
+    .sos-section h3 {
+        font-size: 14px; font-weight: 700; color: var(--text);
+        margin-top: 48px; margin-bottom: 0; letter-spacing: -0.01em;
+    }
+    .sos-section h4 {
+        font-size: 12px; font-weight: 700; color: var(--text);
+        margin-top: 8px; margin-bottom: 4px; letter-spacing: -0.01em;
+    }
+    .sos-version {
+        font-size: 12px; color: var(--text-tertiary);
+        margin-bottom: 24px; font-style: italic; letter-spacing: -0.01em;
+    }
+    .sos-confidence {
+        display: inline-block;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.03em;
+        padding: 2px 8px;
+        border-radius: 3px;
+        vertical-align: middle;
+        margin-left: 8px;
+        text-transform: uppercase;
+    }
+    .sos-confidence--high {
+        background: #dcfce7;
+        color: #166534;
+    }
+    .sos-confidence--medium-high {
+        background: #fef9c3;
+        color: #854d0e;
+    }
+    .sos-confidence--medium {
+        background: #fef9c3;
+        color: #854d0e;
+    }
+    .sos-confidence--low {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+    .sos-confidence--directional {
+        background: #f3f4f6;
+        color: #6b7280;
     }
 
     .sos-section p {
-        font-size: 14px; line-height: 1.7; color: var(--text-muted); margin-bottom: 16px;
+        font-size: 13px; line-height: 1.4; color: var(--text-muted); margin-bottom: 8px; letter-spacing: -0.01em;
     }
 
     /* ── Flow inline ── */

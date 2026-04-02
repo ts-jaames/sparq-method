@@ -1,79 +1,1283 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import PageNav from '../components/PageNav.astro';
+import { ViewTransitions } from 'astro:transitions';
+import '../styles/global.css';
 ---
 
-<BaseLayout title="Overview">
-    <div class="page-header">
-        <h1>Evidence-Driven Delivery</h1>
-        <p class="page-header-desc">
-            A structural model for managing uncertainty, governing build progression,
-            and determining when work becomes commitment.
-        </p>
-        <div class="page-meta">
-            <span class="page-reading-time">2 min read</span>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sparq OS — AI-Enabled Engagement System</title>
+    <ViewTransitions />
+</head>
+<body>
+<div class="sos">
+
+    <header class="sos-header">
+        <h1>Sparq OS</h1>
+    </header>
+
+    <figure class="sos-diagram">
+        <!-- Title + Engagement Lifecycle label -->
+        <svg viewBox="0 0 880 56" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+            <style>.st{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}</style>
+            <text class="st" x="440" y="22" text-anchor="middle" font-size="26" font-weight="600" fill="#171717">Layers of the Sparq OS</text>
+            <text class="st" x="440" y="48" text-anchor="middle" font-size="10.5" fill="#737373">An AI-enabled system for discovering, building, and scaling software.</text>
+        </svg>
+
+        <div class="sos-section-label" style="margin-top:40px;margin-bottom:4px;">Engagement System</div>
+        <div class="sos-nucleus-captions">Nothing that matters to a client happens outside of here.</div>
+
+        <!-- Nucleus: particle sphere with labels above -->
+        <div class="sos-nucleus-section">
+            <div class="sos-nucleus-wrap">
+                <canvas id="nucleusCanvas" aria-hidden="true"></canvas>
+            </div>
         </div>
+
+        <!-- AI Enablement & Governance: mesh gradient -->
+        <div class="sos-mesh-section">
+            <div class="sos-mesh-wrap">
+                <canvas id="meshCanvas" aria-hidden="true"></canvas>
+                <div class="sos-mesh-overlay">
+                    <div class="sos-mesh-label">AI Enablement &amp; Governance</div>
+                    <div class="sos-mesh-captions">Commercial · Product &amp; Strategy · Design · Engineering &amp; Data · Operations</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Middle: Work Loops animated figure-8 -->
+        <div class="sos-miniloop-section">
+            <div class="sos-miniloop-label">Work Loops</div>
+            <div class="sos-miniloop-helper">The AI/SDLC lives inside the loop. It isn't the loop.</div>
+            <div class="sos-miniloop-wrap">
+                <canvas id="miniLoopCanvas" aria-hidden="true"></canvas>
+                <div class="sos-miniloop-labels">
+                    <div class="sos-miniloop-lbl sos-miniloop-lbl--left">
+                        <span class="sos-miniloop-lbl-title">Evidence</span>
+                        <span class="sos-miniloop-lbl-sub">Build to Validate</span>
+                    </div>
+                    <div class="sos-miniloop-lbl sos-miniloop-lbl--right">
+                        <span class="sos-miniloop-lbl-title">Commitment</span>
+                        <span class="sos-miniloop-lbl-sub">Build to Operate</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom: Capability Maturity — State Transition -->
+        <div class="sos-maturity-section">
+            <div class="sos-section-label" style="margin-bottom:16px;">AI Capability Maturity</div>
+            <div class="sos-maturity-labels">
+                <div class="sos-maturity-lbl">
+                    <span class="sos-maturity-title">Assisted</span>
+                    <span class="sos-maturity-sub">Isolated tools</span>
+                </div>
+                <div class="sos-maturity-lbl">
+                    <span class="sos-maturity-title">Integrated</span>
+                    <span class="sos-maturity-sub">Connected workflows</span>
+                </div>
+                <div class="sos-maturity-lbl">
+                    <span class="sos-maturity-title">AI-Native</span>
+                    <span class="sos-maturity-sub">Autonomous agents</span>
+                </div>
+            </div>
+            <div class="sos-maturity-band">
+                <canvas id="maturityCanvas" aria-hidden="true"></canvas>
+            </div>
+        </div>
+    </figure>
+
+    <div class="sos-content">
+
+        <div class="sos-nav-out">
+            <a href="/engagement-canvas/" class="sos-nav-card">
+                <div class="sos-nav-card-label">Tool</div>
+                <div class="sos-nav-card-title">Engagement System Canvas</div>
+                <div class="sos-nav-card-desc">Interactive node map of the full engagement system. See what every change affects downstream — from first sales contact through production learning.</div>
+                <div class="sos-nav-card-arrow">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </div>
+            </a>
+            <a href="/evidence-work/" class="sos-nav-card">
+                <div class="sos-nav-card-label">Reference</div>
+                <div class="sos-nav-card-title">Evidence-Driven Delivery Breakout</div>
+                <div class="sos-nav-card-desc">The structural model for managing uncertainty, governing build progression, and determining when work becomes commitment.</div>
+                <div class="sos-nav-card-arrow">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </div>
+            </a>
+        </div>
+
     </div>
 
-    <section class="hero-section">
-        <div class="hero-thesis">
-            <h2 style="font-size:13px;font-weight:600;color:var(--text);text-transform:none;letter-spacing:-0.01em;margin-bottom:12px;">The Core Thesis</h2>
-            <p style="font-size:12.5px;line-height:1.7;color:var(--text-muted);max-width:640px;">
-                Traditional delivery models advance work by time. Phases complete on schedule,
-                handoffs occur at predetermined milestones, and commitment scales with calendar
-                position — not with validated understanding.
-            </p>
-            <p style="font-size:12.5px;line-height:1.7;color:var(--text-muted);max-width:640px;margin-top:12px;">
-                Evidence-Driven Delivery inverts this. Work advances by <strong style="color:var(--text)">confidence</strong>.
-                Investment scales only when uncertainty has been measurably reduced. Commitment
-                is governed by evidence, not elapsed time.
-            </p>
-        </div>
-    </section>
+</div>
 
-    <section style="margin-top:48px;">
-        <h2>What This Specification Covers</h2>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-            <a href="/philosophy/" style="display:block;padding:20px;border:1px solid var(--border);border-radius:6px;text-decoration:none;transition:border-color 0.15s,background 0.15s;" onmouseover="this.style.borderColor='var(--accent)';this.style.background='var(--accent-bg)'" onmouseout="this.style.borderColor='var(--border)';this.style.background='transparent'">
-                <div style="font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.05em;color:var(--accent);margin-bottom:6px;">Philosophy</div>
-                <div style="font-size:12.5px;font-weight:500;color:var(--text);margin-bottom:4px;">The Shift</div>
-                <div style="font-size:12.5px;color:var(--text-muted);line-height:1.5;">From time-boxed discovery to continuous uncertainty reduction through confidence gates.</div>
-            </a>
-            <a href="/model/operating-model/" style="display:block;padding:20px;border:1px solid var(--border);border-radius:6px;text-decoration:none;transition:border-color 0.15s,background 0.15s;" onmouseover="this.style.borderColor='var(--accent)';this.style.background='var(--accent-bg)'" onmouseout="this.style.borderColor='var(--border)';this.style.background='transparent'">
-                <div style="font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.05em;color:var(--accent);margin-bottom:6px;">The Model</div>
-                <div style="font-size:12.5px;font-weight:500;color:var(--text);margin-bottom:4px;">Operating Model</div>
-                <div style="font-size:12.5px;color:var(--text-muted);line-height:1.5;">Multi-dimensional model: Evidence Work, Build Lifecycle, and SDLC as independent dimensions.</div>
-            </a>
-            <a href="/practice/backlogs/" style="display:block;padding:20px;border:1px solid var(--border);border-radius:6px;text-decoration:none;transition:border-color 0.15s,background 0.15s;" onmouseover="this.style.borderColor='var(--accent)';this.style.background='var(--accent-bg)'" onmouseout="this.style.borderColor='var(--border)';this.style.background='transparent'">
-                <div style="font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.05em;color:var(--accent);margin-bottom:6px;">In Practice</div>
-                <div style="font-size:12.5px;font-weight:500;color:var(--text);margin-bottom:4px;">Dual Backlogs & Engagement</div>
-                <div style="font-size:12.5px;color:var(--text-muted);line-height:1.5;">Evidence and Commitment backlogs, 8-week engagement shape, and traced risk examples.</div>
-            </a>
-            <a href="/reference/" style="display:block;padding:20px;border:1px solid var(--border);border-radius:6px;text-decoration:none;transition:border-color 0.15s,background 0.15s;" onmouseover="this.style.borderColor='var(--accent)';this.style.background='var(--accent-bg)'" onmouseout="this.style.borderColor='var(--border)';this.style.background='transparent'">
-                <div style="font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.05em;color:var(--accent);margin-bottom:6px;">Reference</div>
-                <div style="font-size:12.5px;font-weight:500;color:var(--text);margin-bottom:4px;">Glossary & Constraints</div>
-                <div style="font-size:12.5px;color:var(--text-muted);line-height:1.5;">Operating model terms, operational constraints, and what this model does and does not define.</div>
-            </a>
-        </div>
-    </section>
+<script is:inline>
+function initNucleus() {
+  var el = document.getElementById('nucleusCanvas');
+  if (!el || el.dataset.init) return;
+  el.dataset.init = '1';
 
-    <section style="margin-top:48px;">
-        <div style="padding:24px;background:var(--surface);border:1px solid var(--border);border-radius:6px;">
-            <div style="font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-tertiary);margin-bottom:8px;">About This Document</div>
-            <p style="font-size:12.5px;line-height:1.7;color:var(--text-muted);">
-                This is an internal operating specification for Sparq. It defines the structural model for how we manage uncertainty,
-                govern build progression, and determine when work becomes commitment. Use the sidebar to explore each section,
-                or press <kbd style="font-family:var(--font);font-size:10px;font-weight:500;padding:1px 5px;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-tertiary);">⌘</kbd><kbd style="font-family:var(--font);font-size:10px;font-weight:500;padding:1px 5px;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-tertiary);">K</kbd> to search.
-            </p>
-        </div>
-    </section>
+  var SIZE = 120;
+  var COUNT = 560;
+  var COLOR = '#E75437';
 
-    <footer style="margin-top:64px;padding-top:20px;border-top:1px solid var(--border);">
-        <div class="version-history" style="margin-top:0;padding-top:0;border-top:none;">
-            <h4>Version History</h4>
-            <p>v1.0 — Initial specification (February 2026)</p>
-        </div>
-    </footer>
+  var dpr = window.devicePixelRatio || 1;
+  el.width = SIZE * dpr;
+  el.height = SIZE * dpr;
+  el.style.width = SIZE + 'px';
+  el.style.height = SIZE + 'px';
 
-    <PageNav next={{ href: "/philosophy/", title: "The Shift" }} />
-</BaseLayout>
+  var ctx = el.getContext('2d');
+  if (!ctx) return;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  var cx = SIZE / 2;
+  var cy = SIZE / 2;
+  var radius = SIZE / 2 - 2;
+
+  var particles = [];
+  for (var i = 0; i < COUNT; i++) {
+    var x, y;
+    do { x = (Math.random() - 0.5) * 2; y = (Math.random() - 0.5) * 2; }
+    while (x * x + y * y > 1);
+    var speed = 0.001 + Math.random() * 0.002;
+    var angle = Math.random() * Math.PI * 2;
+    particles.push({
+      x: x, y: y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      r: 0.5 + Math.random() * 1.6,
+      opacity: 0.2 + Math.random() * 0.6,
+    });
+  }
+
+  var LINK_DIST = 0.35;
+  var linkNodes = [];
+  for (var li = 0; li < 100; li++) {
+    linkNodes.push(particles[Math.floor(Math.random() * COUNT)]);
+  }
+
+  function tick() {
+    if (!document.body.contains(el)) return;
+    ctx.clearRect(0, 0, SIZE, SIZE);
+
+    for (var j = 0; j < particles.length; j++) {
+      var p = particles[j];
+
+      p.x += (Math.random() - 0.5) * 0.003;
+      p.y += (Math.random() - 0.5) * 0.003;
+
+      p.x += p.vx;
+      p.y += p.vy;
+
+      var spd = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+      var MAX_SPD = 0.003;
+      if (spd > MAX_SPD) { p.vx *= MAX_SPD / spd; p.vy *= MAX_SPD / spd; }
+
+      p.x *= 0.9997;
+      p.y *= 0.9997;
+
+      var dist = Math.sqrt(p.x * p.x + p.y * p.y);
+      if (dist > 0.95) {
+        var nx = p.x / dist, ny = p.y / dist;
+        var dot = p.vx * nx + p.vy * ny;
+        p.vx -= 2 * dot * nx;
+        p.vy -= 2 * dot * ny;
+        p.x *= 0.94 / dist;
+        p.y *= 0.94 / dist;
+      }
+    }
+
+    ctx.strokeStyle = '#F4845F';
+    ctx.lineWidth = 0.6;
+    for (var a = 0; a < linkNodes.length; a++) {
+      var pi = linkNodes[a];
+      for (var b = a + 1; b < linkNodes.length; b++) {
+        var pj = linkNodes[b];
+        var dx = pi.x - pj.x, dy = pi.y - pj.y;
+        var d = Math.sqrt(dx * dx + dy * dy);
+        if (d < LINK_DIST) {
+          ctx.globalAlpha = (1 - d / LINK_DIST) * 0.7;
+          ctx.beginPath();
+          ctx.moveTo(cx + pi.x * radius, cy + pi.y * radius);
+          ctx.lineTo(cx + pj.x * radius, cy + pj.y * radius);
+          ctx.stroke();
+        }
+      }
+    }
+
+    for (var j = 0; j < particles.length; j++) {
+      var p = particles[j];
+      ctx.beginPath();
+      ctx.arc(cx + p.x * radius, cy + p.y * radius, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = COLOR;
+      ctx.globalAlpha = p.opacity;
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(tick);
+  }
+
+  requestAnimationFrame(tick);
+}
+
+initNucleus();
+document.addEventListener('astro:page-load', initNucleus);
+</script>
+
+<script is:inline>
+function initMesh() {
+  var el = document.getElementById('meshCanvas');
+  if (!el || el.dataset.init) return;
+  el.dataset.init = '1';
+
+  var wrap = el.parentElement;
+  var W = wrap.offsetWidth;
+  var H = 100;
+  var dpr = window.devicePixelRatio || 1;
+
+  el.width = W * dpr;
+  el.height = H * dpr;
+  el.style.width = W + 'px';
+  el.style.height = H + 'px';
+
+  var ctx = el.getContext('2d');
+  if (!ctx) return;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  var COLS = 80;
+  var ROWS = 18;
+  var COLOR = '#E75437';
+  var time = 0;
+
+  function draw() {
+    if (!document.body.contains(el)) return;
+    time += 0.007;
+    ctx.clearRect(0, 0, W, H);
+
+    var cellW = W / (COLS - 1);
+    var cellH = H / (ROWS - 1);
+    var pts = [];
+
+    for (var r = 0; r < ROWS; r++) {
+      var row = [];
+      for (var c = 0; c < COLS; c++) {
+        var x = c * cellW;
+        var y = r * cellH;
+        var nx = c / (COLS - 1);
+        var ny = r / (ROWS - 1);
+        var w1 = Math.sin(nx * 12 + time * 1.1 + ny * 3) * 10;
+        var w2 = Math.sin(nx * 7 - time * 0.9 + ny * 5) * 8;
+        var w3 = Math.cos(ny * 8 + nx * 4 + time * 0.7) * 6;
+        var w4 = Math.sin(nx * 18 + ny * 6 - time * 1.3) * 4;
+        var w5 = Math.cos(nx * 9 - ny * 3.5 + time * 0.5) * 5;
+        y += w1 + w2 + w3 + w4 + w5;
+        row.push({ x: x, y: y });
+      }
+      pts.push(row);
+    }
+
+    for (var r = 0; r < ROWS; r++) {
+      var ny = r / (ROWS - 1);
+      var yFade = Math.pow(Math.sin(ny * Math.PI), 0.7);
+      ctx.beginPath();
+      ctx.moveTo(pts[r][0].x, pts[r][0].y);
+      for (var c = 1; c < COLS; c++) {
+        ctx.lineTo(pts[r][c].x, pts[r][c].y);
+      }
+      ctx.strokeStyle = COLOR;
+      ctx.globalAlpha = (0.06 + yFade * 0.22);
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
+    }
+
+    for (var c = 0; c < COLS; c++) {
+      var nx = c / (COLS - 1);
+      var xFade = Math.pow(Math.sin(nx * Math.PI), 1.2);
+      ctx.beginPath();
+      ctx.moveTo(pts[0][c].x, pts[0][c].y);
+      for (var r = 1; r < ROWS; r++) {
+        ctx.lineTo(pts[r][c].x, pts[r][c].y);
+      }
+      ctx.strokeStyle = COLOR;
+      ctx.globalAlpha = (0.04 + xFade * 0.15);
+      ctx.lineWidth = 0.35;
+      ctx.stroke();
+    }
+
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(draw);
+  }
+
+  requestAnimationFrame(draw);
+}
+
+initMesh();
+document.addEventListener('astro:page-load', initMesh);
+</script>
+
+<script is:inline>
+function initMaturity() {
+  var el = document.getElementById('maturityCanvas');
+  if (!el || el.dataset.init) return;
+  el.dataset.init = '1';
+
+  var wrap = el.parentElement;
+  var W = wrap.offsetWidth;
+  var H = 80;
+  var dpr = window.devicePixelRatio || 1;
+
+  el.width = W * dpr;
+  el.height = H * dpr;
+  el.style.width = W + 'px';
+  el.style.height = H + 'px';
+
+  var ctx = el.getContext('2d');
+  if (!ctx) return;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  var COLOR = '#2D5F3E';
+  var time = 0;
+  var THIRD = W / 3;
+  var PAD = 16;
+  var NODE_R = 2.8;
+
+  var zones = [];
+
+  var CY = H / 2;
+  var SPREAD_A = 14;
+  var SPREAD_I = 18;
+  var SPREAD_N = 22;
+
+  // Assisted: scattered, few connections
+  (function() {
+    var nodes = [];
+    var count = 8;
+    for (var i = 0; i < count; i++) {
+      nodes.push({
+        x: PAD + Math.random() * (THIRD - PAD * 2),
+        y: CY + (Math.random() - 0.5) * SPREAD_A * 2,
+        vx: (Math.random() - 0.5) * 0.15,
+        vy: (Math.random() - 0.5) * 0.08
+      });
+    }
+    var edges = [[0, 2], [4, 6]];
+    zones.push({ nodes: nodes, edges: edges, ox: 0, spread: SPREAD_A });
+  })();
+
+  // Integrated: connected workflow
+  (function() {
+    var nodes = [];
+    var count = 14;
+    for (var i = 0; i < count; i++) {
+      nodes.push({
+        x: PAD + Math.random() * (THIRD - PAD * 2),
+        y: CY + (Math.random() - 0.5) * SPREAD_I * 2,
+        vx: (Math.random() - 0.5) * 0.12,
+        vy: (Math.random() - 0.5) * 0.08
+      });
+    }
+    var edges = [];
+    for (var i = 0; i < count; i++) {
+      var closest = -1; var dist = 9999;
+      for (var j = 0; j < count; j++) {
+        if (i === j) continue;
+        var dx = nodes[i].x - nodes[j].x;
+        var dy = nodes[i].y - nodes[j].y;
+        var d = Math.sqrt(dx * dx + dy * dy);
+        if (d < dist) { dist = d; closest = j; }
+      }
+      if (closest >= 0) edges.push([i, closest]);
+      // add a second connection for some nodes
+      if (i % 3 === 0) {
+        var sec = -1; var sd = 9999;
+        for (var j = 0; j < count; j++) {
+          if (j === i || j === closest) continue;
+          var dx = nodes[i].x - nodes[j].x;
+          var dy = nodes[i].y - nodes[j].y;
+          var d = Math.sqrt(dx * dx + dy * dy);
+          if (d < sd) { sd = d; sec = j; }
+        }
+        if (sec >= 0) edges.push([i, sec]);
+      }
+    }
+    zones.push({ nodes: nodes, edges: edges, ox: THIRD, spread: SPREAD_I });
+  })();
+
+  // AI-Native: dense autonomous mesh
+  (function() {
+    var nodes = [];
+    var count = 24;
+    for (var i = 0; i < count; i++) {
+      nodes.push({
+        x: PAD + Math.random() * (THIRD - PAD * 2),
+        y: CY + (Math.random() - 0.5) * SPREAD_N * 2,
+        vx: (Math.random() - 0.5) * 0.2,
+        vy: (Math.random() - 0.5) * 0.1
+      });
+    }
+    var edges = [];
+    var CONN_DIST = (THIRD - PAD * 2) * 0.45;
+    for (var i = 0; i < count; i++) {
+      for (var j = i + 1; j < count; j++) {
+        var dx = nodes[i].x - nodes[j].x;
+        var dy = nodes[i].y - nodes[j].y;
+        if (Math.sqrt(dx * dx + dy * dy) < CONN_DIST) edges.push([i, j]);
+      }
+    }
+    zones.push({ nodes: nodes, edges: edges, ox: THIRD * 2, spread: SPREAD_N });
+  })();
+
+  function draw() {
+    if (!document.body.contains(el)) return;
+    time += 0.01;
+    ctx.clearRect(0, 0, W, H);
+
+    // hairline spectrum baseline
+    ctx.beginPath();
+    ctx.moveTo(0, H / 2);
+    ctx.lineTo(W, H / 2);
+    ctx.strokeStyle = '#d4d4d4';
+    ctx.globalAlpha = 1;
+    ctx.lineWidth = 0.5;
+    ctx.stroke();
+
+    for (var z = 0; z < zones.length; z++) {
+      var zone = zones[z];
+      var ns = zone.nodes;
+      var es = zone.edges;
+      var ox = zone.ox;
+      var zoneW = THIRD - PAD * 2;
+
+      // drift nodes
+      for (var i = 0; i < ns.length; i++) {
+        var n = ns[i];
+        n.x += n.vx;
+        n.y += n.vy;
+        // gentle brownian nudge
+        n.vx += (Math.random() - 0.5) * 0.02;
+        n.vy += (Math.random() - 0.5) * 0.02;
+        // damping
+        n.vx *= 0.98;
+        n.vy *= 0.98;
+        // bounds: horizontal full zone, vertical constrained to spread
+        if (n.x < PAD) { n.x = PAD; n.vx = Math.abs(n.vx); }
+        if (n.x > THIRD - PAD) { n.x = THIRD - PAD; n.vx = -Math.abs(n.vx); }
+        var sp = zone.spread;
+        if (n.y < CY - sp) { n.y = CY - sp; n.vy = Math.abs(n.vy); }
+        if (n.y > CY + sp) { n.y = CY + sp; n.vy = -Math.abs(n.vy); }
+      }
+
+      // draw edges
+      for (var e = 0; e < es.length; e++) {
+        var a = ns[es[e][0]];
+        var b = ns[es[e][1]];
+        var dx = a.x - b.x;
+        var dy = a.y - b.y;
+        var d = Math.sqrt(dx * dx + dy * dy);
+        var maxD = z === 2 ? (THIRD - PAD * 2) * 0.45 : 999;
+        var alpha = z === 0 ? 0.08 : z === 1 ? 0.12 : Math.max(0, 0.15 * (1 - d / maxD));
+        // pulse
+        alpha *= 0.7 + 0.3 * Math.sin(time * 2 + e * 0.5);
+
+        ctx.beginPath();
+        ctx.moveTo(ox + a.x, a.y);
+        ctx.lineTo(ox + b.x, b.y);
+        ctx.strokeStyle = COLOR;
+        ctx.globalAlpha = alpha;
+        ctx.lineWidth = z === 2 ? 0.8 : 0.6;
+        ctx.stroke();
+      }
+
+      // draw nodes
+      for (var i = 0; i < ns.length; i++) {
+        var n = ns[i];
+        var pulse = 0.5 + 0.5 * Math.sin(time * 1.5 + i * 1.1);
+        var nodeAlpha = 0.55;
+
+        var isAgent = z === 2 && (i === 3 || i === 11 || i === 19);
+        var nodeColor = isAgent ? '#78FF59' : COLOR;
+
+        ctx.beginPath();
+        ctx.arc(ox + n.x, n.y, NODE_R, 0, Math.PI * 2);
+        ctx.fillStyle = nodeColor;
+        ctx.globalAlpha = nodeAlpha;
+        ctx.fill();
+
+        // glow for AI-Native nodes
+        if (z === 2) {
+          ctx.beginPath();
+          ctx.arc(ox + n.x, n.y, NODE_R + 3, 0, Math.PI * 2);
+          ctx.fillStyle = nodeColor;
+          ctx.globalAlpha = isAgent ? 0.12 * pulse : 0.06 * pulse;
+          ctx.fill();
+        }
+      }
+    }
+
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(draw);
+  }
+
+  requestAnimationFrame(draw);
+}
+
+initMaturity();
+document.addEventListener('astro:page-load', initMaturity);
+</script>
+
+<script is:inline>
+function initMiniLoop() {
+  var el = document.getElementById('miniLoopCanvas');
+  if (!el || el.dataset.init) return;
+  el.dataset.init = '1';
+
+  var wrap = el.parentElement;
+  var W = wrap.offsetWidth;
+  var PAD = 40;
+  var RX = (W / 2) - PAD;
+  var RY = RX * 0.38;
+  var H = RY * 0.75 + 40;
+
+  var dpr = window.devicePixelRatio || 1;
+  el.width = W * dpr;
+  el.height = H * dpr;
+  el.style.width = W + 'px';
+  el.style.height = H + 'px';
+
+  var ctx = el.getContext('2d');
+  if (!ctx) return;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  var COLOR = '#E75437';
+  var COUNT = 1000;
+  var CX = W / 2, CY = H / 2;
+  var TUBE = 10;
+  var SPRING = 0.01;
+  var DAMPING = 0.62;
+  var BROWNIAN = 1.2;
+
+  function lemX(t) {
+    var s = Math.sin(t), c = Math.cos(t);
+    return CX + (RX * c) / (1 + s * s);
+  }
+  function lemY(t) {
+    var s = Math.sin(t), c = Math.cos(t);
+    return CY + (RY * s * c) / (1 + s * s);
+  }
+  function normalAtT(t) {
+    var dt = 0.001;
+    var dx = lemX(t + dt) - lemX(t - dt);
+    var dy = lemY(t + dt) - lemY(t - dt);
+    var len = Math.sqrt(dx * dx + dy * dy);
+    return { x: -dy / len, y: dx / len };
+  }
+
+  var TRAIL_PTS = 300;
+  var outerTrail = [], innerTrail = [];
+  for (var i = 0; i <= TRAIL_PTS; i++) {
+    var t = (i / TRAIL_PTS) * Math.PI * 2;
+    var n = normalAtT(t);
+    var bx = lemX(t), by = lemY(t);
+    outerTrail.push({ x: bx + n.x * TUBE, y: by + n.y * TUBE });
+    innerTrail.push({ x: bx - n.x * TUBE, y: by - n.y * TUBE });
+  }
+
+  var particles = [];
+  for (var i = 0; i < COUNT; i++) {
+    var t = (i / COUNT) * Math.PI * 2;
+    var speed = 0.005 + Math.random() * 0.008;
+    var nOff = (Math.random() - 0.5) * TUBE * 0.8;
+    particles.push({
+      t: t, speed: speed,
+      r: 0.7 + Math.random() * 1.4,
+      opacity: 0.2 + Math.random() * 0.65,
+      nOff: nOff, nVel: 0,
+    });
+  }
+
+  function drawPath(pts) {
+    ctx.beginPath();
+    ctx.moveTo(pts[0].x, pts[0].y);
+    for (var i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
+    ctx.closePath();
+  }
+
+  function tick() {
+    if (!document.body.contains(el)) return;
+    ctx.clearRect(0, 0, W, H);
+
+    ctx.save();
+    drawPath(outerTrail);
+    ctx.strokeStyle = 'rgba(0,0,0,0.05)';
+    ctx.lineWidth = 0.4;
+    ctx.stroke();
+    ctx.restore();
+
+    ctx.save();
+    drawPath(innerTrail);
+    ctx.strokeStyle = 'rgba(0,0,0,0.05)';
+    ctx.lineWidth = 0.4;
+    ctx.stroke();
+    ctx.restore();
+
+    for (var j = 0; j < particles.length; j++) {
+      var p = particles[j];
+      p.t += p.speed;
+      if (p.t > Math.PI * 2) p.t -= Math.PI * 2;
+
+      p.nVel += (Math.random() - 0.5) * BROWNIAN;
+      p.nVel += -p.nOff * SPRING;
+      p.nVel *= DAMPING;
+      p.nOff += p.nVel;
+
+      var limit = TUBE * 0.85;
+      if (p.nOff > limit) { p.nOff = limit; p.nVel *= -0.3; }
+      if (p.nOff < -limit) { p.nOff = -limit; p.nVel *= -0.3; }
+
+      var n = normalAtT(p.t);
+      var px = lemX(p.t) + n.x * p.nOff;
+      var py = lemY(p.t) + n.y * p.nOff;
+
+      ctx.beginPath();
+      ctx.arc(px, py, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = COLOR;
+      ctx.globalAlpha = p.opacity;
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(tick);
+  }
+
+  requestAnimationFrame(tick);
+}
+
+initMiniLoop();
+document.addEventListener('astro:page-load', initMiniLoop);
+</script>
+
+<script is:inline>
+function initFigure8() {
+  var el = document.getElementById('figure8Canvas');
+  if (!el || el.dataset.init) return;
+  el.dataset.init = '1';
+
+  var wrap = el.parentElement;
+  var lblL = wrap.querySelector('.sos-figure8-label--left');
+  var lblR = wrap.querySelector('.sos-figure8-label--right');
+
+  var W = wrap.offsetWidth;
+  var PAD = 16;
+  var RX = (W / 2) - PAD;
+  var RY = RX * 1.1;
+  var H = RY * 2 * 0.52 + PAD * 2;
+
+  var dpr = window.devicePixelRatio || 1;
+  el.width = W * dpr;
+  el.height = H * dpr;
+  el.style.width = W + 'px';
+  el.style.height = H + 'px';
+  wrap.style.minHeight = H + 'px';
+
+  var ctx = el.getContext('2d');
+  if (!ctx) return;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  var COLOR = '#E75437';
+  var COUNT = 700;
+  var CX = W / 2, CY = H / 2;
+  var TUBE = 16;
+  var SPRING = 0.01;
+  var DAMPING = 0.62;
+  var BROWNIAN = 1.4;
+
+  function lemX(t) {
+    var s = Math.sin(t), c = Math.cos(t);
+    return CX + (RX * c) / (1 + s * s);
+  }
+  function lemY(t) {
+    var s = Math.sin(t), c = Math.cos(t);
+    return CY + (RY * s * c) / (1 + s * s);
+  }
+
+  function normalAtT(t) {
+    var dt = 0.001;
+    var dx = lemX(t + dt) - lemX(t - dt);
+    var dy = lemY(t + dt) - lemY(t - dt);
+    var len = Math.sqrt(dx * dx + dy * dy);
+    return { x: -dy / len, y: dx / len };
+  }
+
+  var lMinX = W, lMaxX = 0, lMinY = H, lMaxY = 0;
+  var rMinX = W, rMaxX = 0, rMinY = H, rMaxY = 0;
+  var SAMP = 400;
+  for (var i = 0; i < SAMP; i++) {
+    var t = (i / SAMP) * Math.PI * 2;
+    var px = lemX(t), py = lemY(t);
+    if (px < CX) {
+      if (px < lMinX) lMinX = px; if (px > lMaxX) lMaxX = px;
+      if (py < lMinY) lMinY = py; if (py > lMaxY) lMaxY = py;
+    } else {
+      if (px < rMinX) rMinX = px; if (px > rMaxX) rMaxX = px;
+      if (py < rMinY) rMinY = py; if (py > rMaxY) rMaxY = py;
+    }
+  }
+
+  if (lblL) {
+    lblL.style.left = ((lMinX + lMaxX) / 2.3 / W * 100) + '%';
+    lblL.style.top = ((lMinY + lMaxY) / 2 / H * 100) + '%';
+  }
+  if (lblR) {
+    lblR.style.left = ((rMinX + rMaxX) / 1.9 / W * 100) + '%';
+    lblR.style.top = ((rMinY + rMaxY) / 2 / H * 100) + '%';
+  }
+
+  var TRAIL_PTS = 400;
+  var outerTrail = [], innerTrail = [];
+  for (var i = 0; i <= TRAIL_PTS; i++) {
+    var t = (i / TRAIL_PTS) * Math.PI * 2;
+    var n = normalAtT(t);
+    var bx = lemX(t), by = lemY(t);
+    outerTrail.push({ x: bx + n.x * TUBE, y: by + n.y * TUBE });
+    innerTrail.push({ x: bx - n.x * TUBE, y: by - n.y * TUBE });
+  }
+
+  var particles = [];
+  for (var i = 0; i < COUNT; i++) {
+    var t = (i / COUNT) * Math.PI * 2;
+    var speed = 0.005 + Math.random() * 0.008;
+    var nOff = (Math.random() - 0.5) * TUBE * 1.0;
+    particles.push({
+      t: t,
+      speed: speed,
+      r: 1.0 + Math.random() * 2.2,
+      opacity: 0.2 + Math.random() * 0.7,
+      nOff: nOff,
+      nVel: 0,
+    });
+  }
+
+  function drawPath(pts) {
+    ctx.beginPath();
+    ctx.moveTo(pts[0].x, pts[0].y);
+    for (var i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
+    ctx.closePath();
+  }
+
+  function tick() {
+    if (!document.body.contains(el)) return;
+    ctx.clearRect(0, 0, W, H);
+
+    ctx.save();
+    drawPath(outerTrail);
+    ctx.strokeStyle = 'rgba(0,0,0,0.06)';
+    ctx.lineWidth = 0.5;
+    ctx.stroke();
+    ctx.restore();
+
+    ctx.save();
+    drawPath(innerTrail);
+    ctx.strokeStyle = 'rgba(0,0,0,0.06)';
+    ctx.lineWidth = 0.5;
+    ctx.stroke();
+    ctx.restore();
+
+    for (var j = 0; j < particles.length; j++) {
+      var p = particles[j];
+
+      p.t += p.speed;
+      if (p.t > Math.PI * 2) p.t -= Math.PI * 2;
+
+      p.nVel += (Math.random() - 0.5) * BROWNIAN;
+      p.nVel += -p.nOff * SPRING;
+      p.nVel *= DAMPING;
+      p.nOff += p.nVel;
+
+      var limit = TUBE * 0.85;
+      if (p.nOff > limit) { p.nOff = limit; p.nVel *= -0.3; }
+      if (p.nOff < -limit) { p.nOff = -limit; p.nVel *= -0.3; }
+
+      var n = normalAtT(p.t);
+      var px = lemX(p.t) + n.x * p.nOff;
+      var py = lemY(p.t) + n.y * p.nOff;
+
+      ctx.beginPath();
+      ctx.arc(px, py, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = COLOR;
+      ctx.globalAlpha = p.opacity;
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(tick);
+  }
+
+  requestAnimationFrame(tick);
+}
+
+initFigure8();
+document.addEventListener('astro:page-load', initFigure8);
+
+</script>
+
+</body>
+</html>
+
+<style>
+    .sos {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 40px 48px 80px;
+        font-family: var(--font);
+        color: var(--text);
+    }
+
+    /* ── Header ── */
+    .sos-header { margin-bottom: 40px; }
+    .sos-back {
+        display: inline-flex; align-items: center; gap: 6px;
+        font-size: 12px; font-weight: 500; color: var(--text-muted);
+        text-decoration: none; margin-bottom: 24px;
+        transition: color 0.15s;
+    }
+    .sos-back:hover { color: var(--accent); }
+    .sos-nav-out {
+        margin-top: 48px;
+        padding-top: 32px;
+        border-top: 1px solid #e5e5e5;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+    .sos-nav-card {
+        display: block;
+        position: relative;
+        padding: 20px 20px 16px;
+        border: 0.5px solid #e5e5e5;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: border-color 0.15s, background 0.15s;
+    }
+    .sos-nav-card:hover {
+        border-color: #E75437;
+        background: rgba(231,84,55,0.03);
+    }
+    .sos-nav-card-label {
+        font-size: 10px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #E75437;
+        margin-bottom: 6px;
+    }
+    .sos-nav-card-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: #171717;
+        margin-bottom: 6px;
+    }
+    .sos-nav-card-desc {
+        font-size: 12px;
+        line-height: 1.6;
+        color: #737373;
+    }
+    .sos-nav-card-arrow {
+        position: absolute;
+        top: 20px;
+        right: 16px;
+        color: #a3a3a3;
+        transition: color 0.15s;
+    }
+    .sos-nav-card:hover .sos-nav-card-arrow { color: #E75437; }
+    .sos-header h1 {
+        font-size: 28px; font-weight: 700; letter-spacing: -0.02em;
+        color: var(--text); margin-bottom: 10px;
+    }
+    .sos-header p {
+        font-size: 14px; line-height: 1.7; color: var(--text-muted); max-width: 640px;
+    }
+
+    /* ── Diagram ── */
+    .sos-diagram {
+        position: relative; margin: 0 0 56px; padding: 24px 0;
+        background: #ffffff;
+        border-radius: 14px; border: 1px solid var(--border);
+    }
+
+    .sos-section-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #171717;
+        text-align: center;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    /* ── Nucleus section ── */
+    .sos-nucleus-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 12px 24px 24px;
+    }
+    .sos-nucleus-captions {
+        font-size: 13px;
+        font-weight: 400;
+        color: #171717;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        text-align: center;
+        margin-bottom: 0;
+    }
+    .sos-nucleus-wrap {
+        position: relative;
+        width: 120px;
+        height: 120px;
+    }
+    #nucleusCanvas {
+        width: 120px;
+        height: 120px;
+        display: block;
+    }
+
+    /* ── Mesh gradient ── */
+    .sos-mesh-section {
+        padding: 16px 0 8px;
+        text-align: center;
+        margin-top: 12px;
+    }
+    .sos-mesh-wrap {
+        position: relative;
+    }
+    .sos-mesh-overlay {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        transform: translateY(-50%);
+        text-align: center;
+        pointer-events: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+    }
+    .sos-mesh-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #171717;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    #meshCanvas {
+        display: block;
+        width: 100%;
+    }
+    /* ── Mini work loop ── */
+    .sos-miniloop-section {
+        padding: 0;
+        text-align: center;
+        margin-top: 32px;
+    }
+    .sos-miniloop-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #171717;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        margin-bottom: 0;
+    }
+    .sos-miniloop-helper {
+        font-size: 12px;
+        font-weight: 400;
+        color: #737373;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        text-align: center;
+        margin-top: 2px;
+    }
+    .sos-miniloop-wrap {
+        position: relative;
+        margin: -12px 60px 0;
+        overflow: hidden;
+    }
+    #miniLoopCanvas {
+        display: block;
+        width: 100%;
+    }
+    .sos-miniloop-labels {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        pointer-events: none;
+    }
+    .sos-miniloop-lbl {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        text-align: center;
+    }
+    .sos-miniloop-lbl--left { left: 19%; }
+    .sos-miniloop-lbl--right { right: 19%; }
+    .sos-miniloop-lbl-title {
+        display: block;
+        font-size: 13px;
+        font-weight: 400;
+        color: #171717;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    .sos-miniloop-lbl-sub {
+        display: block;
+        font-size: 12px;
+        font-weight: 400;
+        color: #737373;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        margin-top: -2px;
+    }
+
+    /* ── Maturity band ── */
+    .sos-maturity-section {
+        padding: 0 24px 20px;
+        margin-top: 48px;
+    }
+    .sos-maturity-labels {
+        display: flex;
+        padding: 0;
+        margin-bottom: 8px;
+    }
+    .sos-maturity-lbl {
+        flex: 1;
+        text-align: center;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    .sos-maturity-title {
+        display: block;
+        font-size: 13px;
+        font-weight: 400;
+        color: #171717;
+    }
+    .sos-maturity-sub {
+        display: block;
+        font-size: 12px;
+        font-weight: 400;
+        color: #737373;
+        margin-top: 1px;
+    }
+    .sos-maturity-band {
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    #maturityCanvas {
+        display: block;
+        width: 100%;
+    }
+
+    .sos-mesh-captions {
+        text-align: center;
+        font-size: 13px;
+        font-weight: 400;
+        color: #171717;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    /* ── Content sections ── */
+    .sos-content { }
+
+    .sos-intro {
+        font-size: 14px;
+        color: #737373;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        text-align: center;
+        padding: 40px 0 0;
+    }
+    .sos-closing {
+        font-size: 14px;
+        color: #737373;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        text-align: center;
+        padding: 48px 0 24px;
+        border-top: 1px solid var(--border);
+    }
+
+    .sos-section {
+        padding: 48px 0;
+        border-top: 1px solid var(--border);
+    }
+    .sos-section:first-child { border-top: none; padding-top: 0; }
+
+    .sos-section h2 {
+        font-size: 22px; font-weight: 700; letter-spacing: -0.015em;
+        color: var(--text); margin-bottom: 12px;
+    }
+    .sos-section h3 {
+        font-size: 14px; font-weight: 700; color: var(--text);
+        margin-top: 48px; margin-bottom: 0; letter-spacing: -0.01em;
+    }
+    .sos-section h4 {
+        font-size: 12px; font-weight: 700; color: var(--text);
+        margin-top: 8px; margin-bottom: 4px; letter-spacing: -0.01em;
+    }
+    .sos-version {
+        font-size: 12px; color: var(--text-tertiary);
+        margin-bottom: 24px; font-style: italic; letter-spacing: -0.01em;
+    }
+    .sos-confidence {
+        display: inline-block;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.03em;
+        padding: 2px 8px;
+        border-radius: 3px;
+        vertical-align: middle;
+        margin-left: 8px;
+        text-transform: uppercase;
+    }
+    .sos-confidence--high {
+        background: #dcfce7;
+        color: #166534;
+    }
+    .sos-confidence--medium-high {
+        background: #fef9c3;
+        color: #854d0e;
+    }
+    .sos-confidence--medium {
+        background: #fef9c3;
+        color: #854d0e;
+    }
+    .sos-confidence--low {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+    .sos-confidence--directional {
+        background: #f3f4f6;
+        color: #6b7280;
+    }
+
+    .sos-section p {
+        font-size: 13px; line-height: 1.4; color: var(--text-muted); margin-bottom: 8px; letter-spacing: -0.01em;
+    }
+
+    /* ── Flow inline ── */
+    .sos-flow-inline {
+        display: flex; align-items: center; gap: 0; margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+    .sos-flow-inline span {
+        font-size: 12.5px; font-weight: 600; color: var(--text);
+        padding: 8px 16px; background: var(--surface);
+        border: 1px solid var(--border);
+    }
+    .sos-flow-inline span:first-child { border-radius: 6px 0 0 6px; }
+    .sos-flow-inline span:last-child { border-radius: 0 6px 6px 0; }
+    .sos-flow-inline span + span { border-left: none; }
+
+    /* ── Tags ── */
+    .sos-tags {
+        display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px;
+    }
+    .sos-tags span {
+        font-size: 12.5px; font-weight: 500; color: var(--text-secondary);
+        padding: 6px 14px; border: 1px solid var(--border); border-radius: 100px;
+        background: var(--surface);
+    }
+
+    /* ── Defines list ── */
+
+    /* ── Two tracks ── */
+    .sos-two-tracks {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;
+    }
+    .sos-track {
+        padding: 18px 20px; border: 1px solid var(--border);
+        border-radius: 8px; background: var(--surface);
+    }
+    .sos-track h3 {
+        font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px;
+    }
+    .sos-track p {
+        font-size: 13px; color: var(--text-muted); line-height: 1.5;
+    }
+    .sos-track-sub {
+        font-size: 12px !important; color: var(--text-tertiary) !important;
+    }
+    .sos-track-tools {
+        font-size: 13px !important; font-family: var(--mono);
+        color: var(--text-secondary) !important; margin-top: 4px;
+    }
+
+    /* ── Loop steps ── */
+    .sos-loop-steps {
+        display: flex; gap: 0; margin-top: 8px;
+    }
+    .sos-loop-steps span {
+        font-size: 12px; font-weight: 600; color: var(--text);
+        padding: 6px 12px; background: var(--bg);
+        border: 1px solid var(--border);
+    }
+    .sos-loop-steps span:first-child { border-radius: 5px 0 0 5px; }
+    .sos-loop-steps span:last-child { border-radius: 0 5px 5px 0; }
+    .sos-loop-steps span + span { border-left: none; }
+
+    /* ── Figure 8 ── */
+    .sos-figure8-wrap {
+        position: relative; margin: 0;
+    }
+    .sos-figure8-canvas {
+        display: block; width: 100%; height: auto;
+    }
+    .sos-figure8-labels {
+        position: absolute; inset: 0;
+        pointer-events: none;
+    }
+    .sos-figure8-label {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        display: flex; flex-direction: column; align-items: center;
+        gap: 3px;
+    }
+    .sos-figure8-label-title {
+        font-size: 16px; font-weight: 700; color: var(--text);
+        letter-spacing: -0.01em;
+    }
+    .sos-figure8-label-sub {
+        font-size: 12px; color: var(--text-muted);
+    }
+
+    /* ── Body text ── */
+
+    /* ── Connected loops ── */
+    .sos-loops-connected {
+        display: flex; flex-direction: column; align-items: center; gap: 0;
+        margin-bottom: 16px;
+    }
+    .sos-loops-connected .sos-track {
+        width: 100%; max-width: 420px;
+    }
+    .sos-loop-arrow-down {
+        display: flex; align-items: center; justify-content: center;
+        height: 36px; color: var(--text-tertiary); opacity: 0.5;
+    }
+    .sos-loop-note {
+        font-size: 11.5px; color: var(--text-tertiary);
+        margin-top: 12px; text-align: center;
+    }
+
+    /* ── Maturity ── */
+
+    /* ── Table ── */
+    .sos-table {
+        width: 100%; max-width: 400px; border-collapse: collapse;
+        font-size: 13px; margin-bottom: 16px;
+    }
+    .sos-table td {
+        padding: 10px 14px; border-bottom: 1px solid var(--border);
+        color: var(--text);
+    }
+    .sos-table td:first-child { font-weight: 600; }
+    .sos-table td:last-child { color: var(--text-secondary); }
+    .sos-table tr:last-child td { border-bottom: none; }
+
+    /* ── Responsive ── */
+    @media (max-width: 700px) {
+        .sos { padding: 24px 20px 60px; }
+        .sos-header h1 { font-size: 22px; }
+        .sos-two-tracks { grid-template-columns: 1fr; }
+        .sos-flow-inline { flex-wrap: wrap; }
+    }
+</style>

@@ -1,0 +1,79 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageNav from '../components/PageNav.astro';
+---
+
+<BaseLayout title="Overview">
+    <div class="page-header">
+        <h1>Evidence-Driven Delivery</h1>
+        <p class="page-header-desc">
+            A structural model for managing uncertainty, governing build progression,
+            and determining when work becomes commitment.
+        </p>
+        <div class="page-meta">
+            <span class="page-reading-time">2 min read</span>
+        </div>
+    </div>
+
+    <section class="hero-section">
+        <div class="hero-thesis">
+            <h2 style="font-size:13px;font-weight:600;color:var(--text);text-transform:none;letter-spacing:-0.01em;margin-bottom:12px;">The Core Thesis</h2>
+            <p style="font-size:12.5px;line-height:1.7;color:var(--text-muted);max-width:640px;">
+                Traditional delivery models advance work by time. Phases complete on schedule,
+                handoffs occur at predetermined milestones, and commitment scales with calendar
+                position — not with validated understanding.
+            </p>
+            <p style="font-size:12.5px;line-height:1.7;color:var(--text-muted);max-width:640px;margin-top:12px;">
+                Evidence-Driven Delivery inverts this. Work advances by <strong style="color:var(--text)">confidence</strong>.
+                Investment scales only when uncertainty has been measurably reduced. Commitment
+                is governed by evidence, not elapsed time.
+            </p>
+        </div>
+    </section>
+
+    <section style="margin-top:48px;">
+        <h2>What This Specification Covers</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <a href="/philosophy/" style="display:block;padding:20px;border:1px solid var(--border);border-radius:6px;text-decoration:none;transition:border-color 0.15s,background 0.15s;" onmouseover="this.style.borderColor='var(--accent)';this.style.background='var(--accent-bg)'" onmouseout="this.style.borderColor='var(--border)';this.style.background='transparent'">
+                <div style="font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.05em;color:var(--accent);margin-bottom:6px;">Philosophy</div>
+                <div style="font-size:12.5px;font-weight:500;color:var(--text);margin-bottom:4px;">The Shift</div>
+                <div style="font-size:12.5px;color:var(--text-muted);line-height:1.5;">From time-boxed discovery to continuous uncertainty reduction through confidence gates.</div>
+            </a>
+            <a href="/model/operating-model/" style="display:block;padding:20px;border:1px solid var(--border);border-radius:6px;text-decoration:none;transition:border-color 0.15s,background 0.15s;" onmouseover="this.style.borderColor='var(--accent)';this.style.background='var(--accent-bg)'" onmouseout="this.style.borderColor='var(--border)';this.style.background='transparent'">
+                <div style="font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.05em;color:var(--accent);margin-bottom:6px;">The Model</div>
+                <div style="font-size:12.5px;font-weight:500;color:var(--text);margin-bottom:4px;">Operating Model</div>
+                <div style="font-size:12.5px;color:var(--text-muted);line-height:1.5;">Multi-dimensional model: Evidence Work, Build Lifecycle, and SDLC as independent dimensions.</div>
+            </a>
+            <a href="/practice/backlogs/" style="display:block;padding:20px;border:1px solid var(--border);border-radius:6px;text-decoration:none;transition:border-color 0.15s,background 0.15s;" onmouseover="this.style.borderColor='var(--accent)';this.style.background='var(--accent-bg)'" onmouseout="this.style.borderColor='var(--border)';this.style.background='transparent'">
+                <div style="font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.05em;color:var(--accent);margin-bottom:6px;">In Practice</div>
+                <div style="font-size:12.5px;font-weight:500;color:var(--text);margin-bottom:4px;">Dual Backlogs & Engagement</div>
+                <div style="font-size:12.5px;color:var(--text-muted);line-height:1.5;">Evidence and Commitment backlogs, 8-week engagement shape, and traced risk examples.</div>
+            </a>
+            <a href="/reference/" style="display:block;padding:20px;border:1px solid var(--border);border-radius:6px;text-decoration:none;transition:border-color 0.15s,background 0.15s;" onmouseover="this.style.borderColor='var(--accent)';this.style.background='var(--accent-bg)'" onmouseout="this.style.borderColor='var(--border)';this.style.background='transparent'">
+                <div style="font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.05em;color:var(--accent);margin-bottom:6px;">Reference</div>
+                <div style="font-size:12.5px;font-weight:500;color:var(--text);margin-bottom:4px;">Glossary & Constraints</div>
+                <div style="font-size:12.5px;color:var(--text-muted);line-height:1.5;">Operating model terms, operational constraints, and what this model does and does not define.</div>
+            </a>
+        </div>
+    </section>
+
+    <section style="margin-top:48px;">
+        <div style="padding:24px;background:var(--surface);border:1px solid var(--border);border-radius:6px;">
+            <div style="font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-tertiary);margin-bottom:8px;">About This Document</div>
+            <p style="font-size:12.5px;line-height:1.7;color:var(--text-muted);">
+                This is an internal operating specification for Sparq. It defines the structural model for how we manage uncertainty,
+                govern build progression, and determine when work becomes commitment. Use the sidebar to explore each section,
+                or press <kbd style="font-family:var(--font);font-size:10px;font-weight:500;padding:1px 5px;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-tertiary);">⌘</kbd><kbd style="font-family:var(--font);font-size:10px;font-weight:500;padding:1px 5px;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-tertiary);">K</kbd> to search.
+            </p>
+        </div>
+    </section>
+
+    <footer style="margin-top:64px;padding-top:20px;border-top:1px solid var(--border);">
+        <div class="version-history" style="margin-top:0;padding-top:0;border-top:none;">
+            <h4>Version History</h4>
+            <p>v1.0 — Initial specification (February 2026)</p>
+        </div>
+    </footer>
+
+    <PageNav next={{ href: "/philosophy/", title: "The Shift" }} />
+</BaseLayout>
