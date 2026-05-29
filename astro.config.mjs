@@ -7,4 +7,7 @@ export default defineConfig({
   site: 'https://evidence-driven-delivery.dev',
   adapter: node({ mode: 'standalone' }),
   integrations: [react(), tailwind()],
+  server: {
+    host: '0.0.0.0',
+  },
 });
