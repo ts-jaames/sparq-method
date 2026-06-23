@@ -1,0 +1,684 @@
+---
+
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Now / The New — The Sparq Method</title>
+    <link
+      href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+
+    <div class="wrap">
+      <header>
+        <h1>The Now <span class="slash">/</span> The New</h1>
+      </header>
+
+      <!-- ═══════════════════════════════════════
+           SECTION 1 — Operating Model
+           ═══════════════════════════════════════ -->
+      <section class="cmp-section" id="ops-section" data-ops-mode="now">
+        <h2 class="section-label">Methodology</h2>
+        <div class="toggle" role="group" aria-label="Operating model view">
+          <button id="btn-ops-now" aria-pressed="true">The Now</button>
+          <button id="btn-ops-new" aria-pressed="false">The New</button>
+        </div>
+
+        <p class="hero-claim ops-now-only">Six projects running simultaneously — none talking to each other. Every engagement starts from zero. Learnings never compound. The signals at the end dissolve into the ether instead of feeding the next project.</p>
+
+        <p class="hero-claim ops-new-only">The same projects — but connected. Every engagement feeds the next. Evidence, patterns, and validated decisions compound across the portfolio. No silos. No starting from zero. Each project makes the others sharper.</p>
+
+        <div class="hero">
+          <canvas id="field"></canvas>
+          <div class="hud">
+            <span class="tl" id="hud-tl"></span>
+            <span class="flash" id="flash">&uarr; Risk &mdash; discovered in build</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════
+           SECTION 2 — Delivery
+           ═══════════════════════════════════════ -->
+      <section class="cmp-section" id="del-section" data-del-mode="now">
+        <h2 class="section-label">Delivery</h2>
+        <div class="toggle" role="group" aria-label="Delivery view">
+          <button id="btn-del-now" aria-pressed="true">The Now</button>
+          <button id="btn-del-new" aria-pressed="false">The New</button>
+        </div>
+
+        <div class="track now-track del-now-only"><div class="row" id="now-row"></div></div>
+        <div class="detail del-now-only" id="detail"></div>
+
+        <div class="track new-track del-new-only">
+          <div class="lem-wrap">
+            <canvas id="lem-canvas"></canvas>
+          </div>
+          <div class="mode-panel" id="mode-panel">
+            <div class="mp-left">
+              <div class="mp-eyebrow" id="mp-eyebrow">Mode · Discover</div>
+              <div class="mp-question" id="mp-question">What are we actually solving, and for whom?</div>
+            </div>
+            <div class="mp-right">
+              <div class="mp-eyebrow">Capability intensity</div>
+              <div class="cap-rows" id="cap-rows"></div>
+            </div>
+          </div>
+          <p class="concnote">Capabilities remain present throughout every engagement &mdash; only their intensity shifts.</p>
+        </div>
+      </section>
+
+      <footer>
+        Internal working artifact · v0.1 · Source for the external-facing visual.
+      </footer>
+    </div>
+
+    <style is:global>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; background: #14100e; }
+
+      body {
+        --bg: #14100e;
+        --panel: #1b1613;
+        --line: #2c2521;
+        --ink: #f2efe9;
+        --ink-2: #e8e5e0;
+        --mute: #d5d1cc;
+        --dim: #b0aca7;
+        --orange: #e75437;
+        --orange-dim: #7a3a2e;
+        --sans: "Satoshi", system-ui, -apple-system, sans-serif;
+        --mono: "IBM Plex Mono", ui-monospace, monospace;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: var(--sans);
+        line-height: 1.55;
+        font-size: 16px;
+        padding: 0 0 110px;
+      }
+
+      .wrap { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+
+      /* ── Header ── */
+      header { padding: 64px 0 0; margin-bottom: 56px; text-align: center; }
+      h1 { font-size: 44px; font-weight: 700; letter-spacing: -0.03em; margin: 0; line-height: 1.05; color: var(--ink); }
+      h1 .slash { color: var(--orange); }
+
+      /* ── Sections ── */
+      .cmp-section { margin-bottom: 72px; }
+      .section-label {
+        font-family: var(--sans); font-size: 24px; font-weight: 700;
+        letter-spacing: -0.02em; color: var(--ink); margin-bottom: 16px;
+        padding-top: 32px; border-top: 1px solid var(--line);
+      }
+
+      /* ── Toggle ── */
+      .toggle { display: inline-flex; border: 2px solid var(--line); border-radius: 2px; margin: 0 0 24px; overflow: hidden; }
+      .toggle button {
+        font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+        background: transparent; color: var(--mute); border: 0; padding: 11px 24px; cursor: pointer; transition: 0.2s;
+      }
+      .toggle button + button { border-left: 1px solid var(--line); }
+      .toggle button[aria-pressed="true"] { background: var(--orange); color: #fff; }
+      .toggle button:not([aria-pressed="true"]):hover { color: var(--ink); }
+
+      /* ── Hero claim ── */
+      .hero-claim {
+        font-size: 16px; font-weight: 500; line-height: 1.55; color: var(--ink);
+        letter-spacing: -0.01em; margin: 0 0 24px; max-width: 620px;
+      }
+      .ops-now-only { display: block; }
+      .ops-new-only { display: none; }
+      [data-ops-mode="new"] .ops-now-only { display: none; }
+      [data-ops-mode="new"] .ops-new-only { display: block; }
+
+      /* ── Hero canvas ── */
+      .hero { position: relative; overflow: hidden; margin-bottom: 16px; }
+      canvas#field { display: block; width: 100%; height: 300px; }
+      .hud { position: absolute; inset: 0; pointer-events: none; }
+      .hud .tl {
+        position: absolute; top: 16px; left: 0;
+        font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+        text-transform: uppercase; color: var(--dim);
+      }
+      .hud .flash {
+        position: absolute; font-family: var(--mono); font-size: 10px;
+        letter-spacing: 0.1em; text-transform: uppercase; color: var(--orange);
+        opacity: 0; transition: opacity 0.25s;
+      }
+
+      /* ── Delivery visibility ── */
+      .del-now-only { display: block; }
+      .del-new-only { display: none; }
+      [data-del-mode="new"] .del-now-only { display: none; }
+      [data-del-mode="new"] .del-new-only { display: block; }
+
+      /* ── Now track (delivery) ── */
+      .track { margin: 24px 0 0; position: relative; }
+      .track.now-track .row { display: grid; grid-template-columns: repeat(6, 1fr); position: relative; }
+      .track.now-track .row::before {
+        content: ""; position: absolute; top: 9px; left: 6%; right: 4%; height: 1px; background: var(--line);
+      }
+      .stage {
+        background: none; border: 0; text-align: left; cursor: pointer;
+        padding: 8px 10px 10px 8px; position: relative; font-family: inherit;
+        border-radius: 6px; transition: background 0.2s;
+      }
+      .stage:hover { background: rgba(255,255,255,0.04); }
+      .now-track .dot {
+        width: 12px; height: 12px; border-radius: 50%; background: var(--dim);
+        border: 2px solid transparent; position: relative; z-index: 2;
+        margin-bottom: 14px; transition: 0.2s; opacity: 0.5;
+      }
+      .stage:hover .dot { border-color: var(--mute); transform: scale(1.15); opacity: 0.8; }
+      .stage .num { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; color: var(--dim); transition: 0.2s; }
+      .stage .nm { font-size: 14px; font-weight: 600; margin: 4px 0 3px; color: var(--dim); transition: 0.2s; }
+      .stage .wk { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; color: var(--dim); text-transform: uppercase; transition: 0.2s; }
+      .stage[aria-selected="true"] { background: var(--panel); }
+      .stage[aria-selected="true"] .dot { background: var(--orange); border-color: var(--orange); transform: scale(1.25); opacity: 1; }
+      .stage[aria-selected="true"] .nm { color: var(--ink); }
+      .stage[aria-selected="true"] .num { color: var(--mute); }
+      .stage[aria-selected="true"] .wk { color: var(--mute); }
+      .stage:hover .nm { color: var(--mute); }
+
+      /* ── Detail panel (delivery now) ── */
+      .detail {
+        margin: 4px 0 0; padding: 24px; min-height: 120px;
+        background: var(--panel); border-radius: 0 0 4px 4px;
+        border-top: 2px solid var(--orange);
+      }
+      .detail h3 { font-size: 20px; font-weight: 700; margin-bottom: 22px; letter-spacing: -0.02em; color: var(--ink); }
+      .dgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; }
+      .dcell .k { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mute); margin-bottom: 6px; }
+      .dcell .v { font-size: 14px; color: var(--ink-2); line-height: 1.5; }
+
+      /* ── Lemniscate canvas (delivery new) ── */
+      .lem-wrap { position: relative; margin: 24px 0 0; }
+      canvas#lem-canvas { display: block; width: 100%; height: 340px; cursor: pointer; }
+
+      /* ── Mode panel ── */
+      .mode-panel {
+        display: grid; grid-template-columns: 2fr 3fr;
+        background: var(--panel); padding: 24px 28px; gap: 32px;
+      }
+      .mp-eyebrow {
+        font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+        text-transform: uppercase; color: var(--orange); margin-bottom: 10px;
+      }
+      .mp-question { font-size: 20px; font-weight: 600; color: var(--ink); line-height: 1.4; letter-spacing: -0.02em; transition: color 0.3s; }
+      .mp-right .mp-eyebrow { color: var(--mute); }
+
+      .cap-rows { display: flex; flex-direction: column; gap: 11px; margin-top: 2px; }
+      .cap-row { display: flex; align-items: center; gap: 10px; }
+      .cap-name {
+        font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.05em;
+        text-transform: uppercase; color: var(--dim); width: 158px; flex-shrink: 0; transition: color 0.35s;
+      }
+      .cap-name.cap-bright { color: #f2efe9; }
+      .seg-bar { display: grid; grid-template-columns: repeat(16, 1fr); gap: 2px; height: 13px; flex: 1; }
+      .seg { background: var(--line); border-radius: 1px; transition: background 0.35s; }
+      .seg.seg-lit.seg-high { background: #e75437; }
+      .seg.seg-lit.seg-med { background: #7a3a2e; }
+      .seg.seg-lit.seg-low { background: var(--dim); }
+      .cap-lbl {
+        font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em;
+        text-transform: uppercase; color: var(--mute); width: 30px; flex-shrink: 0; transition: color 0.35s;
+      }
+      .cap-lbl.lbl-high { color: #e75437; }
+      .cap-lbl.lbl-muted { color: var(--mute); }
+
+      .concnote {
+        font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+        text-transform: uppercase; color: var(--dim); margin: 16px 0 0;
+      }
+
+      footer {
+        margin: 64px 0 0; color: var(--dim); font-family: var(--mono); font-size: 10px;
+        letter-spacing: 0.08em; text-transform: uppercase; line-height: 1.9;
+        padding-top: 28px; border-top: 1px solid var(--line);
+      }
+
+      /* ── Responsive ── */
+      @media (max-width: 640px) {
+        h1 { font-size: 32px; }
+        canvas#field { height: 240px; }
+        canvas#lem-canvas { height: 260px; }
+        .track.now-track .row { grid-template-columns: repeat(3, 1fr); gap: 26px 0; }
+        .track.now-track .row::before { display: none; }
+        .mode-panel { grid-template-columns: 1fr; gap: 20px; padding: 20px; }
+        .cap-name { width: auto; }
+      }
+      @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+    </style>
+
+    <script is:inline>
+      /* ════════════════════════════════════════
+         Data
+         ════════════════════════════════════════ */
+      var NOW = [
+        { num: "01", nm: "Workshops", wk: "2 wk", purpose: "Align on vision and requirements.", deliv: "Workshop notes and alignment.", client: "Meetings and alignment sessions." },
+        { num: "02", nm: "Research", wk: "2 wk", purpose: "Gather context and inputs.", deliv: "Research synthesis.", client: "Interviews and analysis." },
+        { num: "03", nm: "Definition", wk: "2 wk", purpose: "Define the MVP, roadmap, and scope.", deliv: "Strategy, roadmap, backlog.", client: "Documents to review." },
+        { num: "04", nm: "Finalization", wk: "2 wk", purpose: "Polish the deliverables.", deliv: "Final decks and specs.", client: "Polished artifacts." },
+        { num: "05", nm: "Handoff", wk: "", purpose: "Transfer the plan to a build team.", deliv: "A specification set.", client: "A document handed over." },
+        { num: "06", nm: "Build", wk: "X wk", purpose: "Implement the plan as written.", deliv: "Software.", client: "Surprises and rework when assumptions break." }
+      ];
+
+      var LEM_MODES = [
+        { label: "Discover",  q: "What are we actually solving, and for whom?",                     intensity: [3,2,1,0,2], t: Math.PI * 0.62, lobe: "learn" },
+        { label: "Architect", q: "How do we structure the system and define AI's role in it?",      intensity: [2,3,2,1,1], t: Math.PI * 1.0,  lobe: "learn" },
+        { label: "Validate",  q: "Who validates what — and how do we maintain rigor at AI speed?",  intensity: [1,1,2,2,3], t: Math.PI * 1.38, lobe: "learn" },
+        { label: "Build",     q: "How do AI agents and humans co-develop?",                         intensity: [1,2,3,3,2], t: Math.PI * 1.62, lobe: "scale" },
+        { label: "Transfer",  q: "How do we hand off without losing context?",                      intensity: [2,1,0,2,2], t: Math.PI * 2.0,  lobe: "scale" },
+        { label: "Evolve",    q: "How does the system — and our engagement — compound over time?",  intensity: [2,1,1,2,3], t: Math.PI * 0.38, lobe: "scale" }
+      ];
+      var LEM_CAPS = ["Defining Strategy", "Designing Experience", "Experimenting & Spiking", "Engineering for Production", "Generating Evidence"];
+      var LEM_COUNT = [0, 3, 8, 13];
+      var LEM_LBL = ["", "LOW", "MED", "HIGH"];
+
+      var opsMode = "now", delMode = "now", selNow = 0;
+      var reduce = window.matchMedia("(prefers-reduced-motion:reduce)").matches;
+
+      /* ════════════════════════════════════════
+         Section 1: Operating Model
+         ════════════════════════════════════════ */
+      var opsSection = document.getElementById("ops-section");
+
+      function setOpsMode(m) {
+        opsMode = m;
+        opsSection.dataset.opsMode = m;
+        document.getElementById("btn-ops-now").setAttribute("aria-pressed", m === "now" ? "true" : "false");
+        document.getElementById("btn-ops-new").setAttribute("aria-pressed", m === "new" ? "true" : "false");
+        restartHero();
+      }
+
+      document.getElementById("btn-ops-now").onclick = function () { setOpsMode("now"); };
+      document.getElementById("btn-ops-new").onclick = function () { setOpsMode("new"); };
+
+      /* ── Hero canvas (#field) ── */
+      var cv = document.getElementById("field");
+      var ctx = cv.getContext("2d");
+      var W, H, DPR;
+      var hParts = [], hLinks = [], hCX, hCY, hR;
+      var flash = document.getElementById("flash");
+      var t0 = performance.now();
+      var riskPartsGrid = [[], [], [], [], [], []];
+      var PROJ_LABELS = ["Project 1", "Project 2", "Project 3", "Project 4", "Project 5", "Project 6"];
+      var PROJ_PHASE = [0, 0.17, 0.33, 0.5, 0.67, 0.83];
+
+      function buildHeroField() {
+        hParts = []; hLinks = [];
+        var COUNT = 350;
+        hCX = W * 0.5; hCY = H * 0.5;
+        hR = Math.min(W * 0.47, H * 0.44);
+        for (var i = 0; i < COUNT; i++) {
+          var x, y;
+          do { x = (Math.random() - 0.5) * 2; y = (Math.random() - 0.5) * 2; } while (x * x + y * y > 1);
+          var spd = 0.0005 + Math.random() * 0.001, ang = Math.random() * Math.PI * 2;
+          hParts.push({ x: x, y: y, vx: Math.cos(ang) * spd, vy: Math.sin(ang) * spd, r: 0.8 + Math.random() * 2, opacity: 0.15 + Math.random() * 0.55 });
+        }
+        for (var li = 0; li < 70; li++) hLinks.push(hParts[Math.floor(Math.random() * COUNT)]);
+      }
+
+      function restartHero() {
+        t0 = performance.now();
+        for (var ri = 0; ri < 6; ri++) riskPartsGrid[ri] = [];
+        flash.style.opacity = 0;
+      }
+
+      function roundRect(c, x, y, w, h, r) {
+        c.beginPath();
+        c.moveTo(x + r, y); c.lineTo(x + w - r, y); c.arcTo(x + w, y, x + w, y + r, r);
+        c.lineTo(x + w, y + h - r); c.arcTo(x + w, y + h, x + w - r, y + h, r);
+        c.lineTo(x + r, y + h); c.arcTo(x, y + h, x, y + h - r, r);
+        c.lineTo(x, y + r); c.arcTo(x, y, x + r, y, r);
+        c.closePath();
+      }
+
+      function drawMiniTimeline(ox, oy, cw, ch, idx, el) {
+        var GAP = 6, R = 5;
+        var cx = ox + GAP, cy = oy + GAP, cardW = cw - GAP * 2, cardH = ch - GAP * 2;
+        ctx.strokeStyle = "rgba(255,255,255,0.15)"; ctx.lineWidth = 1;
+        roundRect(ctx, cx, cy, cardW, cardH, R); ctx.stroke();
+        var DUR = 7.0, t = (el + PROJ_PHASE[idx] * DUR) % DUR, pp = t / DUR;
+        if (t < 0.07) riskPartsGrid[idx] = [];
+        var pad = 18, tly = cy + cardH * 0.62, tlx0 = cx + pad, tlx1 = cx + cardW - pad, tlen = tlx1 - tlx0;
+        var head = tlx0 + pp * tlen, TICKS = 4;
+        ctx.strokeStyle = "rgba(255,255,255,0.18)"; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(tlx0, tly); ctx.lineTo(tlx1, tly); ctx.stroke();
+        for (var k = 0; k < TICKS; k++) {
+          var dx = tlx0 + tlen * (k / (TICKS - 1));
+          ctx.fillStyle = head >= dx ? "rgba(210,205,198,1)" : "rgba(255,255,255,0.25)";
+          ctx.beginPath(); ctx.arc(dx, tly, 2.5, 0, 6.28); ctx.fill();
+        }
+        ctx.strokeStyle = "rgba(255,255,255,0.22)"; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(head, cy + 10); ctx.lineTo(head, cy + cardH - 10); ctx.stroke();
+        if (pp > 0.82) {
+          if (riskPartsGrid[idx].length < 18) for (var z = 0; z < 2; z++) riskPartsGrid[idx].push({ x: tlx1, y: tly, vx: (Math.random() - 0.5) * 3.5, vy: (Math.random() - 0.5) * 3.5, a: 0.85, r: 0.7 + Math.random() * 1.4 });
+          for (var ri = 0; ri < riskPartsGrid[idx].length; ri++) {
+            var rp = riskPartsGrid[idx][ri];
+            rp.x += rp.vx; rp.y += rp.vy; rp.vx *= 0.96; rp.vy *= 0.96; rp.a *= 0.975;
+            ctx.fillStyle = "rgba(231,84,55," + rp.a + ")"; ctx.beginPath(); ctx.arc(rp.x, rp.y, rp.r, 0, 6.28); ctx.fill();
+          }
+        }
+        ctx.fillStyle = "rgba(210,205,198,0.85)"; ctx.font = "8px IBM Plex Mono";
+        ctx.textAlign = "left"; ctx.textBaseline = "top";
+        ctx.fillText(PROJ_LABELS[idx], cx + pad, cy + 12);
+      }
+
+      function drawNowGrid(el) {
+        var cw = W / 2, ch = H / 3;
+        for (var i = 0; i < 6; i++) drawMiniTimeline((i % 2) * cw, Math.floor(i / 2) * ch, cw, ch, i, el);
+      }
+
+      function heroResize() {
+        DPR = Math.min(window.devicePixelRatio || 1, 2);
+        W = cv.clientWidth; H = cv.clientHeight;
+        cv.width = W * DPR; cv.height = H * DPR;
+        ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+        buildHeroField();
+      }
+
+      function heroFrame(ts) {
+        var el = (ts - t0) / 1000;
+        ctx.clearRect(0, 0, W, H);
+        if (opsMode === "new") {
+          for (var j = 0; j < hParts.length; j++) {
+            var p = hParts[j];
+            p.x += (Math.random() - 0.5) * 0.002; p.y += (Math.random() - 0.5) * 0.002;
+            p.x += p.vx; p.y += p.vy;
+            var sp = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+            if (sp > 0.002) { p.vx *= 0.002 / sp; p.vy *= 0.002 / sp; }
+            p.x *= 0.9998; p.y *= 0.9998;
+            var dd = Math.sqrt(p.x * p.x + p.y * p.y);
+            if (dd > 0.95) { var nx2 = p.x / dd, ny2 = p.y / dd, dot = p.vx * nx2 + p.vy * ny2; p.vx -= 2 * dot * nx2; p.vy -= 2 * dot * ny2; p.x *= 0.94 / dd; p.y *= 0.94 / dd; }
+          }
+          ctx.strokeStyle = "#F4845F"; ctx.lineWidth = 0.8;
+          for (var a = 0; a < hLinks.length; a++) {
+            var pi = hLinks[a];
+            for (var b = a + 1; b < hLinks.length; b++) {
+              var pj = hLinks[b], dx = pi.x - pj.x, dy = pi.y - pj.y, d = Math.sqrt(dx * dx + dy * dy);
+              if (d < 0.25) { ctx.globalAlpha = (1 - d / 0.25) * 0.5; ctx.beginPath(); ctx.moveTo(hCX + pi.x * hR, hCY + pi.y * hR); ctx.lineTo(hCX + pj.x * hR, hCY + pj.y * hR); ctx.stroke(); }
+            }
+          }
+          ctx.fillStyle = "#E75437";
+          for (var j2 = 0; j2 < hParts.length; j2++) {
+            var p2 = hParts[j2]; ctx.globalAlpha = p2.opacity;
+            ctx.beginPath(); ctx.arc(hCX + p2.x * hR, hCY + p2.y * hR, p2.r, 0, 6.283); ctx.fill();
+          }
+          ctx.globalAlpha = 1;
+        } else {
+          drawNowGrid(el);
+        }
+        if (!reduce) requestAnimationFrame(heroFrame);
+      }
+
+      heroResize();
+      requestAnimationFrame(heroFrame);
+
+      /* ════════════════════════════════════════
+         Section 2: Delivery
+         ════════════════════════════════════════ */
+      var delSection = document.getElementById("del-section");
+
+      /* ── Now-track stages ── */
+      var nowRow = document.getElementById("now-row");
+      NOW.forEach(function (s, i) {
+        var b = document.createElement("button");
+        b.className = "stage";
+        b.setAttribute("aria-selected", i === 0 ? "true" : "false");
+        b.innerHTML = '<div class="dot"></div><div class="num">' + s.num + '</div><div class="nm">' + s.nm + '</div><div class="wk">' + (s.wk || "&nbsp;") + "</div>";
+        b.onclick = function () { selNow = i; syncSel(); renderDetail(); };
+        nowRow.appendChild(b);
+      });
+
+      function syncSel() {
+        var c = nowRow.children;
+        for (var i = 0; i < c.length; i++) c[i].setAttribute("aria-selected", i === selNow ? "true" : "false");
+      }
+
+      function renderDetail() {
+        var d = document.getElementById("detail");
+        var s = NOW[selNow];
+        d.innerHTML = "<h3>" + s.nm + '</h3><div class="dgrid">' +
+          '<div class="dcell"><div class="k">Purpose</div><div class="v">' + s.purpose + "</div></div>" +
+          '<div class="dcell"><div class="k">Deliverable</div><div class="v">' + s.deliv + "</div></div>" +
+          '<div class="dcell"><div class="k">What the client sees</div><div class="v">' + s.client + "</div></div></div>";
+      }
+
+      /* ── Capability rows ── */
+      (function buildCapRows() {
+        var el = document.getElementById("cap-rows");
+        if (!el) return;
+        LEM_CAPS.forEach(function (cap, ci) {
+          var row = document.createElement("div"); row.className = "cap-row";
+          var nm = document.createElement("span"); nm.className = "cap-name"; nm.id = "capnm-" + ci; nm.textContent = cap;
+          var bar = document.createElement("div"); bar.className = "seg-bar";
+          for (var s = 0; s < 16; s++) { var seg = document.createElement("div"); seg.className = "seg"; seg.id = "seg-" + ci + "-" + s; bar.appendChild(seg); }
+          var lbl = document.createElement("span"); lbl.className = "cap-lbl"; lbl.id = "lbl-" + ci;
+          row.appendChild(nm); row.appendChild(bar); row.appendChild(lbl);
+          el.appendChild(row);
+        });
+      })();
+
+      function lemSetActive(zi) {
+        var m = LEM_MODES[zi];
+        document.getElementById("mp-eyebrow").textContent = "Mode · " + m.label;
+        document.getElementById("mp-question").textContent = m.q;
+        lemMeters(m.intensity);
+      }
+
+      function lemMeters(arr) {
+        arr.forEach(function (lvl, ci) {
+          var cnt = LEM_COUNT[lvl];
+          for (var s = 0; s < 16; s++) {
+            var seg = document.getElementById("seg-" + ci + "-" + s);
+            if (!seg) return;
+            var cls = "seg";
+            if (s < cnt) cls += " seg-lit seg-" + (lvl === 3 ? "high" : lvl === 2 ? "med" : "low");
+            seg.className = cls;
+          }
+          var lbl = document.getElementById("lbl-" + ci);
+          if (lbl) { lbl.textContent = lvl > 0 ? LEM_LBL[lvl] : ""; lbl.className = "cap-lbl" + (lvl === 3 ? " lbl-high" : lvl > 0 ? " lbl-muted" : ""); }
+          var nm = document.getElementById("capnm-" + ci);
+          if (nm) nm.className = "cap-name" + (lvl >= 2 ? " cap-bright" : "");
+        });
+      }
+
+      /* ── Figure-8 lemniscate canvas ── */
+      var lemCv = document.getElementById("lem-canvas");
+      var lemCtx = lemCv.getContext("2d");
+      var LW, LH, LCX, LCY, LRX, LRY;
+      var lemParts = [], lemRunning = false;
+      var lemActive = 0;
+      var TUBE = 14, LEM_PARTICLE_COUNT = 800;
+      var ZONE_RADIUS = 0.4;
+
+      function lemX(t) { var s = Math.sin(t), c = Math.cos(t); return LCX + (LRX * c) / (1 + s * s); }
+      function lemY(t) { var s = Math.sin(t), c = Math.cos(t); return LCY + (LRY * s * c) / (1 + s * s); }
+
+      function lemNormalAtT(t) {
+        var dt = 0.001;
+        var dx = lemX(t + dt) - lemX(t - dt), dy = lemY(t + dt) - lemY(t - dt);
+        var len = Math.sqrt(dx * dx + dy * dy);
+        return { x: -dy / len, y: dx / len };
+      }
+
+      function angDist(a, b) {
+        var d = ((a - b) % (Math.PI * 2) + Math.PI * 3) % (Math.PI * 2) - Math.PI;
+        return Math.abs(d);
+      }
+
+      function lemBuild() {
+        lemParts = [];
+        for (var i = 0; i < LEM_PARTICLE_COUNT; i++) {
+          var t = (i / LEM_PARTICLE_COUNT) * Math.PI * 2;
+          var speed = 0.004 + Math.random() * 0.008;
+          var nOff = (Math.random() - 0.5) * TUBE * 0.8;
+          lemParts.push({ t: t, speed: speed, r: 0.7 + Math.random() * 1.5, opacity: 0.2 + Math.random() * 0.6, nOff: nOff, nVel: 0 });
+        }
+      }
+
+      function lemResize() {
+        var d = Math.min(window.devicePixelRatio || 1, 2);
+        LW = lemCv.clientWidth; LH = lemCv.clientHeight;
+        lemCv.width = LW * d; lemCv.height = LH * d;
+        lemCtx.setTransform(d, 0, 0, d, 0, 0);
+        LCX = LW / 2; LCY = LH / 2;
+        LRX = LW * 0.38; LRY = LH * 0.36;
+        lemBuild();
+      }
+
+      function lemDrawTrail() {
+        var PTS = 300;
+        lemCtx.beginPath();
+        for (var i = 0; i <= PTS; i++) {
+          var t = (i / PTS) * Math.PI * 2;
+          var px = lemX(t), py = lemY(t);
+          if (i === 0) lemCtx.moveTo(px, py); else lemCtx.lineTo(px, py);
+        }
+        lemCtx.closePath();
+        lemCtx.strokeStyle = "rgba(255,255,255,0.06)";
+        lemCtx.lineWidth = TUBE * 2;
+        lemCtx.stroke();
+      }
+
+      function lemFrame() {
+        if (delMode !== "new") { lemRunning = false; return; }
+        lemCtx.clearRect(0, 0, LW, LH);
+
+        lemDrawTrail();
+
+        var activeT = LEM_MODES[lemActive].t;
+
+        for (var j = 0; j < lemParts.length; j++) {
+          var p = lemParts[j];
+          p.t += p.speed;
+          if (p.t > Math.PI * 2) p.t -= Math.PI * 2;
+          p.nVel += (Math.random() - 0.5) * 1.2;
+          p.nVel += -p.nOff * 0.01;
+          p.nVel *= 0.62;
+          p.nOff += p.nVel;
+          var limit = TUBE * 0.85;
+          if (p.nOff > limit) { p.nOff = limit; p.nVel *= -0.3; }
+          if (p.nOff < -limit) { p.nOff = -limit; p.nVel *= -0.3; }
+          var n = lemNormalAtT(p.t);
+          var px = lemX(p.t) + n.x * p.nOff;
+          var py = lemY(p.t) + n.y * p.nOff;
+
+          var dist = angDist(p.t, activeT);
+          var inZone = dist < ZONE_RADIUS;
+          var zoneFade = inZone ? 1.0 : 0.25;
+
+          lemCtx.beginPath();
+          lemCtx.arc(px, py, p.r * (inZone ? 1.3 : 1.0), 0, Math.PI * 2);
+          lemCtx.fillStyle = inZone ? "#E75437" : "#E75437";
+          lemCtx.globalAlpha = p.opacity * zoneFade;
+          lemCtx.fill();
+        }
+        lemCtx.globalAlpha = 1;
+
+        lemCtx.font = "500 11px 'IBM Plex Mono'";
+        lemCtx.textAlign = "center"; lemCtx.textBaseline = "middle";
+        lemCtx.fillStyle = "rgba(210,205,198,0.18)";
+        lemCtx.fillText("BUILD TO LEARN", LCX - LRX * 0.62, LCY);
+        lemCtx.fillText("BUILD TO SCALE", LCX + LRX * 0.62, LCY);
+
+        for (var zi = 0; zi < LEM_MODES.length; zi++) {
+          var m = LEM_MODES[zi];
+          var zx = lemX(m.t), zy = lemY(m.t);
+          var isActive = zi === lemActive;
+
+          if (isActive) {
+            lemCtx.strokeStyle = "rgba(231,84,55,0.5)";
+            lemCtx.lineWidth = 1;
+            lemCtx.setLineDash([3, 5]);
+            lemCtx.beginPath();
+            var ringR = Math.min(LRX, LRY) * 0.18;
+            lemCtx.arc(zx, zy, ringR, 0, Math.PI * 2);
+            lemCtx.stroke();
+            lemCtx.setLineDash([]);
+          }
+
+          var lbl = m.label.toUpperCase();
+          lemCtx.font = "600 10px 'IBM Plex Mono'";
+          lemCtx.textAlign = "center"; lemCtx.textBaseline = "middle";
+          lemCtx.fillStyle = isActive ? "rgba(231,84,55,0.95)" : "rgba(210,205,198,0.4)";
+          var offY = zy < LCY ? -1 : 1;
+          var labelY = zy + offY * (Math.min(LRX, LRY) * 0.22 + 4);
+          lemCtx.fillText(lbl, zx, labelY);
+        }
+
+        if (!reduce) requestAnimationFrame(lemFrame);
+      }
+
+      lemCv.addEventListener("click", function (e) {
+        var rect = lemCv.getBoundingClientRect();
+        var mx = e.clientX - rect.left, my = e.clientY - rect.top;
+        var best = 0, bestD = Infinity;
+        LEM_MODES.forEach(function (m, i) {
+          var zx = lemX(m.t), zy = lemY(m.t);
+          var dx = mx - zx, dy = my - zy, dd = dx * dx + dy * dy;
+          if (dd < bestD) { bestD = dd; best = i; }
+        });
+        lemActive = best;
+        lemSetActive(lemActive);
+      });
+
+      lemCv.addEventListener("mousemove", function (e) {
+        var rect = lemCv.getBoundingClientRect();
+        var mx = e.clientX - rect.left, my = e.clientY - rect.top;
+        var best = 0, bestD = Infinity;
+        LEM_MODES.forEach(function (m, i) {
+          var zx = lemX(m.t), zy = lemY(m.t);
+          var dx = mx - zx, dy = my - zy, dd = dx * dx + dy * dy;
+          if (dd < bestD) { bestD = dd; best = i; }
+        });
+        var threshold = Math.min(LRX, LRY) * 0.3;
+        if (bestD < threshold * threshold) {
+          lemActive = best;
+          lemSetActive(lemActive);
+        }
+      });
+
+      /* ── Delivery toggle ── */
+      function setDelMode(m) {
+        delMode = m;
+        delSection.dataset.delMode = m;
+        document.getElementById("btn-del-now").setAttribute("aria-pressed", m === "now" ? "true" : "false");
+        document.getElementById("btn-del-new").setAttribute("aria-pressed", m === "new" ? "true" : "false");
+        if (m === "now") {
+          renderDetail();
+        }
+        if (m === "new") {
+          lemResize();
+          lemSetActive(0);
+          if (!lemRunning) { lemRunning = true; requestAnimationFrame(lemFrame); }
+        }
+      }
+
+      document.getElementById("btn-del-now").onclick = function () { setDelMode("now"); };
+      document.getElementById("btn-del-new").onclick = function () { setDelMode("new"); };
+
+      /* ── Resize ── */
+      window.addEventListener("resize", function () {
+        heroResize();
+        if (delMode === "new") lemResize();
+      });
+
+      /* ── Boot ── */
+      setOpsMode("now");
+      setDelMode("now");
+    </script>
+  </body>
+</html>
