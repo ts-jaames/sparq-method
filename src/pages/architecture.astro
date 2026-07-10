@@ -1,0 +1,931 @@
+---
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What SparqOS is</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style is:inline>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #1A1A1A;
+  --bg2: #222222;
+  --bg3: #2a2a2a;
+  --text: #E5E5E5;
+  --text2: rgba(229,229,229,0.6);
+  --text3: rgba(229,229,229,0.35);
+  --border: rgba(229,229,229,0.08);
+  --border2: rgba(229,229,229,0.14);
+  --green: #1D9E75;
+  --green-dim: rgba(29,158,117,0.15);
+  --green-border: rgba(29,158,117,0.3);
+  --purple: #7F77DD;
+  --purple-dim: rgba(127,119,221,0.15);
+  --purple-border: rgba(127,119,221,0.3);
+  --amber: #EF9F27;
+  --amber-dim: rgba(239,159,39,0.12);
+  --amber-border: rgba(239,159,39,0.25);
+  --red: #E24B4A;
+  --red-dim: rgba(226,75,74,0.12);
+  --domain: #7BB2D4;
+  --domain-dim: rgba(123,178,212,0.12);
+  --domain-border: rgba(123,178,212,0.3);
+  --font: 'Host Grotesk', sans-serif;
+  --mono: 'IBM Plex Mono', monospace;
+}
+html, body {
+  width: 100%; min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── HEADER ── */
+header {
+  padding: 40px 48px 28px;
+  border-bottom: 0.5px solid var(--border);
+  display: flex; align-items: flex-start; justify-content: space-between;
+  flex-wrap: wrap; gap: 20px;
+}
+.header-left h1 {
+  font-size: 28px; font-weight: 500; letter-spacing: -0.01em;
+  margin-bottom: 8px;
+}
+.header-left p {
+  font-size: 14px; color: var(--text2); max-width: 560px; line-height: 1.6;
+}
+.header-right {
+  display: flex; flex-direction: column; align-items: flex-end; gap: 10px;
+}
+.legend { display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-end; }
+.legend-item {
+  display: flex; align-items: center; gap: 6px;
+  font-family: var(--mono); font-size: 10px; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--text3);
+}
+.legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.lens-select {
+  display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+}
+.lens-label {
+  font-family: var(--mono); font-size: 9px; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--text3);
+}
+.lens-btn {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .05em;
+  padding: 5px 12px;
+  border-radius: 100px; border: 0.5px solid var(--purple-border);
+  background: none; color: var(--text3); cursor: pointer;
+  transition: all .2s;
+}
+.lens-btn:hover { color: #b0aaee; border-color: var(--purple-border); }
+.lens-btn.active { background: var(--purple-dim); border-color: var(--purple-border); color: #b0aaee; }
+
+/* ── MAIN LAYOUT ── */
+main {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  min-height: calc(100vh - 140px);
+}
+
+/* ── DIAGRAM ── */
+.diagram {
+  padding: 32px 40px;
+  overflow-x: auto;
+}
+.section-headings {
+  display: grid;
+  grid-template-columns: 200px 32px 160px 160px 160px 160px;
+  gap: 0; padding: 0 4px; margin-bottom: 12px;
+}
+.section-heading {
+  font-size: 14px; font-weight: 500; color: var(--text);
+  letter-spacing: 0.04em; text-transform: uppercase; margin: 0; padding: 0 8px;
+}
+.layer-labels {
+  display: grid;
+  grid-template-columns: 200px 32px 160px 160px 160px 160px;
+  gap: 0; margin-bottom: 20px; padding: 0 4px;
+}
+.layer-label {
+  font-family: var(--mono); font-size: 9px; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--text3);
+  padding: 0 8px;
+}
+.diagram-canvas {
+  position: relative;
+  min-height: 520px;
+}
+.nodes-layer {
+  position: relative; z-index: 1;
+  display: grid;
+  grid-template-columns: 200px 32px 160px 160px 160px 160px;
+  gap: 0;
+  align-items: start;
+}
+.node-col {
+  display: flex; flex-direction: column; gap: 12px;
+  padding: 0 8px;
+}
+
+/* ── INTERNAL BADGE ── */
+.int-badge {
+  display: inline-block; font-family: var(--mono); font-size: 8px;
+  letter-spacing: .05em; text-transform: uppercase;
+  padding: 2px 6px; border-radius: 3px; margin-top: 5px; margin-left: 4px;
+  background: var(--red); color: var(--bg); font-weight: 500;
+  position: relative; cursor: inherit;
+}
+.int-badge::after {
+  content: 'Internally built tool';
+  position: absolute; bottom: calc(100% + 6px); left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--mono); font-size: 9px; letter-spacing: .04em;
+  white-space: nowrap; padding: 3px 8px; border-radius: 4px;
+  background: var(--bg); border: 0.5px solid var(--border2);
+  color: var(--text2); opacity: 0; pointer-events: none;
+  transition: opacity .2s ease;
+}
+.int-badge:hover::after { opacity: 1; }
+
+/* ── NODES ── */
+.node {
+  border-radius: 8px; padding: 10px 12px;
+  border: 0.5px solid var(--border2);
+  background: var(--bg2);
+  cursor: pointer;
+  transition: opacity .25s, border-color .2s, transform .2s, box-shadow .2s;
+  position: relative;
+}
+.node:hover { border-color: var(--border2); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
+.node-name {
+  font-size: 12px; font-weight: 500; line-height: 1.3;
+  margin-bottom: 3px; color: var(--text);
+}
+.node-sub {
+  font-family: var(--mono); font-size: 9px; letter-spacing: .04em;
+  color: var(--text3); line-height: 1.4;
+}
+.node-tag {
+  display: inline-block; font-family: var(--mono); font-size: 8px;
+  letter-spacing: .05em; text-transform: uppercase;
+  padding: 2px 6px; border-radius: 3px; margin-top: 5px;
+}
+
+/* Node color variants */
+.node-principle { background: rgba(239,159,39,0.07); border-color: var(--amber-border); }
+.node-principle .node-name { color: #f4b84a; }
+.node-principle .node-tag { background: var(--amber-dim); color: #f4b84a; }
+
+
+.node-method { background: rgba(127,119,221,0.07); border-color: var(--purple-border); }
+.node-method .node-name { color: #b0aaee; }
+.node-method .node-tag { background: var(--purple-dim); color: #b0aaee; }
+
+.node-tool { background: rgba(226,75,74,0.07); border-color: rgba(226,75,74,0.25); }
+.node-tool .node-name { color: #e87070; }
+.node-tool .node-tag { background: var(--red-dim); color: #e87070; }
+
+.node-undef { background: rgba(229,229,229,0.02); border-color: var(--border); }
+.node-undef .node-name { color: var(--text2); }
+.node-undef .node-tag { background: rgba(229,229,229,0.04); color: var(--text3); }
+
+.node-domain { background: rgba(123,178,212,0.07); border-color: var(--domain-border); }
+.node-domain .node-name { color: var(--domain); }
+.node-domain .node-tag { background: var(--domain-dim); color: var(--domain); }
+
+/* click highlight states */
+.node.click-dim { opacity: 0.1; }
+.node.click-dim:hover { opacity: 0.18; transform: none; box-shadow: none; }
+
+/* filter dim */
+.node.flow-dim { opacity: 0.15; }
+
+/* ── SEPARATOR COLUMN ── */
+.sep-col {
+  display: flex; justify-content: center; padding-top: 4px;
+}
+.sep-col::after {
+  content: '';
+  display: block; width: 0.5px;
+  background: var(--border2);
+  min-height: 500px;
+}
+
+/* ── CHIPS ── */
+.chip-list { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+.chip {
+  font-family: var(--font); font-size: 10px; font-weight: 500;
+  padding: 2px 8px; line-height: 1.4;
+  border-radius: 10px; border: 0.5px solid var(--border2);
+  background: var(--bg2); color: var(--text);
+  cursor: pointer; transition: opacity .2s;
+  display: inline-block; white-space: nowrap;
+}
+.chip:hover { opacity: 0.8; }
+.chip-principle { background: rgba(239,159,39,0.07); border-color: var(--amber-border); color: #f4b84a; }
+.chip-principle:hover { background: rgba(239,159,39,0.12); }
+.chip-method { background: rgba(127,119,221,0.07); border-color: var(--purple-border); color: #b0aaee; }
+.chip-method:hover { background: rgba(127,119,221,0.12); }
+.chip-tool { background: rgba(226,75,74,0.07); border-color: rgba(226,75,74,0.25); color: #e87070; }
+.chip-tool:hover { background: rgba(226,75,74,0.12); }
+.chip-undefined { background: rgba(229,229,229,0.02); border-color: var(--border); color: var(--text2); }
+.chip-undefined:hover { background: rgba(229,229,229,0.05); }
+.chip-domain { background: rgba(123,178,212,0.07); border-color: var(--domain-border); color: var(--domain); }
+.chip-domain:hover { background: rgba(123,178,212,0.15); }
+
+/* ── OPERATIONAL UNITS ── */
+.op-units { margin-bottom: 20px; padding-bottom: 16px; border-bottom: 0.5px solid var(--border); }
+.op-units-label {
+  font-family: var(--mono); font-size: 9px; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--text3); margin-bottom: 5px;
+}
+.op-units-list { display: flex; flex-wrap: wrap; gap: 4px; }
+.op-unit {
+  font-family: var(--mono); font-size: 8px; letter-spacing: .04em;
+  text-transform: uppercase; color: var(--bg);
+  padding: 2px 6px; border-radius: 3px;
+  background: #f4b84a; border: 0.5px solid var(--amber-border);
+  font-weight: 500;
+}
+
+/* ── TODO CALLOUT ── */
+.todo-item {
+  padding: 10px 12px; border-radius: 6px;
+  background: var(--amber-dim); border: 0.5px solid var(--amber-border);
+  margin-bottom: 8px;
+}
+.todo-label {
+  font-family: var(--mono); font-size: 9px; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--amber); margin-bottom: 5px;
+}
+.todo-text { font-size: 12px; color: var(--text2); line-height: 1.55; }
+
+/* ── UNDEFINED NOTE ── */
+.undef-note {
+  margin-top: 10px; padding: 10px 12px; border-radius: 6px;
+  background: rgba(229,229,229,0.03); border: 0.5px solid var(--border);
+  font-size: 12px; color: var(--text3); font-style: italic; line-height: 1.6;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  border-left: 0.5px solid var(--border);
+  background: var(--bg2);
+  overflow-y: auto;
+}
+.sidebar-section {
+  padding: 20px 24px;
+  border-bottom: 0.5px solid var(--border);
+}
+.sidebar-title {
+  font-family: var(--mono); font-size: 9px; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--text3); margin-bottom: 12px;
+}
+.detail-empty {
+  font-size: 11px; color: var(--text3); line-height: 1.6;
+  font-style: italic;
+}
+
+/* Node detail panel */
+#node-detail { display: none; }
+#node-detail.visible { display: block; }
+.detail-name { font-size: 15px; font-weight: 500; margin-bottom: 6px; }
+.detail-desc { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 14px; }
+.detail-meta { display: flex; flex-direction: column; gap: 10px; }
+.meta-row { display: flex; flex-direction: column; gap: 3px; }
+.meta-label {
+  font-family: var(--mono); font-size: 9px; letter-spacing: .07em;
+  text-transform: uppercase; color: var(--text3);
+}
+.meta-value { font-size: 12px; color: var(--text2); line-height: 1.5; }
+.detail-bullets { list-style: none; padding: 0; margin: 0 0 14px; }
+.detail-bullets li {
+  font-size: 12px; color: var(--text2); line-height: 1.6;
+  padding-left: 12px; position: relative; margin-bottom: 12px;
+  padding-bottom: 12px; border-bottom: 0.5px solid var(--border);
+}
+.detail-bullets li:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.detail-bullets li::before {
+  content: '·'; position: absolute; left: 0; color: var(--text3);
+}
+.node-chip {
+  display: inline-block; font-size: 10px; font-weight: 500;
+  padding: 2px 8px; line-height: 1.4;
+  border-radius: 10px; border: 0.5px solid var(--border2);
+  background: var(--bg); color: var(--text);
+  cursor: pointer; transition: opacity .2s;
+  white-space: nowrap; vertical-align: baseline;
+}
+.node-chip:hover { opacity: 0.8; }
+.node-chip-principle { background: rgba(239,159,39,0.07); border-color: var(--amber-border); color: #f4b84a; }
+.node-chip-method { background: rgba(127,119,221,0.07); border-color: var(--purple-border); color: #b0aaee; }
+.node-chip-tool { background: rgba(226,75,74,0.07); border-color: rgba(226,75,74,0.25); color: #e87070; }
+.node-chip-undefined { background: rgba(229,229,229,0.02); border-color: var(--border); color: var(--text3); }
+
+/* footer */
+footer {
+  padding: 20px 48px;
+  border-top: 0.5px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 12px;
+}
+.footer-text {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .05em;
+  color: var(--text3); text-transform: uppercase;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <h1>What SparqOS is</h1>
+    <p>Sparq holds a set of principles about how work should be done. SparqOS is everything those principles produced. The methods, tools on the right, each one tracing back to a principle on the left.</p>
+  </div>
+  <div class="header-right">
+    <div class="lens-select" id="lens-select"></div>
+  </div>
+</header>
+
+<main>
+  <div class="diagram">
+    <div class="section-headings">
+      <h3 class="section-heading">Sparq</h3>
+      <div></div>
+      <h3 class="section-heading" style="grid-column: span 4;">SparqOS</h3>
+    </div>
+    <div class="layer-labels">
+      <div class="layer-label">Operational units</div>
+      <div class="layer-label"></div>
+      <div class="layer-label">Domain</div>
+      <div class="layer-label">Method</div>
+      <div class="layer-label">Tool</div>
+      <div class="layer-label">Undefined</div>
+    </div>
+    <div class="diagram-canvas">
+      <div class="nodes-layer">
+
+        <!-- COL 1: PRINCIPLES & OPERATIONAL UNITS -->
+        <div class="node-col">
+          <div class="op-units">
+            <div class="op-units-list">
+              <span class="op-unit">Marketing</span>
+              <span class="op-unit">Sales</span>
+              <span class="op-unit">Delivery</span>
+              <span class="op-unit">People</span>
+              <span class="op-unit">Solution Consulting</span>
+              <span class="op-unit">Finance</span>
+              <span class="op-unit">IT</span>
+              <span class="op-unit">RevOps</span>
+            </div>
+          </div>
+          <div class="op-units-label">Principles</div>
+          <div class="node node-principle" id="n-conf" data-id="conf" onclick="selectNode('conf')">
+            <div class="node-name">Confidence governs commitment</div>
+            <div class="node-sub">Commit as far as evidence reaches</div>
+            <div class="node-tag">GOVERNANCE</div>
+          </div>
+          <div class="node node-principle" id="n-evd" data-id="evd" onclick="selectNode('evd')">
+            <div class="node-name">Evidence over artifacts</div>
+            <div class="node-sub">Traceability is the deliverable</div>
+            <div class="node-tag">STANDARD</div>
+          </div>
+          <div class="node node-principle" id="n-econ" data-id="econ" onclick="selectNode('econ')">
+            <div class="node-name">We work from the economic reality, not the stated request</div>
+            <div class="node-sub">We operate at the level of the problem, not the ask</div>
+            <div class="node-tag">ECONOMIC</div>
+          </div>
+          <div class="node node-principle" id="n-airigor" data-id="airigor" onclick="selectNode('airigor')">
+            <div class="node-name">We bring the same rigor to AI that we bring to the business problem</div>
+            <div class="node-sub">AI with accountability, not AI as decoration</div>
+            <div class="node-tag">RIGOR</div>
+          </div>
+          <div class="node node-principle" id="n-client_p" data-id="client_p" onclick="selectNode('client_p')">
+            <div class="node-name">Client engagement is structural, not ceremonial</div>
+            <div class="node-sub">The client is part of the delivery system</div>
+            <div class="node-tag">ENGAGEMENT</div>
+          </div>
+          <div class="node node-principle" id="n-ctx" data-id="ctx" onclick="selectNode('ctx')">
+            <div class="node-name">We treat context as infrastructure</div>
+            <div class="node-sub">Intelligence compounds, not resets</div>
+            <div class="node-tag">CONTEXT</div>
+          </div>
+          <div class="node node-principle" id="n-leave" data-id="leave" onclick="selectNode('leave')">
+            <div class="node-name">The system we leave behind works without us</div>
+            <div class="node-sub">Outcomes the client owns; identity discipline</div>
+            <div class="node-tag">OWNERSHIP</div>
+          </div>
+        </div>
+
+        <!-- COL 2: SEPARATOR -->
+        <div class="sep-col"></div>
+
+        <!-- COL 3: DOMAINS -->
+        <div class="node-col">
+          <div class="node node-domain" id="n-adlc" data-id="adlc" onclick="selectNode('adlc')">
+            <div class="node-name">ADLC</div>
+            <div class="node-sub">How the work moves</div>
+            <div class="node-tag">DELIVERY</div>
+          </div>
+          <div class="node node-domain" id="n-client" data-id="client" onclick="selectNode('client')">
+            <div class="node-name">Client Engagement</div>
+            <div class="node-sub">How the client participates</div>
+            <div class="node-tag">ENGAGEMENT</div>
+          </div>
+          <div class="node node-domain" id="n-people" data-id="people" onclick="selectNode('people')">
+            <div class="node-name">People / Resourcing</div>
+            <div class="node-sub">How we source and place talent</div>
+            <div class="node-tag">RESOURCING</div>
+          </div>
+          <div class="node node-domain" id="n-sales" data-id="sales" onclick="selectNode('sales')">
+            <div class="node-name">Sales / Commercial</div>
+            <div class="node-sub">How we sell and package</div>
+            <div class="node-tag">COMMERCIAL</div>
+          </div>
+        </div>
+
+        <!-- COL 4: METHODS -->
+        <div class="node-col">
+          <div class="node node-method" id="n-evidence" data-id="evidence" onclick="selectNode('evidence')">
+            <div class="node-name">Evidence Work</div>
+            <div class="node-sub">The operating method</div>
+            <div class="node-tag">PRACTICE</div>
+          </div>
+        </div>
+
+        <!-- COL 5: TOOLS -->
+        <div class="node-col">
+          <div class="node node-tool" id="n-aiprevail" data-id="aiprevail" onclick="selectNode('aiprevail')">
+            <div class="node-name">AI Prevail</div>
+            <div class="node-sub">Predictive validation engine</div>
+            <div class="node-tag">PREDICTION</div>
+          </div>
+          <div class="node node-tool" id="n-billboard" data-id="billboard" onclick="selectNode('billboard')">
+            <div class="node-name">Billboard</div>
+            <div class="node-sub">Artifact creator</div>
+            <div class="node-tag">ARTIFACTS</div><span class="int-badge">INT</span>
+          </div>
+          <div class="node node-tool" id="n-chakra" data-id="chakra" onclick="selectNode('chakra')">
+            <div class="node-name">Chakra AI</div>
+            <div class="node-sub">AI-powered technical interviewer developed by HackerRank</div>
+            <div class="node-tag">INTELLIGENCE</div>
+          </div>
+          <div class="node node-tool" id="n-spot" data-id="spot" onclick="selectNode('spot')">
+            <div class="node-name">SPOT</div>
+            <div class="node-sub">Single Point of Truth</div>
+            <div class="node-tag">CONTEXT</div><span class="int-badge">INT</span>
+          </div>
+          <div class="node node-tool" id="n-stacks" data-id="stacks" onclick="selectNode('stacks')">
+            <div class="node-name">Stacks</div>
+            <div class="node-sub">Knowledge architecture</div>
+            <div class="node-tag">LINEAGE</div><span class="int-badge">INT</span>
+          </div>
+          <div class="node node-tool" id="n-vera" data-id="vera" onclick="selectNode('vera')">
+            <div class="node-name">VERA</div>
+            <div class="node-sub">Validated Evidence, Ready Artifacts</div>
+            <div class="node-tag">VALIDATION</div><span class="int-badge">INT</span>
+          </div>
+        </div>
+
+        <!-- COL 6: UNDEFINED -->
+        <div class="node-col">
+          <div class="node node-undef" id="n-askiq" data-id="askiq" onclick="selectNode('askiq')">
+            <div class="node-name">AskIQ</div>
+            <div class="node-sub">Position TBD</div>
+            <div class="node-tag">UNDEFINED</div><span class="int-badge">INT</span>
+          </div>
+          <div class="node node-undef" id="n-shopos" data-id="shopos" onclick="selectNode('shopos')">
+            <div class="node-name">ShopOS</div>
+            <div class="node-sub">Position TBD</div>
+            <div class="node-tag">UNDEFINED</div><span class="int-badge">INT</span>
+          </div>
+          <div class="node node-undef" id="n-speciq" data-id="speciq" onclick="selectNode('speciq')">
+            <div class="node-name">SpecIQ</div>
+            <div class="node-sub">Position TBD</div>
+            <div class="node-tag">UNDEFINED</div><span class="int-badge">INT</span>
+          </div>
+        </div>
+
+      </div><!-- /nodes-layer -->
+    </div><!-- /diagram-canvas -->
+  </div><!-- /diagram -->
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">Node detail</div>
+      <div id="node-placeholder" class="detail-empty">Click any node to see its role, what it connects to, and which principles it answers to.</div>
+      <div id="node-detail"></div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-text">The Sparq Method · Operating system architecture · v0.1</div>
+</footer>
+
+<script is:inline>
+const nodeData = {
+  'conf': {
+    name: 'Confidence governs commitment',
+    type: 'principle',
+    typeColor: '#f4b84a',
+    desc: 'Work advances when uncertainty drops, not when time passes. The governing variable across every decision.',
+    details: [{ label: 'Tag', value: 'GOVERNANCE' }],
+    nonNegotiables: [
+      'Commit only as far as evidence reaches.',
+      'Scope changes require a re-evaluation of the economic hypothesis, not just a change order.'
+    ],
+    links: ['adlc', 'evidence']
+  },
+  'evd': {
+    name: 'Evidence over artifacts',
+    type: 'principle',
+    typeColor: '#f4b84a',
+    desc: 'Documentation is not evidence. Polish is not confidence. Only measurable signal moves belief.',
+    details: [{ label: 'Tag', value: 'STANDARD' }],
+    nonNegotiables: [
+      'AI-generated output is never delivered to a client without a human who understands it and can defend it.',
+      'QA rigor matches delivery speed.'
+    ],
+    links: ['vera', 'evidence']
+  },
+  'econ': {
+    name: 'We work from the economic reality, not the stated request',
+    type: 'principle',
+    typeColor: '#f4b84a',
+    desc: 'We enter every engagement with a point of view, not a blank slate. We do not start building until we can name what winning looks like, and we measure everything in the language of the P&L.',
+    details: [{ label: 'Tag', value: 'ECONOMIC' }],
+    nonNegotiables: [
+      'Every engagement begins with an economic hypothesis, not a scope document.',
+      'We do not start building until we can name what winning looks like.',
+      'We operate at the level of the problem, not the level of the ask.'
+    ],
+    links: ['sales']
+  },
+  'airigor': {
+    name: 'We bring the same rigor to AI that we bring to the business problem',
+    type: 'principle',
+    typeColor: '#f4b84a',
+    desc: 'AI gets the same engineering discipline as anything else we build. This principle governs every domain — it is not a domain itself. Speed is evidence of a well-engineered process, not a sales pitch.',
+    details: [{ label: 'Tag', value: 'RIGOR' }],
+    nonNegotiables: [
+      'Every agentic or autonomous component has a defined failure mode and a human override.',
+      'Security and governance are designed in from sprint one, not reviewed at delivery. (NOTE: needs more definition on the level of security and governance.)',
+      'Speed is evidence of a well-engineered process, not a sales pitch. QA rigor matches delivery speed.'
+    ],
+    links: ['adlc', 'client', 'sales', 'people']
+  },
+  'client_p': {
+    name: 'Client engagement is structural, not ceremonial',
+    type: 'principle',
+    typeColor: '#f4b84a',
+    desc: 'The client relationship is built into how delivery works, not bolted on as reviews and sign-offs. Sparq never presents something it has not already tested with them.',
+    details: [{ label: 'Tag', value: 'ENGAGEMENT' }],
+    nonNegotiables: [
+      'The client names a decision-maker who is reachable within 24 hours at all stages of delivery.',
+      'A defined and committed level of client time each week for reviews and decision-making.',
+      'Sparq never presents to a client something it has not already tested with them.',
+      'Every sprint delivers something a non-technical stakeholder can evaluate.'
+    ],
+    links: ['client']
+  },
+  'ctx': {
+    name: 'We treat context as infrastructure',
+    type: 'principle',
+    typeColor: '#f4b84a',
+    desc: 'Context is infrastructure and infrastructure is context. Evidence, decisions, and confidence move with the work rather than resetting each engagement. Because Sparq works this way, SPOT and Stacks exist.',
+    details: [{ label: 'Tag', value: 'CONTEXT' }],
+    nonNegotiables: [
+      'Every engagement has a designated context owner responsible for continuity — not a rotating cast.',
+      'What Sparq learns on one engagement is available in structured form to the next.'
+    ],
+    links: ['spot', 'stacks']
+  },
+  'leave': {
+    name: 'The system we leave behind works without us',
+    type: 'principle',
+    typeColor: '#f4b84a',
+    desc: 'We are accountable to what we leave behind. Every engagement should be one we would put on our website — or we should not take it.',
+    details: [{ label: 'Tag', value: 'OWNERSHIP' }],
+    nonNegotiables: [
+      'The engagement ends with the client able to operate what Sparq built — not dependent on Sparq to run it.',
+      'Every engagement is a reference engagement, or Sparq should not take it.'
+    ],
+    links: ['adlc']
+  },
+  'adlc': {
+    name: 'ADLC',
+    type: 'domain',
+    typeColor: '#7BB2D4',
+    desc: 'The delivery lifecycle — how software work moves from uncertainty to committed capability. Confidence-sequenced, not phase-sequenced. Contains the question-driven modes. Christa doc drills specifically into this domain and calls it SparqOS; this map shows it as one of four. Boundary with Client Engagement: modes belong to ADLC; the client role within them belongs to Client Engagement. Full mode structure is a separate drill-down artifact. OPEN QUESTION: SparqOS scope — broad (all operating domains) vs narrow (delivery only). Building broad, internally; Christa doc leans narrow. Not resolved.',
+    details: [{ label: 'Tag', value: 'DELIVERY' }],
+    links: ['conf', 'leave', 'airigor', 'evidence', 'vera', 'speciq']
+  },
+  'client': {
+    name: 'Client Engagement',
+    type: 'domain',
+    typeColor: '#7BB2D4',
+    desc: 'How the client participates in the movement of work. Solution consulting lives here. Boundary with ADLC: ADLC is how the work moves; Client Engagement is how the client participates in that movement. Same events, different lens — a chosen line, not a discovered one. OPEN QUESTION: domain boundaries are chosen, not discovered. Agree internally; do not expect a bright line.',
+    details: [{ label: 'Tag', value: 'ENGAGEMENT' }],
+    links: ['client_p', 'airigor']
+  },
+  'sales': {
+    name: 'Sales / Commercial',
+    type: 'domain',
+    typeColor: '#7BB2D4',
+    desc: 'How Sparq sells and packages engagements — selling outcomes and validated confidence, not a list of artifacts. Distinct from Client Engagement (selling vs. delivering).',
+    details: [{ label: 'Tag', value: 'COMMERCIAL' }],
+    links: ['econ', 'airigor']
+  },
+  'people': {
+    name: 'People / Resourcing',
+    type: 'domain',
+    typeColor: '#7BB2D4',
+    desc: 'How Sparq sources and places talent — staffing for judgment, not artifact production. Robin people-tools serve this domain.',
+    details: [{ label: 'Tag', value: 'RESOURCING' }],
+    links: ['airigor', 'chakra', 'aiprevail']
+  },
+  'evidence': {
+    name: 'Evidence Work',
+    type: 'method',
+    typeColor: '#b0aaee',
+    desc: 'Risk to Assumption to Slice to Signal to Confidence to Decision. The loop that runs inside ADLC modes. Never stops; only its scale changes. Runs on confidence-governs-commitment and evidence-over-artifacts. OPEN QUESTION: does this column earn its place with one node? Evidence Work may absorb into ADLC as the method becomes the domain. Revisit when a second method surfaces.',
+    details: [{ label: 'Tag', value: 'PRACTICE' }],
+    links: ['adlc', 'conf', 'evd']
+  },
+  'spot': {
+    name: 'SPOT',
+    type: 'tool',
+    typeColor: '#e87070',
+    desc: 'Retrieval and recall surface. Architecture still open: coupled to Stacks, or agnostic over any corpus. Built from context-as-infrastructure. NOTE: confirm whether SPOT is truly a single point of truth or a recall surface — different architectures.',
+    details: [{ label: 'Tag', value: 'CONTEXT' }],
+    links: ['ctx', 'stacks']
+  },
+  'stacks': {
+    name: 'Stacks',
+    type: 'tool',
+    typeColor: '#e87070',
+    desc: 'The per-engagement active evidence layer. Signal, assumptions, and decisions — stored and traceable. Built from context-as-infrastructure.',
+    details: [{ label: 'Tag', value: 'LINEAGE' }],
+    links: ['ctx', 'spot', 'vera']
+  },
+  'vera': {
+    name: 'VERA',
+    type: 'tool',
+    typeColor: '#e87070',
+    desc: 'Reads structured evidence from Stacks and generates deliverables at the confidence the evidence supports. Never invents certainty. Serves ADLC. Built from evidence-over-artifacts.',
+    details: [{ label: 'Tag', value: 'VALIDATION' }],
+    links: ['evd', 'adlc', 'stacks']
+  },
+  'chakra': {
+    name: 'Chakra AI',
+    type: 'tool',
+    typeColor: '#e87070',
+    desc: 'People-org tool (owned by Robin). Delivery-intelligence for the People / Resourcing domain. Connection near-certain given ownership and stated function; confirm with owner.',
+    details: [{ label: 'Tag', value: 'INTELLIGENCE' }],
+    links: ['people']
+  },
+  'aiprevail': {
+    name: 'AI Prevail',
+    type: 'tool',
+    typeColor: '#e87070',
+    desc: 'People-org tool (owned by Robin). Provisionally serves People / Resourcing. Connection inferred from ownership — confirm.',
+    details: [{ label: 'Tag', value: 'PREDICTION' }],
+    links: ['people']
+  },
+  'billboard': {
+    name: 'Billboard',
+    type: 'tool',
+    typeColor: '#e87070',
+    desc: 'Artifact creator. Generates client-facing deliverables from structured evidence. Outputs are always traceable to their evidence source.',
+    details: [{ label: 'Tag', value: 'ARTIFACTS' }],
+    nonNegotiables: [
+      'Artifacts are generated from evidence — never from assumptions.',
+      'Every output carries its confidence lineage.'
+    ],
+    links: ['vera', 'evidence']
+  },
+  'speciq': {
+    name: 'SpecIQ',
+    type: 'undefined',
+    typeColor: '#555',
+    desc: 'Generates PRDs, backlogs, spec artifacts (high-level only). Likely serves ADLC or Client Engagement, but connection unconfirmed — left undefined rather than guessed. Resolve to a domain, or adjudicate: principle wrong, tool wrong, or boundary wrong.',
+    details: [{ label: 'Status', value: 'Undefined — no principle connection established' }],
+    links: []
+  },
+  'askiq': {
+    name: 'AskIQ',
+    type: 'undefined',
+    typeColor: '#555',
+    desc: 'Data/engineering surface. Details thin. Direction not called — could serve a domain or be a company-level capability. Adjudicate.',
+    details: [{ label: 'Status', value: 'Undefined — no principle connection established' }],
+    links: []
+  },
+  'shopos': {
+    name: 'ShopOS',
+    type: 'undefined',
+    typeColor: '#555',
+    desc: 'ELT reporting, tied to Innovation and People pillars. May resolve left — a company-level capability rather than a SparqOS domain thing. Clearest candidate for living outside SparqOS entirely. Adjudicate before absorbing.',
+    details: [{ label: 'Status', value: 'Undefined — no principle connection established' }],
+    links: []
+  }
+}
+
+// Build reverse-link index for bidirectional highlight
+const backlinks = {};
+Object.keys(nodeData).forEach(function(id) {
+  nodeData[id].links.forEach(function(lid) {
+    if (!backlinks[lid]) backlinks[lid] = [];
+    backlinks[lid].push(id);
+  });
+});
+
+// ── LENSES ──
+var lenses = [
+  {
+    id: 'christa-baseline',
+    label: 'External narrative',
+    highlightNodeIds: ['conf', 'ctx', 'evd', 'airigor', 'adlc', 'client', 'spot', 'stacks', 'vera'],
+    explanation: '<div class="detail-name">External narrative \u2014 market-facing positioning</div><div class="detail-desc">This lens maps the current external/commercial narrative onto the system: what the story leads with when SparqOS is explained to buyers.</div><ul class="detail-bullets"><li><strong>Lit:</strong> the concepts the external narrative centers \u2014 operational confidence, context that persists (Institutional + Project Intelligence), evidence-grounded decisions, AI within guardrails, and the delivery and client-experience domains. SPOT, Stacks, and VERA light up because they\u2019re the tools behind the \u201Cno engagement starts from zero\u201D promise, even though the narrative doesn\u2019t name them directly.</li><li><strong>Dim:</strong> what the external narrative doesn\u2019t center \u2014 the economic-hypothesis discipline, \u201Cthe system we leave behind works without us,\u201D and the Sales and Resourcing domains. These are load-bearing internally but sit outside the buyer-facing story.</li><li><strong>What this surfaces:</strong> The external framing has converged toward the operating-system definition \u2014 SparqOS as an orchestration/intelligence layer, not a methodology or a product. The open question is the center of gravity. The external narrative leads with Institutional Intelligence (context compounding, no engagement starting from zero); the internal architecture has led with confidence-governed commitment (surfacing risk, earning the right to build). Not opposed \u2014 two true faces of the same system \u2014 but which one anchors the promise is a choice worth making deliberately rather than by default.</li></ul>'
+  }
+];
+
+var currentLens = null;
+let currentNode = null;
+
+function allNodes() { return document.querySelectorAll('.node'); }
+
+// Render lens buttons
+(function renderLensButtons() {
+  var container = document.getElementById('lens-select');
+  var html = '<span class="lens-label">Lenses</span>';
+  lenses.forEach(function(lens) {
+    html += '<button class="lens-btn" data-lens="' + lens.id + '" onclick="toggleLens(\'' + lens.id + '\', this)">' + lens.label + '</button>';
+  });
+  container.innerHTML = html;
+})();
+
+function toggleLens(lensId, btn) {
+  if (currentLens && currentLens.id === lensId) {
+    currentLens = null;
+    btn.classList.remove('active');
+    resetAllNodes();
+    clearNodeDetail();
+    return;
+  }
+
+  currentLens = lenses.find(function(l) { return l.id === lensId; });
+  currentNode = null;
+
+  document.querySelectorAll('.lens-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+
+  applyLens();
+  showLensExplanation();
+}
+
+function applyLens() {
+  if (!currentLens) return;
+  allNodes().forEach(function(n) {
+    var nid = n.dataset.id;
+    n.classList.remove('click-dim', 'flow-dim');
+    n.style.outline = 'none';
+    n.style.outlineOffset = 'unset';
+
+    if (currentLens.highlightNodeIds.includes(nid)) {
+      var nd = nodeData[nid];
+      if (nd) {
+        n.style.outline = '1px solid ' + nd.typeColor;
+        n.style.outlineOffset = '1px';
+      }
+    } else {
+      n.classList.add('flow-dim');
+    }
+  });
+  var opUnits = document.querySelector('.op-units');
+  if (opUnits) opUnits.style.opacity = '0.18';
+}
+
+function showLensExplanation() {
+  if (!currentLens) return;
+  document.getElementById('node-placeholder').style.display = 'none';
+  var detail = document.getElementById('node-detail');
+  detail.classList.add('visible');
+  detail.innerHTML = currentLens.explanation;
+}
+
+function resetAllNodes() {
+  allNodes().forEach(function(n) {
+    n.classList.remove('click-dim', 'flow-dim');
+    n.style.outline = 'none';
+    n.style.outlineOffset = 'unset';
+  });
+  var opUnits = document.querySelector('.op-units');
+  if (opUnits) opUnits.style.opacity = '';
+}
+
+
+function selectNode(id) {
+  if (currentNode === id) {
+    currentNode = null;
+    if (currentLens) {
+      applyLens();
+      showLensExplanation();
+    } else {
+      resetAllNodes();
+      clearNodeDetail();
+    }
+    return;
+  }
+  currentNode = id;
+  var d = nodeData[id];
+  if (!d) return;
+
+  var connected = {};
+  d.links.forEach(function(lid) { connected[lid] = true; });
+  (backlinks[id] || []).forEach(function(bid) { connected[bid] = true; });
+
+  allNodes().forEach(function(n) {
+    var nid = n.dataset.id;
+    n.classList.remove('click-dim', 'flow-dim');
+    n.style.outline = 'none';
+    n.style.outlineOffset = 'unset';
+
+    if (nid === id) {
+      n.style.outline = '1.5px solid ' + d.typeColor;
+      n.style.outlineOffset = '1px';
+    } else if (currentLens && !currentLens.highlightNodeIds.includes(nid) && !connected[nid]) {
+      n.classList.add('flow-dim');
+    } else if (!connected[nid]) {
+      n.classList.add('click-dim');
+    }
+  });
+
+  renderNodeDetail(id);
+}
+
+function renderNodeDetail(id) {
+  var d = nodeData[id];
+  document.getElementById('node-placeholder').style.display = 'none';
+  var detail = document.getElementById('node-detail');
+  detail.classList.add('visible');
+
+  var connected = [];
+  d.links.forEach(function(lid) { if (!connected.includes(lid)) connected.push(lid); });
+  (backlinks[id] || []).forEach(function(bid) { if (!connected.includes(bid)) connected.push(bid); });
+
+  function makeChip(nid) {
+    var nd = nodeData[nid];
+    if (!nd) return '';
+    return '<span class="node-chip node-chip-' + nd.type + '" onclick="selectNode(\'' + nid + '\')">' + nd.name + '</span>';
+  }
+
+  var html = '<div class="detail-name">' + d.name + '</div>';
+  html += '<div class="detail-desc">' + d.desc + '</div>';
+
+  if (d.nonNegotiables && d.nonNegotiables.length > 0) {
+    html += '<ul class="detail-bullets">';
+    d.nonNegotiables.forEach(function(nn) {
+      html += '<li>' + nn + '</li>';
+    });
+    html += '</ul>';
+  }
+
+  html += '<div class="detail-meta">';
+
+  if (connected.length > 0) {
+    html += '<div class="meta-row"><div class="meta-label">Connected</div><div class="chip-list">';
+    connected.forEach(function(cid) {
+      html += makeChip(cid);
+    });
+    html += '</div></div>';
+  }
+
+  d.details.forEach(function(item) {
+    html += '<div class="meta-row"><div class="meta-label">' + item.label + '</div><div class="meta-value">' + item.value + '</div></div>';
+  });
+
+  if (d.type === 'undefined') {
+    html += '<div class="undef-note">Not part of the system until it connects to a principle.</div>';
+  }
+
+  html += '</div>';
+  detail.innerHTML = html;
+}
+
+function clearNodeDetail() {
+  document.getElementById('node-placeholder').style.display = 'block';
+  var detail = document.getElementById('node-detail');
+  detail.classList.remove('visible');
+  detail.innerHTML = '';
+}
+</script>
+</body>
+</html>
