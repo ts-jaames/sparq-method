@@ -100,7 +100,7 @@ main {
 }
 .section-headings {
   display: grid;
-  grid-template-columns: 200px 32px 160px 160px 160px 160px;
+  grid-template-columns: 200px 32px 160px 160px 160px;
   gap: 0; padding: 0 4px; margin-bottom: 12px;
 }
 .section-heading {
@@ -109,7 +109,7 @@ main {
 }
 .layer-labels {
   display: grid;
-  grid-template-columns: 200px 32px 160px 160px 160px 160px;
+  grid-template-columns: 200px 32px 160px 160px 160px;
   gap: 0; margin-bottom: 20px; padding: 0 4px;
 }
 .layer-label {
@@ -124,7 +124,7 @@ main {
 .nodes-layer {
   position: relative; z-index: 1;
   display: grid;
-  grid-template-columns: 200px 32px 160px 160px 160px 160px;
+  grid-template-columns: 200px 32px 160px 160px 160px;
   gap: 0;
   align-items: start;
 }
@@ -346,7 +346,7 @@ footer {
 <header>
   <div class="header-left">
     <h1>What SparqOS is</h1>
-    <p>Sparq holds a set of principles about how work should be done. SparqOS is everything those principles produced. The methods, tools on the right, each one tracing back to a principle on the left.</p>
+    <p>Sparq holds a set of principles about how work should be done. SparqOS is everything those principles produced — the domains and tools on the right, each one tracing back to a principle on the left.</p>
   </div>
   <div class="header-right">
     <div class="lens-select" id="lens-select"></div>
@@ -358,13 +358,12 @@ footer {
     <div class="section-headings">
       <h3 class="section-heading">Sparq</h3>
       <div></div>
-      <h3 class="section-heading" style="grid-column: span 4;">SparqOS</h3>
+      <h3 class="section-heading" style="grid-column: span 3;">SparqOS</h3>
     </div>
     <div class="layer-labels">
       <div class="layer-label">Operational units</div>
       <div class="layer-label"></div>
       <div class="layer-label">Domain</div>
-      <div class="layer-label">Method</div>
       <div class="layer-label">Tool</div>
       <div class="layer-label">Undefined</div>
     </div>
@@ -450,16 +449,7 @@ footer {
           </div>
         </div>
 
-        <!-- COL 4: METHODS -->
-        <div class="node-col">
-          <div class="node node-method" id="n-evidence" data-id="evidence" onclick="selectNode('evidence')">
-            <div class="node-name">Evidence Work</div>
-            <div class="node-sub">The operating method</div>
-            <div class="node-tag">PRACTICE</div>
-          </div>
-        </div>
-
-        <!-- COL 5: TOOLS -->
+        <!-- COL 4: TOOLS -->
         <div class="node-col">
           <div class="node node-tool" id="n-aiprevail" data-id="aiprevail" onclick="selectNode('aiprevail')">
             <div class="node-name">AI Prevail</div>
@@ -542,7 +532,7 @@ const nodeData = {
       'Commit only as far as evidence reaches.',
       'Scope changes require a re-evaluation of the economic hypothesis, not just a change order.'
     ],
-    links: ['adlc', 'evidence']
+    links: ['adlc']
   },
   'evd': {
     name: 'Evidence over artifacts',
@@ -554,7 +544,7 @@ const nodeData = {
       'AI-generated output is never delivered to a client without a human who understands it and can defend it.',
       'QA rigor matches delivery speed.'
     ],
-    links: ['vera', 'evidence']
+    links: ['vera']
   },
   'econ': {
     name: 'We work from the economic reality, not the stated request',
@@ -626,13 +616,13 @@ const nodeData = {
     typeColor: '#7BB2D4',
     desc: 'The delivery lifecycle — how software work moves from uncertainty to committed capability. Confidence-sequenced, not phase-sequenced. Contains the question-driven modes. Christa doc drills specifically into this domain and calls it SparqOS; this map shows it as one of four. Boundary with Client Engagement: modes belong to ADLC; the client role within them belongs to Client Engagement. Full mode structure is a separate drill-down artifact. OPEN QUESTION: SparqOS scope — broad (all operating domains) vs narrow (delivery only). Building broad, internally; Christa doc leans narrow. Not resolved.',
     details: [{ label: 'Tag', value: 'DELIVERY' }],
-    links: ['conf', 'leave', 'airigor', 'evidence', 'vera', 'speciq']
+    links: ['conf', 'leave', 'airigor', 'vera', 'speciq']
   },
   'client': {
     name: 'Client Engagement',
     type: 'domain',
     typeColor: '#7BB2D4',
-    desc: 'How the client participates in the movement of work. Solution consulting lives here. Boundary with ADLC: ADLC is how the work moves; Client Engagement is how the client participates in that movement. Same events, different lens — a chosen line, not a discovered one. OPEN QUESTION: domain boundaries are chosen, not discovered. Agree internally; do not expect a bright line.',
+    desc: 'How the client participates across the entire relationship, from first conversation through delivery. Not one phase — the through-line of client involvement. (Solution consulting sits at the front of it; structured client participation during delivery sits at the other end.) Boundary with ADLC: ADLC is how the work moves; Client Engagement is how the client participates in that movement. Same events, different lens.',
     details: [{ label: 'Tag', value: 'ENGAGEMENT' }],
     links: ['client_p', 'airigor']
   },
@@ -651,14 +641,6 @@ const nodeData = {
     desc: 'How Sparq sources and places talent — staffing for judgment, not artifact production. Robin people-tools serve this domain.',
     details: [{ label: 'Tag', value: 'RESOURCING' }],
     links: ['airigor', 'chakra', 'aiprevail']
-  },
-  'evidence': {
-    name: 'Evidence Work',
-    type: 'method',
-    typeColor: '#b0aaee',
-    desc: 'Risk to Assumption to Slice to Signal to Confidence to Decision. The loop that runs inside ADLC modes. Never stops; only its scale changes. Runs on confidence-governs-commitment and evidence-over-artifacts. OPEN QUESTION: does this column earn its place with one node? Evidence Work may absorb into ADLC as the method becomes the domain. Revisit when a second method surfaces.',
-    details: [{ label: 'Tag', value: 'PRACTICE' }],
-    links: ['adlc', 'conf', 'evd']
   },
   'spot': {
     name: 'SPOT',
@@ -710,7 +692,7 @@ const nodeData = {
       'Artifacts are generated from evidence — never from assumptions.',
       'Every output carries its confidence lineage.'
     ],
-    links: ['vera', 'evidence']
+    links: ['vera']
   },
   'speciq': {
     name: 'SpecIQ',
