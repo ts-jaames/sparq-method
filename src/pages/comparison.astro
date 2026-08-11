@@ -7,7 +7,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>The Now / The New — The Sparq Method</title>
+    <title>The Old / The New — The Sparq Method</title>
     <link
       href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700&display=swap"
       rel="stylesheet"
@@ -21,7 +21,7 @@
 
     <div class="wrap">
       <header>
-        <h1>The Now <span class="slash">/</span> The New</h1>
+        <h1>The Old <span class="slash">/</span> The New</h1>
       </header>
 
       <!-- ═══════════════════════════════════════
@@ -30,7 +30,7 @@
       <section class="cmp-section" id="ops-section" data-ops-mode="now">
         <h2 class="section-label">Methodology</h2>
         <div class="toggle" role="group" aria-label="Operating model view">
-          <button id="btn-ops-now" aria-pressed="true">The Now</button>
+          <button id="btn-ops-now" aria-pressed="true">The Old</button>
           <button id="btn-ops-new" aria-pressed="false">The New</button>
         </div>
 
@@ -50,27 +50,57 @@
       <!-- ═══════════════════════════════════════
            SECTION 2 — Delivery
            ═══════════════════════════════════════ -->
-      <section class="cmp-section" id="del-section" data-del-mode="now">
+      <section class="cmp-section" id="del-section">
         <h2 class="section-label">Delivery</h2>
-        <div class="toggle" role="group" aria-label="Delivery view">
-          <button id="btn-del-now" aria-pressed="true">The Now</button>
-          <button id="btn-del-new" aria-pressed="false">The New</button>
+        <p class="del-intro">Old model: promise and practice were one plan, paced by time. New model: two registers, paced by confidence &mdash; and the changed practice is what defines a stronger promise.</p>
+
+        <div class="del-cards">
+          <div class="del-card-col">
+            <h3 class="del-card-h3">The Old</h3>
+            <div class="del-card">
+              <div class="del-card-half">
+                <div class="del-card-eye">Promise</div>
+                <div class="del-card-head">You buy a timeline.</div>
+                <p class="del-card-body">Phases and dates. The plan is the product.</p>
+              </div>
+              <div class="del-card-divider"></div>
+              <div class="del-card-half">
+                <div class="del-card-eye">Practice</div>
+                <div class="del-card-head">We run that timeline.</div>
+                <p class="del-card-body">Same phases, same order &mdash; each ends when the date arrives, proven or not.</p>
+              </div>
+            </div>
+          </div>
+          <div class="del-card-col">
+            <h3 class="del-card-h3 del-card-h3--new">The New</h3>
+            <div class="del-card del-card--new">
+              <div class="del-card-half">
+                <div class="del-card-eye del-card-eye--open">Promise</div>
+                <div class="del-card-head">You never build on a guess.</div>
+                <p class="del-card-body">Every commitment is backed by proof, not a date &mdash; and you can see which is which.</p>
+              </div>
+              <div class="del-card-divider"></div>
+              <div class="del-card-half">
+                <div class="del-card-eye del-card-eye--defined">Practice</div>
+                <div class="del-card-head">We chase what we don&rsquo;t know.</div>
+                <p class="del-card-body">Work runs hot where confidence is lowest. Nothing advances until it&rsquo;s earned.</p>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="track now-track del-now-only"><div class="row" id="now-row"></div></div>
-        <div class="detail del-now-only" id="detail"></div>
+        <h2 class="del-sub-label">The Old &mdash; Linear timeline</h2>
+        <div class="track now-track"><div class="row" id="now-row"></div></div>
+        <div class="detail" id="detail"></div>
 
-        <div class="track new-track del-new-only">
-          <div class="lem-wrap">
-            <canvas id="lem-canvas"></canvas>
-          </div>
+        <h2 class="del-sub-label del-sub-label--new">The New &mdash; Capability intensity by question</h2>
+        <div class="track new-track">
           <div class="mode-panel" id="mode-panel">
             <div class="mp-left">
-              <div class="mp-eyebrow" id="mp-eyebrow">Mode · Discover</div>
-              <div class="mp-question" id="mp-question">What are we actually solving, and for whom?</div>
+              <div class="q-list" id="q-list"></div>
             </div>
             <div class="mp-right">
-              <div class="mp-eyebrow">Capability intensity</div>
+              <div class="mp-eyebrow mp-eyebrow--mute">Capability intensity</div>
               <div class="cap-rows" id="cap-rows"></div>
             </div>
           </div>
@@ -157,11 +187,61 @@
         opacity: 0; transition: opacity 0.25s;
       }
 
-      /* ── Delivery visibility ── */
-      .del-now-only { display: block; }
-      .del-new-only { display: none; }
-      [data-del-mode="new"] .del-now-only { display: none; }
-      [data-del-mode="new"] .del-new-only { display: block; }
+      /* ── Delivery intro + cards ── */
+      .del-intro {
+        font-size: 16px; font-weight: 500; line-height: 1.55; color: var(--ink);
+        letter-spacing: -0.01em; margin: 0 0 32px; max-width: 620px;
+      }
+      .del-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 48px; }
+      .del-card-col { display: flex; flex-direction: column; }
+      .del-card-h3 {
+        font-size: 16px; font-weight: 700; color: var(--dim); margin-bottom: 10px;
+        letter-spacing: -0.01em;
+      }
+      .del-card-h3--new { color: var(--orange); }
+      .del-card {
+        background: var(--panel); border: 1px solid var(--line); border-radius: 6px;
+        padding: 24px; display: flex; flex-direction: column; flex: 1;
+      }
+      .del-card-half { flex: 1; display: flex; flex-direction: column; justify-content: flex-start; }
+      .del-card--new { border-color: var(--orange-dim); }
+      .del-card-eye {
+        font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+        text-transform: uppercase; color: var(--dim); margin-bottom: 10px;
+      }
+      .del-card-eye--open { color: var(--orange); }
+      .del-card-eye--defined { color: var(--mute); }
+      .del-card-head {
+        font-size: 18px; font-weight: 700; color: var(--ink); line-height: 1.3;
+        letter-spacing: -0.02em; margin-bottom: 8px;
+      }
+      .del-card-sub {
+        font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em;
+        text-transform: uppercase; color: var(--dim); margin-bottom: 12px;
+      }
+      .del-card-body {
+        font-size: 14px; color: var(--mute); line-height: 1.55; margin-bottom: 16px;
+      }
+      .del-card-modes {
+        display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; margin-bottom: 16px;
+      }
+      .del-mode-tag {
+        font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em;
+        text-transform: uppercase; color: var(--dim); border: 1px solid var(--line);
+        border-radius: 3px; padding: 5px 10px;
+      }
+      .del-card-footer {
+        font-family: var(--mono); font-size: 9px; letter-spacing: 0.08em;
+        text-transform: uppercase; color: var(--dim); margin-top: auto;
+      }
+      .del-card-divider { height: 1px; background: var(--line); margin: 8px 0 16px; }
+
+      .del-sub-label {
+        font-family: var(--sans); font-size: 24px; font-weight: 700;
+        letter-spacing: -0.02em; color: var(--ink); margin: 0 0 8px;
+        padding-top: 24px; border-top: 1px solid var(--line);
+      }
+      .del-sub-label--new { margin-top: 48px; }
 
       /* ── Now track (delivery) ── */
       .track { margin: 24px 0 0; position: relative; }
@@ -202,9 +282,36 @@
       .dcell .k { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mute); margin-bottom: 6px; }
       .dcell .v { font-size: 14px; color: var(--ink-2); line-height: 1.5; }
 
+      /* ── Lobe headers ── */
+      .lobe-headers { display: flex; justify-content: space-between; margin: 24px 0 0; }
+      .lobe-col { flex: 1; }
+      .lobe-col--right { text-align: right; }
+      .lobe-title {
+        font-family: var(--sans); font-size: 16px; font-weight: 600;
+        color: var(--ink); letter-spacing: -0.01em;
+      }
+      .lobe-sub {
+        font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em;
+        text-transform: uppercase; color: var(--dim); margin-top: 4px;
+      }
+
       /* ── Lemniscate canvas (delivery new) ── */
-      .lem-wrap { position: relative; margin: 24px 0 0; }
-      canvas#lem-canvas { display: block; width: 100%; height: 340px; cursor: pointer; }
+      .lem-wrap { position: relative; margin: 8px 0 0; }
+      canvas#lem-canvas { display: block; width: 100%; height: 300px; }
+
+      /* ── Question list ── */
+      .q-list { display: flex; flex-direction: column; gap: 0; }
+      .q-item {
+        font-size: 14px; font-weight: 500; color: var(--dim); line-height: 1.45;
+        padding: 10px 12px; border-left: 2px solid transparent;
+        cursor: pointer; transition: color 0.2s, border-color 0.2s, background 0.2s;
+        border-radius: 0 4px 4px 0;
+      }
+      .q-item:hover { color: var(--mute); background: rgba(255,255,255,0.02); }
+      .q-item.q-active {
+        color: var(--ink); border-left-color: var(--orange);
+        background: rgba(255,255,255,0.03);
+      }
 
       /* ── Mode panel ── */
       .mode-panel {
@@ -212,11 +319,12 @@
         background: var(--panel); padding: 24px 28px; gap: 32px;
       }
       .mp-eyebrow {
-        font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+        font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.1em;
         text-transform: uppercase; color: var(--orange); margin-bottom: 10px;
       }
       .mp-question { font-size: 20px; font-weight: 600; color: var(--ink); line-height: 1.4; letter-spacing: -0.02em; transition: color 0.3s; }
       .mp-right .mp-eyebrow { color: var(--mute); }
+      .mp-eyebrow--mute { color: var(--mute); }
 
       .cap-rows { display: flex; flex-direction: column; gap: 11px; margin-top: 2px; }
       .cap-row { display: flex; align-items: center; gap: 10px; }
@@ -226,16 +334,26 @@
       }
       .cap-name.cap-bright { color: #f2efe9; }
       .seg-bar { display: grid; grid-template-columns: repeat(16, 1fr); gap: 2px; height: 13px; flex: 1; }
-      .seg { background: var(--line); border-radius: 1px; transition: background 0.35s; }
+      .seg { background: var(--line); border-radius: 1px; transition: background 0.15s; }
       .seg.seg-lit.seg-high { background: #e75437; }
       .seg.seg-lit.seg-med { background: #7a3a2e; }
       .seg.seg-lit.seg-low { background: var(--dim); }
-      .cap-lbl {
-        font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em;
-        text-transform: uppercase; color: var(--mute); width: 30px; flex-shrink: 0; transition: color 0.35s;
+      .cap-lbl-wrap {
+        width: 36px; height: 14px; overflow: hidden; flex-shrink: 0; position: relative;
       }
-      .cap-lbl.lbl-high { color: #e75437; }
-      .cap-lbl.lbl-muted { color: var(--mute); }
+      .cap-lbl-inner {
+        position: absolute; left: 0; width: 100%;
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .cap-lbl-inner span {
+        display: block; height: 14px; line-height: 14px;
+        font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em;
+        text-transform: uppercase; text-align: left;
+      }
+      .cap-lbl-inner .lbl-high { color: #e75437; }
+      .cap-lbl-inner .lbl-med { color: var(--mute); }
+      .cap-lbl-inner .lbl-low { color: var(--mute); }
+      .cap-lbl-inner .lbl-none { color: transparent; }
 
       .concnote {
         font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
@@ -252,7 +370,7 @@
       @media (max-width: 640px) {
         h1 { font-size: 32px; }
         canvas#field { height: 240px; }
-        canvas#lem-canvas { height: 260px; }
+        .del-cards { grid-template-columns: 1fr; }
         .track.now-track .row { grid-template-columns: repeat(3, 1fr); gap: 26px 0; }
         .track.now-track .row::before { display: none; }
         .mode-panel { grid-template-columns: 1fr; gap: 20px; padding: 20px; }
@@ -266,27 +384,27 @@
          Data
          ════════════════════════════════════════ */
       var NOW = [
-        { num: "01", nm: "Workshops", wk: "2 wk", purpose: "Align on vision and requirements.", deliv: "Workshop notes and alignment.", client: "Meetings and alignment sessions." },
-        { num: "02", nm: "Research", wk: "2 wk", purpose: "Gather context and inputs.", deliv: "Research synthesis.", client: "Interviews and analysis." },
-        { num: "03", nm: "Definition", wk: "2 wk", purpose: "Define the MVP, roadmap, and scope.", deliv: "Strategy, roadmap, backlog.", client: "Documents to review." },
-        { num: "04", nm: "Finalization", wk: "2 wk", purpose: "Polish the deliverables.", deliv: "Final decks and specs.", client: "Polished artifacts." },
-        { num: "05", nm: "Handoff", wk: "", purpose: "Transfer the plan to a build team.", deliv: "A specification set.", client: "A document handed over." },
-        { num: "06", nm: "Build", wk: "X wk", purpose: "Implement the plan as written.", deliv: "Software.", client: "Surprises and rework when assumptions break." }
+        { num: "01", nm: "Discover", purpose: "Align on vision and requirements.", deliv: "Workshop notes and alignment.", client: "Meetings and alignment sessions." },
+        { num: "02", nm: "Frame", purpose: "Gather context and inputs.", deliv: "Research synthesis.", client: "Interviews and analysis." },
+        { num: "03", nm: "Build", purpose: "Define the MVP, roadmap, and scope.", deliv: "Strategy, roadmap, backlog.", client: "Documents to review." },
+        { num: "04", nm: "Validate", purpose: "Polish the deliverables.", deliv: "Final decks and specs.", client: "Polished artifacts." },
+        { num: "05", nm: "Deploy", purpose: "Transfer the plan to a build team.", deliv: "A specification set.", client: "A document handed over." },
+        { num: "06", nm: "Evolve", purpose: "Implement the plan as written.", deliv: "Software.", client: "Surprises and rework when assumptions break." }
       ];
 
       var LEM_MODES = [
-        { label: "Discover",  q: "What are we actually solving, and for whom?",                     intensity: [3,2,1,0,2], t: Math.PI * 0.62, lobe: "learn" },
-        { label: "Architect", q: "How do we structure the system and define AI's role in it?",      intensity: [2,3,2,1,1], t: Math.PI * 1.0,  lobe: "learn" },
-        { label: "Validate",  q: "Who validates what — and how do we maintain rigor at AI speed?",  intensity: [1,1,2,2,3], t: Math.PI * 1.38, lobe: "learn" },
-        { label: "Build",     q: "How do AI agents and humans co-develop?",                         intensity: [1,2,3,3,2], t: Math.PI * 1.62, lobe: "scale" },
-        { label: "Transfer",  q: "How do we hand off without losing context?",                      intensity: [2,1,0,2,2], t: Math.PI * 2.0,  lobe: "scale" },
-        { label: "Evolve",    q: "How does the system — and our engagement — compound over time?",  intensity: [2,1,1,2,3], t: Math.PI * 0.38, lobe: "scale" }
+        { label: "Discover & Frame",       q: "What are we actually solving, and for whom?",                       intensity: [3,2,1,0,2] },
+        { label: "Architect & Instrument",  q: "What shape should this take, and how will we know it works?",       intensity: [2,3,2,1,1] },
+        { label: "Build & Iterate",         q: "Does it actually work when we build it?",                           intensity: [1,2,3,3,2] },
+        { label: "Validate & Harden",       q: "Does it hold up under real conditions, and at scale?",              intensity: [1,1,2,2,3] },
+        { label: "Deploy & Activate",       q: "Is it live, and actually being used?",                              intensity: [2,1,0,2,2] },
+        { label: "Evolve",                  q: "What is it teaching us, and what should change next?",              intensity: [2,1,1,2,3] }
       ];
       var LEM_CAPS = ["Defining Strategy", "Designing Experience", "Experimenting & Spiking", "Engineering for Production", "Generating Evidence"];
       var LEM_COUNT = [0, 3, 8, 13];
       var LEM_LBL = ["", "LOW", "MED", "HIGH"];
 
-      var opsMode = "now", delMode = "now", selNow = 0;
+      var opsMode = "now", selNow = 0;
       var reduce = window.matchMedia("(prefers-reduced-motion:reduce)").matches;
 
       /* ════════════════════════════════════════
@@ -312,7 +430,6 @@
       var hParts = [], hLinks = [], hCX, hCY, hR;
       var flash = document.getElementById("flash");
       var t0 = performance.now();
-      var riskPartsGrid = [[], [], [], [], [], []];
       var PROJ_LABELS = ["Project 1", "Project 2", "Project 3", "Project 4", "Project 5", "Project 6"];
       var PROJ_PHASE = [0, 0.17, 0.33, 0.5, 0.67, 0.83];
 
@@ -332,7 +449,6 @@
 
       function restartHero() {
         t0 = performance.now();
-        for (var ri = 0; ri < 6; ri++) riskPartsGrid[ri] = [];
         flash.style.opacity = 0;
       }
 
@@ -351,7 +467,6 @@
         ctx.strokeStyle = "rgba(255,255,255,0.15)"; ctx.lineWidth = 1;
         roundRect(ctx, cx, cy, cardW, cardH, R); ctx.stroke();
         var DUR = 7.0, t = (el + PROJ_PHASE[idx] * DUR) % DUR, pp = t / DUR;
-        if (t < 0.07) riskPartsGrid[idx] = [];
         var pad = 18, tly = cy + cardH * 0.62, tlx0 = cx + pad, tlx1 = cx + cardW - pad, tlen = tlx1 - tlx0;
         var head = tlx0 + pp * tlen, TICKS = 4;
         ctx.strokeStyle = "rgba(255,255,255,0.18)"; ctx.lineWidth = 1;
@@ -363,17 +478,11 @@
         }
         ctx.strokeStyle = "rgba(255,255,255,0.22)"; ctx.lineWidth = 1;
         ctx.beginPath(); ctx.moveTo(head, cy + 10); ctx.lineTo(head, cy + cardH - 10); ctx.stroke();
-        if (pp > 0.82) {
-          if (riskPartsGrid[idx].length < 18) for (var z = 0; z < 2; z++) riskPartsGrid[idx].push({ x: tlx1, y: tly, vx: (Math.random() - 0.5) * 3.5, vy: (Math.random() - 0.5) * 3.5, a: 0.85, r: 0.7 + Math.random() * 1.4 });
-          for (var ri = 0; ri < riskPartsGrid[idx].length; ri++) {
-            var rp = riskPartsGrid[idx][ri];
-            rp.x += rp.vx; rp.y += rp.vy; rp.vx *= 0.96; rp.vy *= 0.96; rp.a *= 0.975;
-            ctx.fillStyle = "rgba(231,84,55," + rp.a + ")"; ctx.beginPath(); ctx.arc(rp.x, rp.y, rp.r, 0, 6.28); ctx.fill();
-          }
-        }
-        ctx.fillStyle = "rgba(210,205,198,0.85)"; ctx.font = "8px IBM Plex Mono";
+        ctx.fillStyle = "#E75437";
+        ctx.beginPath(); ctx.arc(cx + pad - 1, cy + 16, 3, 0, 6.28); ctx.fill();
+        ctx.fillStyle = "rgba(210,205,198,0.85)"; ctx.font = "600 14px Satoshi, sans-serif";
         ctx.textAlign = "left"; ctx.textBaseline = "top";
-        ctx.fillText(PROJ_LABELS[idx], cx + pad, cy + 12);
+        ctx.fillText(PROJ_LABELS[idx], cx + pad + 8, cy + 10);
       }
 
       function drawNowGrid(el) {
@@ -429,7 +538,6 @@
       /* ════════════════════════════════════════
          Section 2: Delivery
          ════════════════════════════════════════ */
-      var delSection = document.getElementById("del-section");
 
       /* ── Now-track stages ── */
       var nowRow = document.getElementById("now-row");
@@ -437,7 +545,7 @@
         var b = document.createElement("button");
         b.className = "stage";
         b.setAttribute("aria-selected", i === 0 ? "true" : "false");
-        b.innerHTML = '<div class="dot"></div><div class="num">' + s.num + '</div><div class="nm">' + s.nm + '</div><div class="wk">' + (s.wk || "&nbsp;") + "</div>";
+        b.innerHTML = '<div class="dot"></div><div class="num">' + s.num + '</div><div class="nm">' + s.nm + "</div>";
         b.onclick = function () { selNow = i; syncSel(); renderDetail(); };
         nowRow.appendChild(b);
       });
@@ -457,6 +565,12 @@
       }
 
       /* ── Capability rows ── */
+      var capCurrentLvl = [0, 0, 0, 0, 0];
+      var capTargetCnt = [0, 0, 0, 0, 0];
+      var capCurrentCnt = [0, 0, 0, 0, 0];
+      var capTickTimers = [null, null, null, null, null];
+      var LBL_ORDER = ["", "LOW", "MED", "HIGH"];
+
       (function buildCapRows() {
         var el = document.getElementById("cap-rows");
         if (!el) return;
@@ -465,220 +579,89 @@
           var nm = document.createElement("span"); nm.className = "cap-name"; nm.id = "capnm-" + ci; nm.textContent = cap;
           var bar = document.createElement("div"); bar.className = "seg-bar";
           for (var s = 0; s < 16; s++) { var seg = document.createElement("div"); seg.className = "seg"; seg.id = "seg-" + ci + "-" + s; bar.appendChild(seg); }
-          var lbl = document.createElement("span"); lbl.className = "cap-lbl"; lbl.id = "lbl-" + ci;
-          row.appendChild(nm); row.appendChild(bar); row.appendChild(lbl);
+          var wrap = document.createElement("div"); wrap.className = "cap-lbl-wrap";
+          var inner = document.createElement("div"); inner.className = "cap-lbl-inner"; inner.id = "lbl-inner-" + ci;
+          LBL_ORDER.forEach(function (txt) {
+            var sp = document.createElement("span");
+            sp.textContent = txt;
+            sp.className = txt ? "lbl-" + txt.toLowerCase() : "lbl-none";
+            inner.appendChild(sp);
+          });
+          wrap.appendChild(inner);
+          row.appendChild(nm); row.appendChild(bar); row.appendChild(wrap);
           el.appendChild(row);
         });
       })();
 
       function lemSetActive(zi) {
-        var m = LEM_MODES[zi];
-        document.getElementById("mp-eyebrow").textContent = "Mode · " + m.label;
-        document.getElementById("mp-question").textContent = m.q;
-        lemMeters(m.intensity);
+        lemActive = zi;
+        var items = document.querySelectorAll(".q-item");
+        items.forEach(function (el, i) { el.className = "q-item" + (i === zi ? " q-active" : ""); });
+        lemMeters(LEM_MODES[zi].intensity);
       }
+
+      (function buildQList() {
+        var list = document.getElementById("q-list");
+        if (!list) return;
+        LEM_MODES.forEach(function (m, i) {
+          var item = document.createElement("div");
+          item.className = "q-item" + (i === 0 ? " q-active" : "");
+          item.textContent = m.q;
+          item.onclick = function () { lemSetActive(i); };
+          list.appendChild(item);
+        });
+      })();
 
       function lemMeters(arr) {
         arr.forEach(function (lvl, ci) {
-          var cnt = LEM_COUNT[lvl];
-          for (var s = 0; s < 16; s++) {
-            var seg = document.getElementById("seg-" + ci + "-" + s);
-            if (!seg) return;
-            var cls = "seg";
-            if (s < cnt) cls += " seg-lit seg-" + (lvl === 3 ? "high" : lvl === 2 ? "med" : "low");
-            seg.className = cls;
+          var target = LEM_COUNT[lvl];
+          var colorCls = lvl === 3 ? "high" : lvl === 2 ? "med" : "low";
+
+          if (capTickTimers[ci]) { clearInterval(capTickTimers[ci]); capTickTimers[ci] = null; }
+
+          var cur = capCurrentCnt[ci];
+          capTargetCnt[ci] = target;
+          var dir = target > cur ? 1 : -1;
+
+          if (cur !== target) {
+            capTickTimers[ci] = setInterval(function () {
+              cur += dir;
+              capCurrentCnt[ci] = cur;
+              for (var s = 0; s < 16; s++) {
+                var seg = document.getElementById("seg-" + ci + "-" + s);
+                if (!seg) return;
+                seg.className = s < cur ? "seg seg-lit seg-" + colorCls : "seg";
+              }
+              if (cur === target) { clearInterval(capTickTimers[ci]); capTickTimers[ci] = null; }
+            }, 30);
+          } else {
+            for (var s = 0; s < 16; s++) {
+              var seg = document.getElementById("seg-" + ci + "-" + s);
+              if (!seg) return;
+              seg.className = s < target ? "seg seg-lit seg-" + colorCls : "seg";
+            }
           }
-          var lbl = document.getElementById("lbl-" + ci);
-          if (lbl) { lbl.textContent = lvl > 0 ? LEM_LBL[lvl] : ""; lbl.className = "cap-lbl" + (lvl === 3 ? " lbl-high" : lvl > 0 ? " lbl-muted" : ""); }
+          capCurrentCnt[ci] = capCurrentCnt[ci];
+
+          var inner = document.getElementById("lbl-inner-" + ci);
+          if (inner) inner.style.transform = "translateY(" + (-lvl * 14) + "px)";
+
           var nm = document.getElementById("capnm-" + ci);
           if (nm) nm.className = "cap-name" + (lvl >= 2 ? " cap-bright" : "");
+
+          capCurrentLvl[ci] = lvl;
         });
       }
-
-      /* ── Figure-8 lemniscate canvas ── */
-      var lemCv = document.getElementById("lem-canvas");
-      var lemCtx = lemCv.getContext("2d");
-      var LW, LH, LCX, LCY, LRX, LRY;
-      var lemParts = [], lemRunning = false;
-      var lemActive = 0;
-      var TUBE = 14, LEM_PARTICLE_COUNT = 800;
-      var ZONE_RADIUS = 0.4;
-
-      function lemX(t) { var s = Math.sin(t), c = Math.cos(t); return LCX + (LRX * c) / (1 + s * s); }
-      function lemY(t) { var s = Math.sin(t), c = Math.cos(t); return LCY + (LRY * s * c) / (1 + s * s); }
-
-      function lemNormalAtT(t) {
-        var dt = 0.001;
-        var dx = lemX(t + dt) - lemX(t - dt), dy = lemY(t + dt) - lemY(t - dt);
-        var len = Math.sqrt(dx * dx + dy * dy);
-        return { x: -dy / len, y: dx / len };
-      }
-
-      function angDist(a, b) {
-        var d = ((a - b) % (Math.PI * 2) + Math.PI * 3) % (Math.PI * 2) - Math.PI;
-        return Math.abs(d);
-      }
-
-      function lemBuild() {
-        lemParts = [];
-        for (var i = 0; i < LEM_PARTICLE_COUNT; i++) {
-          var t = (i / LEM_PARTICLE_COUNT) * Math.PI * 2;
-          var speed = 0.004 + Math.random() * 0.008;
-          var nOff = (Math.random() - 0.5) * TUBE * 0.8;
-          lemParts.push({ t: t, speed: speed, r: 0.7 + Math.random() * 1.5, opacity: 0.2 + Math.random() * 0.6, nOff: nOff, nVel: 0 });
-        }
-      }
-
-      function lemResize() {
-        var d = Math.min(window.devicePixelRatio || 1, 2);
-        LW = lemCv.clientWidth; LH = lemCv.clientHeight;
-        lemCv.width = LW * d; lemCv.height = LH * d;
-        lemCtx.setTransform(d, 0, 0, d, 0, 0);
-        LCX = LW / 2; LCY = LH / 2;
-        LRX = LW * 0.38; LRY = LH * 0.36;
-        lemBuild();
-      }
-
-      function lemDrawTrail() {
-        var PTS = 300;
-        lemCtx.beginPath();
-        for (var i = 0; i <= PTS; i++) {
-          var t = (i / PTS) * Math.PI * 2;
-          var px = lemX(t), py = lemY(t);
-          if (i === 0) lemCtx.moveTo(px, py); else lemCtx.lineTo(px, py);
-        }
-        lemCtx.closePath();
-        lemCtx.strokeStyle = "rgba(255,255,255,0.06)";
-        lemCtx.lineWidth = TUBE * 2;
-        lemCtx.stroke();
-      }
-
-      function lemFrame() {
-        if (delMode !== "new") { lemRunning = false; return; }
-        lemCtx.clearRect(0, 0, LW, LH);
-
-        lemDrawTrail();
-
-        var activeT = LEM_MODES[lemActive].t;
-
-        for (var j = 0; j < lemParts.length; j++) {
-          var p = lemParts[j];
-          p.t += p.speed;
-          if (p.t > Math.PI * 2) p.t -= Math.PI * 2;
-          p.nVel += (Math.random() - 0.5) * 1.2;
-          p.nVel += -p.nOff * 0.01;
-          p.nVel *= 0.62;
-          p.nOff += p.nVel;
-          var limit = TUBE * 0.85;
-          if (p.nOff > limit) { p.nOff = limit; p.nVel *= -0.3; }
-          if (p.nOff < -limit) { p.nOff = -limit; p.nVel *= -0.3; }
-          var n = lemNormalAtT(p.t);
-          var px = lemX(p.t) + n.x * p.nOff;
-          var py = lemY(p.t) + n.y * p.nOff;
-
-          var dist = angDist(p.t, activeT);
-          var inZone = dist < ZONE_RADIUS;
-          var zoneFade = inZone ? 1.0 : 0.25;
-
-          lemCtx.beginPath();
-          lemCtx.arc(px, py, p.r * (inZone ? 1.3 : 1.0), 0, Math.PI * 2);
-          lemCtx.fillStyle = inZone ? "#E75437" : "#E75437";
-          lemCtx.globalAlpha = p.opacity * zoneFade;
-          lemCtx.fill();
-        }
-        lemCtx.globalAlpha = 1;
-
-        lemCtx.font = "500 11px 'IBM Plex Mono'";
-        lemCtx.textAlign = "center"; lemCtx.textBaseline = "middle";
-        lemCtx.fillStyle = "rgba(210,205,198,0.18)";
-        lemCtx.fillText("BUILD TO LEARN", LCX - LRX * 0.62, LCY);
-        lemCtx.fillText("BUILD TO SCALE", LCX + LRX * 0.62, LCY);
-
-        for (var zi = 0; zi < LEM_MODES.length; zi++) {
-          var m = LEM_MODES[zi];
-          var zx = lemX(m.t), zy = lemY(m.t);
-          var isActive = zi === lemActive;
-
-          if (isActive) {
-            lemCtx.strokeStyle = "rgba(231,84,55,0.5)";
-            lemCtx.lineWidth = 1;
-            lemCtx.setLineDash([3, 5]);
-            lemCtx.beginPath();
-            var ringR = Math.min(LRX, LRY) * 0.18;
-            lemCtx.arc(zx, zy, ringR, 0, Math.PI * 2);
-            lemCtx.stroke();
-            lemCtx.setLineDash([]);
-          }
-
-          var lbl = m.label.toUpperCase();
-          lemCtx.font = "600 10px 'IBM Plex Mono'";
-          lemCtx.textAlign = "center"; lemCtx.textBaseline = "middle";
-          lemCtx.fillStyle = isActive ? "rgba(231,84,55,0.95)" : "rgba(210,205,198,0.4)";
-          var offY = zy < LCY ? -1 : 1;
-          var labelY = zy + offY * (Math.min(LRX, LRY) * 0.22 + 4);
-          lemCtx.fillText(lbl, zx, labelY);
-        }
-
-        if (!reduce) requestAnimationFrame(lemFrame);
-      }
-
-      lemCv.addEventListener("click", function (e) {
-        var rect = lemCv.getBoundingClientRect();
-        var mx = e.clientX - rect.left, my = e.clientY - rect.top;
-        var best = 0, bestD = Infinity;
-        LEM_MODES.forEach(function (m, i) {
-          var zx = lemX(m.t), zy = lemY(m.t);
-          var dx = mx - zx, dy = my - zy, dd = dx * dx + dy * dy;
-          if (dd < bestD) { bestD = dd; best = i; }
-        });
-        lemActive = best;
-        lemSetActive(lemActive);
-      });
-
-      lemCv.addEventListener("mousemove", function (e) {
-        var rect = lemCv.getBoundingClientRect();
-        var mx = e.clientX - rect.left, my = e.clientY - rect.top;
-        var best = 0, bestD = Infinity;
-        LEM_MODES.forEach(function (m, i) {
-          var zx = lemX(m.t), zy = lemY(m.t);
-          var dx = mx - zx, dy = my - zy, dd = dx * dx + dy * dy;
-          if (dd < bestD) { bestD = dd; best = i; }
-        });
-        var threshold = Math.min(LRX, LRY) * 0.3;
-        if (bestD < threshold * threshold) {
-          lemActive = best;
-          lemSetActive(lemActive);
-        }
-      });
-
-      /* ── Delivery toggle ── */
-      function setDelMode(m) {
-        delMode = m;
-        delSection.dataset.delMode = m;
-        document.getElementById("btn-del-now").setAttribute("aria-pressed", m === "now" ? "true" : "false");
-        document.getElementById("btn-del-new").setAttribute("aria-pressed", m === "new" ? "true" : "false");
-        if (m === "now") {
-          renderDetail();
-        }
-        if (m === "new") {
-          lemResize();
-          lemSetActive(0);
-          if (!lemRunning) { lemRunning = true; requestAnimationFrame(lemFrame); }
-        }
-      }
-
-      document.getElementById("btn-del-now").onclick = function () { setDelMode("now"); };
-      document.getElementById("btn-del-new").onclick = function () { setDelMode("new"); };
 
       /* ── Resize ── */
       window.addEventListener("resize", function () {
         heroResize();
-        if (delMode === "new") lemResize();
       });
 
       /* ── Boot ── */
       setOpsMode("now");
-      setDelMode("now");
+      renderDetail();
+      lemSetActive(0);
     </script>
   </body>
 </html>

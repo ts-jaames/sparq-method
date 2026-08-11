@@ -23,6 +23,7 @@ export default function AddNodeForm({ onClose }: { onClose: () => void }) {
   const [description, setDescription] = useState('');
   const [veraRole, setVeraRole] = useState('');
   const [stacksRole, setStacksRole] = useState('');
+  const [bullets, setBullets] = useState('');
 
   const [edgeSource, setEdgeSource] = useState('');
   const [edgeTarget, setEdgeTarget] = useState('');
@@ -59,8 +60,10 @@ export default function AddNodeForm({ onClose }: { onClose: () => void }) {
       subtitle,
       type,
       description,
-      veraRole,
-      stacksRole,
+      bullets: bullets.split('\n').map((b) => b.trim()).filter(Boolean),
+      relatedNodes: [],
+      veraRole: veraRole.split('\n').map((b) => b.trim()).filter(Boolean),
+      stacksRole: stacksRole.split('\n').map((b) => b.trim()).filter(Boolean),
     };
     addNode(node, { x: 400 + Math.random() * 100, y: 150 + Math.random() * 100 });
     onClose();
@@ -147,14 +150,18 @@ export default function AddNodeForm({ onClose }: { onClose: () => void }) {
           </div>
           <div>
             <label style={labelStyle}>Description</label>
-            <textarea value={description} onChange={(e) => setDescription(e.target.value)} style={{ ...inputStyle, minHeight: 48, resize: 'vertical' }} />
+            <textarea value={description} onChange={(e) => setDescription(e.target.value)} style={{ ...inputStyle, minHeight: 36, resize: 'vertical' }} placeholder="Short summary sentence" />
           </div>
           <div>
-            <label style={labelStyle}>VERA Role</label>
+            <label style={labelStyle}>Bullets (one per line)</label>
+            <textarea value={bullets} onChange={(e) => setBullets(e.target.value)} style={{ ...inputStyle, minHeight: 48, resize: 'vertical' }} placeholder="Key point one&#10;Key point two" />
+          </div>
+          <div>
+            <label style={labelStyle}>VERA Role (one per line)</label>
             <textarea value={veraRole} onChange={(e) => setVeraRole(e.target.value)} style={{ ...inputStyle, minHeight: 36, resize: 'vertical' }} />
           </div>
           <div>
-            <label style={labelStyle}>Stacks Role</label>
+            <label style={labelStyle}>Stacks Role (one per line)</label>
             <textarea value={stacksRole} onChange={(e) => setStacksRole(e.target.value)} style={{ ...inputStyle, minHeight: 36, resize: 'vertical' }} />
           </div>
           <button

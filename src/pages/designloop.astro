@@ -1,0 +1,569 @@
+---
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product design loop — ecosystem map</title>
+<style>
+  :root {
+    --bg: #0e1010;
+    --bg-elev: #161918;
+    --bg-panel: #1a1d1c;
+    --border: rgba(255,255,255,0.08);
+    --border-hover: rgba(255,255,255,0.18);
+    --text: #e8e9e6;
+    --text-mid: #9ca09a;
+    --text-dim: #5e635e;
+    --amber-fill: rgba(239, 159, 39, 0.10);
+    --amber-border: rgba(239, 159, 39, 0.40);
+    --amber-text: #FAC775;
+    --amber-text-strong: #EF9F27;
+    --purple-fill: rgba(127, 119, 221, 0.10);
+    --purple-border: rgba(127, 119, 221, 0.40);
+    --purple-text: #AFA9EC;
+    --purple-text-strong: #7F77DD;
+    --coral-fill: rgba(240, 153, 123, 0.10);
+    --coral-border: rgba(240, 153, 123, 0.40);
+    --coral-text: #F5C4B3;
+    --coral-text-strong: #F0997B;
+    --teal-fill: rgba(29, 158, 117, 0.10);
+    --teal-border: rgba(29, 158, 117, 0.40);
+    --teal-text: #5DCAA5;
+    --teal-text-strong: #1D9E75;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+  .mono { font-family: ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace; font-size: 12px; }
+  .container {
+    max-width: 1680px;
+    margin: 0 auto;
+    padding: 32px 40px 64px;
+  }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 48px;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .title-block { flex: 1; min-width: 320px; }
+  h1 {
+    font-size: 28px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+  }
+  .subtitle {
+    color: var(--text-mid);
+    font-size: 14px;
+    max-width: 560px;
+    line-height: 1.6;
+  }
+  .controls {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-end;
+  }
+  .legend {
+    display: flex;
+    gap: 16px;
+    font-size: 11px;
+    color: var(--text-mid);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .flow-buttons {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  .flow-btn {
+    background: transparent;
+    border: 0.5px solid var(--border);
+    color: var(--text-mid);
+    padding: 7px 14px;
+    border-radius: 999px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+  .flow-btn:hover { border-color: var(--border-hover); color: var(--text); }
+  .flow-btn.active {
+    background: rgba(93, 202, 165, 0.12);
+    border-color: rgba(93, 202, 165, 0.45);
+    color: #5DCAA5;
+  }
+  .main-layout {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 32px;
+    align-items: start;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+  .col { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .col-label {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    padding-bottom: 4px;
+    margin-bottom: 2px;
+  }
+  .node {
+    background: var(--bg-elev);
+    border: 0.5px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: opacity 0.25s, border-color 0.2s, background 0.2s;
+  }
+  .node:hover { border-color: var(--border-hover); }
+  .node.dim { opacity: 0.15; }
+  .node.selected {
+    background: var(--bg-panel);
+    border-color: var(--border-hover);
+  }
+  .node-title { font-size: 14px; font-weight: 500; margin-bottom: 4px; line-height: 1.3; }
+  .node-sub { font-size: 11px; color: var(--text-mid); line-height: 1.4; }
+  .node-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-family: ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
+    letter-spacing: 0.04em;
+    margin-top: 8px;
+    padding: 3px 7px;
+    border-radius: 3px;
+    text-transform: uppercase;
+  }
+  .node.cat-people { background: var(--amber-fill); border-color: var(--amber-border); }
+  .node.cat-people .node-title { color: var(--amber-text-strong); }
+  .node.cat-people .node-sub { color: var(--amber-text); opacity: 0.7; }
+  .node.cat-people .node-tag { background: rgba(239,159,39,0.15); color: var(--amber-text-strong); }
+  .node.cat-surfaces { background: var(--purple-fill); border-color: var(--purple-border); }
+  .node.cat-surfaces .node-title { color: var(--purple-text-strong); }
+  .node.cat-surfaces .node-sub { color: var(--purple-text); opacity: 0.7; }
+  .node.cat-surfaces .node-tag { background: rgba(127,119,221,0.15); color: var(--purple-text-strong); }
+  .node.cat-artifacts { background: var(--coral-fill); border-color: var(--coral-border); }
+  .node.cat-artifacts .node-title { color: var(--coral-text-strong); }
+  .node.cat-artifacts .node-sub { color: var(--coral-text); opacity: 0.7; }
+  .node.cat-artifacts .node-tag { background: rgba(240,153,123,0.15); color: var(--coral-text-strong); }
+  .node.cat-repos { background: var(--teal-fill); border-color: var(--teal-border); }
+  .node.cat-repos .node-title { color: var(--teal-text-strong); }
+  .node.cat-repos .node-sub { color: var(--teal-text); opacity: 0.7; }
+  .node.cat-repos .node-tag { background: rgba(29,158,117,0.15); color: var(--teal-text-strong); }
+  .detail-panel {
+    background: transparent;
+    padding: 0 0 0 24px;
+    border-left: 0.5px solid var(--border);
+    position: sticky;
+    top: 32px;
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
+  }
+  .panel-section { margin-bottom: 32px; }
+  .panel-label {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .panel-empty { color: var(--text-mid); font-size: 13px; font-style: italic; line-height: 1.6; }
+  .panel-node-title { font-size: 18px; font-weight: 500; margin-bottom: 8px; }
+  .panel-node-desc { font-size: 13px; line-height: 1.65; color: var(--text-mid); margin-bottom: 12px; }
+  .panel-node-meta { font-size: 11px; color: var(--text-dim); }
+  .panel-flow-step { display: flex; gap: 16px; padding: 16px 0; font-size: 14px; line-height: 1.6; border-bottom: 0.5px solid var(--border); }
+  .panel-flow-step:last-child { border-bottom: none; }
+  .panel-flow-step-n {
+    color: var(--text-mid);
+    font-size: 14px;
+    font-weight: 600;
+    min-width: 22px;
+    padding-top: 1px;
+    font-family: ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
+    letter-spacing: 0.02em;
+    flex-shrink: 0;
+  }
+  .panel-flow-step-text { color: var(--text); }
+  .panel-flow-step-text strong { font-weight: 600; color: #fff; }
+  .footer {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 0.5px solid var(--border);
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.04em;
+  }
+  @media (max-width: 1100px) {
+    .main-layout { grid-template-columns: 1fr; }
+    .detail-panel { border-left: none; border-top: 0.5px solid var(--border); padding: 24px 0 0; position: static; max-height: none; }
+    .grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .container { padding: 24px 20px; }
+    h1 { font-size: 22px; }
+    .grid { grid-template-columns: 1fr; }
+    header { flex-direction: column; align-items: flex-start; }
+    .controls { align-items: flex-start; }
+    .flow-buttons { justify-content: flex-start; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="title-block">
+      <h1>Product design loop</h1>
+      <p class="subtitle">Every actor, surface, and artifact in the loop. Pick a flow to highlight the path through the system. Click any node for what it is and where it fits.</p>
+    </div>
+    <div class="controls">
+      <div class="legend">
+        <div class="legend-item"><span class="legend-dot" style="background: #EF9F27;"></span>People</div>
+        <div class="legend-item"><span class="legend-dot" style="background: #7F77DD;"></span>Surfaces</div>
+        <div class="legend-item"><span class="legend-dot" style="background: #F0997B;"></span>Artifacts</div>
+        <div class="legend-item"><span class="legend-dot" style="background: #1D9E75;"></span>Repos</div>
+      </div>
+      <div class="flow-buttons">
+        <button class="flow-btn active" data-flow="all">All</button>
+        <button class="flow-btn" data-flow="design">Design + extract</button>
+        <button class="flow-btn" data-flow="validation">Validation loop</button>
+        <button class="flow-btn" data-flow="build">Engineering build</button>
+        <button class="flow-btn" data-flow="prototype">Prototype</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="main-layout">
+    <div class="grid">
+      <div class="col">
+        <div class="col-label">People</div>
+        <div class="node cat-people" data-node="designer">
+          <div class="node-title">Designer</div>
+          <div class="node-sub">Owns the loop</div>
+          <div class="node-tag">Authors</div>
+        </div>
+        <div class="node cat-people" data-node="architect">
+          <div class="node-title">Mobile architect</div>
+          <div class="node-sub">Signs off tech contracts</div>
+          <div class="node-tag">Reviews</div>
+        </div>
+        <div class="node cat-people" data-node="engineering">
+          <div class="node-title">Eng + QA</div>
+          <div class="node-sub">Builds + verifies</div>
+          <div class="node-tag">Consumes</div>
+        </div>
+        <div class="node cat-people" data-node="client">
+          <div class="node-title">Client</div>
+          <div class="node-sub">Validates fit</div>
+          <div class="node-tag">Feedback</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="col-label">Surfaces</div>
+        <div class="node cat-surfaces" data-node="figma">
+          <div class="node-title">Figma</div>
+          <div class="node-sub">Authoring surface</div>
+          <div class="node-tag">High craft</div>
+        </div>
+        <div class="node cat-surfaces" data-node="zoom-meeting">
+          <div class="node-title">Validation meeting</div>
+          <div class="node-sub">Zoom + transcript</div>
+          <div class="node-tag">Recurring</div>
+        </div>
+        <div class="node cat-surfaces" data-node="claude-project">
+          <div class="node-title">Claude project</div>
+          <div class="node-sub">Synthesis surface</div>
+          <div class="node-tag">Persistent context</div>
+        </div>
+        <div class="node cat-surfaces" data-node="tickets">
+          <div class="node-title">Tickets</div>
+          <div class="node-sub">Design + dev coordination</div>
+          <div class="node-tag">Constraints at top</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="col-label">Artifacts</div>
+        <div class="node cat-artifacts" data-node="constraints">
+          <div class="node-title">Constraints doc</div>
+          <div class="node-sub">Top of design ticket</div>
+          <div class="node-tag">Locked-amendable</div>
+        </div>
+        <div class="node cat-artifacts" data-node="decisions-log">
+          <div class="node-title">Decisions log</div>
+          <div class="node-sub">Changelog of synthesis</div>
+          <div class="node-tag">Date · source · change</div>
+        </div>
+        <div class="node cat-artifacts" data-node="specs">
+          <div class="node-title">Component specs</div>
+          <div class="node-sub">Markdown contracts</div>
+          <div class="node-tag">/components</div>
+        </div>
+        <div class="node cat-artifacts" data-node="tokens">
+          <div class="node-title">Tokens</div>
+          <div class="node-sub">W3C JSON · primitives + semantic</div>
+          <div class="node-tag">Source of truth</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="col-label">Repos</div>
+        <div class="node cat-repos" data-node="design-system">
+          <div class="node-title">Design system</div>
+          <div class="node-sub">Canonical hub</div>
+          <div class="node-tag">v0.x · pinned</div>
+        </div>
+        <div class="node cat-repos" data-node="production">
+          <div class="node-title">Production</div>
+          <div class="node-sub">Shipping iOS app</div>
+          <div class="node-tag">Pulls from system</div>
+        </div>
+        <div class="node cat-repos" data-node="prototype">
+          <div class="node-title">Prototype</div>
+          <div class="node-sub">TestFlight playground</div>
+          <div class="node-tag">No code standards</div>
+        </div>
+      </div>
+    </div>
+
+    <aside class="detail-panel">
+      <div class="panel-section">
+        <div class="panel-label">Node detail</div>
+        <div id="nodeDetail">
+          <div class="panel-empty">Click any node to see what it is, what it does, and where it fits in the loop.</div>
+        </div>
+      </div>
+      <div class="panel-section">
+        <div class="panel-label">Active flow</div>
+        <div id="flowDetail">
+          <div class="panel-empty">Pick a flow above to trace the path through the system.</div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="footer">Product design loop · ecosystem map · v0.1</div>
+</div>
+
+<script is:inline>
+(function() {
+  const nodeInfo = {
+    'designer': {
+      title: 'Designer',
+      desc: 'Owns the loop end-to-end. Authors constraints at the top of the design ticket, designs in Figma against tokens, runs synthesis after validation meetings, owns the design system as a product. Not the only author of tickets, but the only person responsible for keeping the system honest.',
+      meta: 'Primary actor · authors most artifacts'
+    },
+    'architect': {
+      title: 'Mobile architect',
+      desc: 'Signs off on the technical contracts that gate everything else: the iOS token output format, how production and prototype consume the design system, what "done on-system" means. Their early conversation is what unblocks the first design ticket.',
+      meta: 'Blocking actor for setup decisions'
+    },
+    'engineering': {
+      title: 'Eng + QA',
+      desc: 'Builds production against the design system at a pinned version; QA verifies behavior against the component specs. Both flag gaps in the system as PRs against the system, not as workarounds in their own code. Engineering sits in the room during prototyping for live tech-feasibility input.',
+      meta: 'Consumes the system; never authors it'
+    },
+    'client': {
+      title: 'Client / stakeholders',
+      desc: 'Participates in recurring validation meetings to confirm the experience is on track. Feedback gets transcribed, synthesized via the Claude project, and lands in the decisions log. Clients do not author the system; their voice enters through the validation loop.',
+      meta: 'Feedback into validation loop only'
+    },
+    'figma': {
+      title: 'Figma',
+      desc: 'The authoring surface. Where high-craft design happens, where tokens live as named variables, where screens get polish. Rule zero: no raw values, ever — everything is a variable. The repo is canonical for tokens, but Figma is the canonical authoring surface, and sync goes both ways.',
+      meta: 'Bidirectional sync with design system repo'
+    },
+    'zoom-meeting': {
+      title: 'Validation meeting',
+      desc: 'Recurring small-group session with the client to validate the experience. Zoom captures the transcript automatically. The meeting itself is conversational; the durable output is the synthesized decisions log entry, not the transcript.',
+      meta: 'Source for the validation loop'
+    },
+    'claude-project': {
+      title: 'Claude project',
+      desc: 'The synthesis surface. Holds persistent context: the design system, the constraints doc, project house rules. Drafts syntheses from transcripts, generates tickets from specs, helps process feedback into changelog entries. Drafts only — humans commit.',
+      meta: 'Persistent context · drafts for human review'
+    },
+    'tickets': {
+      title: 'Tickets',
+      desc: 'Coordination surface, not a documentation artifact. Design tickets carry constraints at the top, slices to design, and a DoD that includes system accretion. Dev tickets compose from system pieces (Composes / States to handle / Done when). Lean, scope-clear, scoped to coherent problems.',
+      meta: 'Design tickets fan out into multiple dev tickets'
+    },
+    'constraints': {
+      title: 'Constraints doc',
+      desc: 'Lives at the top of the design ticket. Captures role model, mechanics, scope, technical constraints, out-of-scope. Locked-but-amendable: changes require a visible amendment, not a quiet override. This is also Claude\'s hallucination-proof context for synthesis and generation.',
+      meta: 'Authored by designer · technical items co-signed by architect'
+    },
+    'decisions-log': {
+      title: 'Decisions log',
+      desc: 'A changelog beneath the constraints. Each validation meeting produces ~6 lines: date, what changed, why, source. Transcripts are source material; this log is the durable record. Reviewers read the log to know how we got here; engineering reads the constraints to know what is true now.',
+      meta: 'One file, two audiences'
+    },
+    'specs': {
+      title: 'Component specs',
+      desc: 'Markdown contracts in /components. Document states, behavior, accessibility, and which tokens each property references. Engineering implements native SwiftUI against the spec; QA verifies against it. If a spec feels incomplete, the right move is a PR to update it — not implementation drift.',
+      meta: 'Behavioral contract · not component code'
+    },
+    'tokens': {
+      title: 'Tokens',
+      desc: 'W3C Design Tokens JSON. Two-layer split: primitives (raw values) and semantic (aliases like color/primary → blue/600). The semantic layer is where rebranding and theming happen without touching components. Style Dictionary compiles this to the iOS output engineering imports.',
+      meta: 'Source of truth · platform-agnostic'
+    },
+    'design-system': {
+      title: 'Design system repo',
+      desc: 'Its own repo, owned and versioned like a product. Holds tokens, build pipeline, generated iOS output, component specs, and guidance (principles, patterns, accessibility, CLAUDE.md). Two consumers (production + prototype) justify the own-repo structure. Versioned, with a changelog and one owner.',
+      meta: 'Hub of the loop'
+    },
+    'production': {
+      title: 'Production',
+      desc: 'The shipping iOS app, Imagine Studios. Engineering territory. Pulls the design system at a pinned version (submodule or vendored — TBD with architect). Never edits the vendored copy. PR-based dependency updates, deliberate.',
+      meta: 'Read-only consumer of the system'
+    },
+    'prototype': {
+      title: 'Prototype repo',
+      desc: 'Scrappy by design. SwiftUI iPad app running on TestFlight. Used for explorations where the answer requires real device behavior (Pencil, gestures, on-device feel). Consumes the design system, never writes back. No code standards regime; engineering in the room flags feasibility live.',
+      meta: 'Playground · TestFlight only · not App Store'
+    }
+  };
+
+  const flows = {
+    'design': {
+      label: 'Design + extract',
+      nodes: ['designer','architect','figma','claude-project','tickets','constraints','tokens','specs','design-system'],
+      steps: [
+        { strong: 'Designer drafts constraints', text: 'at the top of the design ticket. Architect signs off on technical items.' },
+        { strong: 'Claude scaffolds', text: 'a starter token set (W3C JSON) so design starts from a foundation, not a blank file.' },
+        { strong: 'Designer imports tokens', text: 'as Figma variables, then designs login + onboarding to a high craft bar.' },
+        { strong: 'Claude extracts', text: 'updated tokens and new component specs from the Figma file via MCP.' },
+        { strong: 'Files land in the design-system repo', text: 'on a PR. Style Dictionary builds the iOS output engineering imports.' },
+        { strong: 'System version bumps', text: 'and the next feature (onboarding) starts from what login seeded.' }
+      ]
+    },
+    'validation': {
+      label: 'Validation loop',
+      nodes: ['designer','client','zoom-meeting','claude-project','constraints','decisions-log','tickets'],
+      steps: [
+        { strong: 'Validation meeting runs', text: 'with client + design. Zoom captures the transcript automatically.' },
+        { strong: 'Transcript flows into the Claude project', text: 'which already has the design system and constraints doc as persistent context.' },
+        { strong: 'Claude drafts a synthesis', text: ': what was confirmed, what changed, what is still open.' },
+        { strong: 'Designer reviews', text: ' edits for judgment calls, commits to the decisions log.' },
+        { strong: 'Constraints section', text: ' at the top of the ticket reflects the new state. Engineering and QA read current state, not the transcript.' },
+        { strong: 'Slack ping', text: ' if the change materially affects in-flight work.' }
+      ]
+    },
+    'build': {
+      label: 'Engineering build',
+      nodes: ['engineering','tickets','tokens','specs','design-system','production','constraints'],
+      steps: [
+        { strong: 'Dev ticket composes', text: ' from the design system at a pinned version. Constraints doc supplies the why.' },
+        { strong: 'Engineering implements', text: ' native SwiftUI against the component specs and tokens.' },
+        { strong: 'QA verifies', text: ' behavior against the specs and the trigger conditions in the constraints.' },
+        { strong: 'Mechanical PR check', text: ': "uses only tokens and components from design-system v0.x — no hardcoded values."' },
+        { strong: 'Gaps in specs become system PRs', text: ' — not implementation drift. The system is amendable in real time.' },
+        { strong: 'PR merged', text: ' system version pinned in production.' }
+      ]
+    },
+    'prototype': {
+      label: 'Prototype exploration',
+      nodes: ['designer','engineering','figma','claude-project','design-system','prototype'],
+      steps: [
+        { strong: 'Ask the gating question', text: ': "do I need an iPad to answer this?"' },
+        { strong: 'No → Figma or local sketch.', text: ' Click-through prototype, or a throwaway SwiftUI sketch Claude generates locally. Never lands in a repo.' },
+        { strong: 'Yes → prototype repo + TestFlight.', text: ' Branch, push a build, run it on device.' },
+        { strong: 'Engineering in the room', text: ' flags tech feasibility live. No code standards regime, no maintainer.' },
+        { strong: 'If a pattern sticks', text: ' it earns a Figma pass and a system update. Prototypes never write back to the system directly.' }
+      ]
+    }
+  };
+
+  const nodes = document.querySelectorAll('.node');
+  const buttons = document.querySelectorAll('.flow-btn');
+  const nodeDetail = document.getElementById('nodeDetail');
+  const flowDetail = document.getElementById('flowDetail');
+
+  let currentFlow = 'all';
+  let selectedNode = null;
+
+  function renderNodeDetail(nodeKey) {
+    if (!nodeKey) {
+      nodeDetail.innerHTML = '<div class="panel-empty">Click any node to see what it is, what it does, and where it fits in the loop.</div>';
+      return;
+    }
+    const info = nodeInfo[nodeKey];
+    if (!info) return;
+    nodeDetail.innerHTML =
+      '<div class="panel-node-title">' + info.title + '</div>' +
+      '<div class="panel-node-desc">' + info.desc + '</div>' +
+      '<div class="panel-node-meta">' + info.meta + '</div>';
+  }
+
+  function renderFlowDetail(flowKey) {
+    if (flowKey === 'all') {
+      flowDetail.innerHTML = '<div class="panel-empty">Pick a flow above to trace the path through the system.</div>';
+      return;
+    }
+    const flow = flows[flowKey];
+    if (!flow) return;
+    const stepsHtml = flow.steps.map(function(s, i) {
+      const n = String(i + 1).padStart(2, '0');
+      return '<div class="panel-flow-step"><div class="panel-flow-step-n">' + n + '</div><div class="panel-flow-step-text"><strong>' + s.strong + '</strong> ' + s.text + '</div></div>';
+    }).join('');
+    flowDetail.innerHTML = stepsHtml;
+  }
+
+  function applyFlow(flowKey) {
+    currentFlow = flowKey;
+    buttons.forEach(function(b) {
+      b.classList.toggle('active', b.dataset.flow === flowKey);
+    });
+    if (flowKey === 'all') {
+      nodes.forEach(function(n) { n.classList.remove('dim'); });
+    } else {
+      const active = new Set(flows[flowKey].nodes);
+      nodes.forEach(function(n) {
+        n.classList.toggle('dim', !active.has(n.dataset.node));
+      });
+    }
+    renderFlowDetail(flowKey);
+  }
+
+  function selectNode(nodeKey) {
+    selectedNode = nodeKey;
+    nodes.forEach(function(n) {
+      n.classList.toggle('selected', n.dataset.node === nodeKey);
+    });
+    renderNodeDetail(nodeKey);
+  }
+
+  buttons.forEach(function(b) {
+    b.addEventListener('click', function() { applyFlow(b.dataset.flow); });
+  });
+  nodes.forEach(function(n) {
+    n.addEventListener('click', function() { selectNode(n.dataset.node); });
+  });
+})();
+</script>
+</body>
+</html>

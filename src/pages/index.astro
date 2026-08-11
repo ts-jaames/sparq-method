@@ -1,5 +1,73 @@
 ---
 import { ViewTransitions } from 'astro:transitions';
+
+// ── SparqOS home state ──────────────────────────────────────────────────────
+// Single source of truth for everything the home page renders. Hardcoded for
+// now; every field here is meant to be driven by a canonical source later (see
+// `sources` below), so wiring real data is a matter of replacing this object,
+// not touching markup.
+const os = {
+  wordmark: "SparqOS",
+  edition: "Internal operating system · v0.1 · Edition 2026.1",
+  // The "what it is" statement — a plain sentence, not a section header.
+  statement:
+    "The operating system Sparq's principles produced — the methods and tools those principles built, and how they fit together.",
+
+  // Primary entry cards — the real navigation into each major area.
+  cards: [
+    {
+      title: "Ecosystem",
+      desc: "The map of what exists and how it relates.",
+      meta: "Full OS map",
+      href: "/architecture/",
+    },
+    {
+      title: "Client narrative",
+      desc: "The story of what it's like to work with Sparq.",
+      meta: "Read-aloud →",
+      href: "/SparqStory/",
+    },
+    {
+      title: "Roles & capabilities",
+      desc: "Who does what, and which capabilities exist today.",
+      meta: "Forming",
+      href: "#",
+    },
+    {
+      title: "Principles",
+      desc: "The non-negotiables the whole system derives from.",
+      meta: "6 principles",
+      href: "/philosophy/",
+    },
+  ],
+
+  // Current state — glanceable counts. Placeholders until source-driven.
+  glance: [
+    { value: "6", label: "Principles" },
+    { value: "5", label: "Domains" },
+    { value: "2", label: "Work loops" },
+    { value: "3", label: "Maturity levels" },
+  ],
+
+  // What's defined vs. still forming across the system.
+  status: [
+    { name: "Engagement system", state: "defined" },
+    { name: "Work loops", state: "defined" },
+    { name: "AI enablement & governance", state: "forming" },
+    { name: "Roles & capabilities", state: "forming" },
+    { name: "Capability maturity", state: "forming" },
+  ],
+
+  // Forward state: canonical inputs SparqOS will generate from. Not yet live.
+  sources: [
+    { name: "Principles doc", type: "Canonical", status: "Not connected" },
+    { name: "Engagement playbook", type: "Canonical", status: "Not connected" },
+    { name: "Roles & capability matrix", type: "Spreadsheet", status: "Not connected" },
+    { name: "Tooling registry", type: "System", status: "Not connected" },
+  ],
+};
+
+const stateLabels = { defined: "Defined", forming: "Forming" };
 ---
 
 <!DOCTYPE html>
@@ -7,7 +75,7 @@ import { ViewTransitions } from 'astro:transitions';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Sparq Method</title>
+    <title>SparqOS</title>
     <link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
     <ViewTransitions />
@@ -16,202 +84,72 @@ import { ViewTransitions } from 'astro:transitions';
 <div class="os">
 
     <header class="os-masthead">
-        <div class="os-wordmark">The Sparq Method</div>
-        <div class="os-edition">Internal operating system · v.0.1 · Edition 2026.1</div>
+        <div class="os-wordmark">{os.wordmark}</div>
+        <div class="os-edition">{os.edition}</div>
     </header>
 
     <div class="os-premise">
-        <p>The Sparq Method is the operating system the practice runs on. It governs how we sell, staff, discover, build, and scale software in an AI-enabled organization — the layers, loops, and governance that turn engagements into evidence and evidence into commitment.</p>
-    </div>  
+        <p>{os.statement}</p>
+    </div>
 
     <div class="os-hero">
         <canvas id="heroCanvas" aria-hidden="true"></canvas>
     </div>
 
-    <section class="os-section os-section--hidden">
-        <div class="os-section-label">The architecture</div>
-        <p class="os-section-sub">Five layers compose the system. Each is documented independently and evolves on its own cadence.</p>
-
-        <figure class="os-diagram">
-            <div class="os-diagram-layer">
-                <div class="os-diagram-layer-label">Engagement system</div>
-                <div class="os-diagram-nucleus-wrap">
-                    <canvas id="nucleusCanvas" aria-hidden="true"></canvas>
-                </div>
-            </div>
-
-            <div class="os-diagram-layer">
-                <div class="os-diagram-layer-label">AI enablement &amp; governance</div>
-                <div class="os-diagram-mesh-wrap">
-                    <canvas id="meshCanvas" aria-hidden="true"></canvas>
-                    <div class="os-diagram-mesh-overlay">Commercial · Product &amp; strategy · Design · Engineering &amp; data · Operations</div>
-                </div>
-            </div>
-
-            <div class="os-diagram-layer">
-                <div class="os-diagram-layer-label">Work loops</div>
-                <div class="os-diagram-loop-wrap">
-                    <canvas id="miniLoopCanvas" aria-hidden="true"></canvas>
-                    <div class="os-diagram-loop-labels">
-                        <div class="os-diagram-loop-lbl os-diagram-loop-lbl--l">
-                            <span class="os-diagram-loop-lbl-title">Evidence</span>
-                            <span class="os-diagram-loop-lbl-sub">Build to validate</span>
-                        </div>
-                        <div class="os-diagram-loop-lbl os-diagram-loop-lbl--r">
-                            <span class="os-diagram-loop-lbl-title">Commitment</span>
-                            <span class="os-diagram-loop-lbl-sub">Build to operate</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="os-diagram-layer">
-                <div class="os-diagram-layer-label">AI capability maturity</div>
-                <div class="os-diagram-maturity">
-                    <div class="os-diagram-maturity-labels">
-                        <span>Assisted</span>
-                        <span>Integrated</span>
-                        <span>AI-native</span>
-                    </div>
-                    <div class="os-diagram-maturity-band">
-                        <canvas id="maturityCanvas" aria-hidden="true"></canvas>
-                    </div>
-                </div>
-            </div>
-        </figure>
-
-        <p class="os-caption">This is the canonical representation of how the layers of the Sparq Method relate. Each layer evolves on its own cadence; the architecture is the constant.</p>
+    <!-- Primary entry cards — the real navigation into each major area. -->
+    <section class="os-section">
+        <div class="os-section-label">Ways in</div>
+        <div class="os-cards">
+            {os.cards.map((c) => (
+                <a href={c.href} class="os-card">
+                    <span class="os-card-title">{c.title}</span>
+                    <span class="os-card-desc">{c.desc}</span>
+                    <span class="os-card-meta">{c.meta}</span>
+                </a>
+            ))}
+        </div>
     </section>
 
-    <nav class="os-nav">
-        <div class="os-nav-group">
-            <div class="os-nav-group-label">Engagement System</div>
-            <a href="/engagement-canvas" class="os-nav-row">
-                <span class="os-nav-title">Overview &amp; canvas</span>
-                <span class="os-nav-num">1.1</span>
-            </a>
-            <a href="/practice/engagement" class="os-nav-row">
-                <span class="os-nav-title">Engagement shape</span>
-                <span class="os-nav-num">1.2</span>
-            </a>
-            <a href="#" class="os-nav-row">
-                <span class="os-nav-title">Stage definitions</span>
-                <span class="os-nav-num">1.3</span>
-            </a>
-            <a href="#" class="os-nav-row">
-                <span class="os-nav-title">Commercial model</span>
-                <span class="os-nav-num">1.4</span>
-            </a>
-            <a href="#" class="os-nav-row">
-                <span class="os-nav-title">Sales &amp; pre-sales motion</span>
-                <span class="os-nav-num">1.5</span>
-            </a>
-            <a href="#" class="os-nav-row">
-                <span class="os-nav-title">Handoffs and transitions</span>
-                <span class="os-nav-num">1.6</span>
-            </a>
+    <!-- Current state — the dashboard: glanceable counts + what's defined vs. forming. -->
+    <section class="os-section">
+        <div class="os-section-label">Current state · at a glance</div>
+        <div class="os-glance">
+            {os.glance.map((s) => (
+                <div class="os-stat">
+                    <span class="os-stat-value">{s.value}</span>
+                    <span class="os-stat-label">{s.label}</span>
+                </div>
+            ))}
         </div>
-
-        <div class="os-nav-rule"></div>
-
-        <div class="os-nav-group">
-            <div class="os-nav-group-label">AI Enablement &amp; Governance</div>
-            <a href="#" class="os-nav-row">
-                <span class="os-nav-title">Position &amp; principles</span>
-                <span class="os-nav-num">2.1</span>
-            </a>
-            <a href="#" class="os-nav-row">
-                <span class="os-nav-title">Fluency standards</span>
-                <span class="os-nav-num">2.2</span>
-            </a>
-            <a href="#" class="os-nav-row">
-                <span class="os-nav-title">Governance &amp; guardrails</span>
-                <span class="os-nav-num">2.3</span>
-            </a>
-            <a href="#" class="os-nav-row">
-                <span class="os-nav-title">AI inside each layer</span>
-                <span class="os-nav-num">2.4</span>
-            </a>
-            <a href="#" class="os-nav-row">
-                <span class="os-nav-title">Tooling stance</span>
-                <span class="os-nav-num">2.5</span>
-            </a>
+        <div class="os-status">
+            {os.status.map((s) => (
+                <div class="os-status-row">
+                    <span class={`os-status-dot os-status-dot--${s.state}`}></span>
+                    <span class="os-status-name">{s.name}</span>
+                    <span class="os-status-state">{stateLabels[s.state]}</span>
+                </div>
+            ))}
         </div>
+    </section>
 
-        <div class="os-nav-rule"></div>
-
-        <div class="os-nav-group">
-            <div class="os-nav-group-label">Work Loops</div>
-            <a href="/evidence-work" class="os-nav-row">
-                <span class="os-nav-title">Overview</span>
-                <span class="os-nav-num">3.1</span>
-            </a>
-            <a href="#" class="os-nav-row">
-                <span class="os-nav-title">Evidence loop</span>
-                <span class="os-nav-num">3.2</span>
-            </a>
-            <a href="#" class="os-nav-row">
-                <span class="os-nav-title">Commitment loop</span>
-                <span class="os-nav-num">3.3</span>
-            </a>
-            <a href="/practice/implementation" class="os-nav-row">
-                <span class="os-nav-title">Prototypes, slices, demos</span>
-                <span class="os-nav-num">3.4</span>
-            </a>
-            <a href="/practice/backlogs" class="os-nav-row">
-                <span class="os-nav-title">Dual backlog discipline</span>
-                <span class="os-nav-num">3.5</span>
-            </a>
-            <a href="#" class="os-nav-row">
-                <span class="os-nav-title">Confidence gates</span>
-                <span class="os-nav-num">3.6</span>
-            </a>
+    <!-- Sources — forward state, scaffolded only. -->
+    <section class="os-section">
+        <div class="os-section-label">Sources</div>
+        <p class="os-section-sub">Forward state — not yet live. SparqOS will generate from these canonical inputs; when a source changes, the site reflects it.</p>
+        <div class="os-sources">
+            {os.sources.map((s) => (
+                <div class="os-source-row">
+                    <span class="os-source-name">{s.name}</span>
+                    <span class="os-source-type">{s.type}</span>
+                    <span class="os-source-status">{s.status}</span>
+                </div>
+            ))}
         </div>
+    </section>
 
-        <div class="os-nav-rule"></div>
-
-        <div class="os-nav-group">
-            <div class="os-nav-group-label">AI Capability Maturity</div>
-            <a href="#" class="os-nav-row">
-                <span class="os-nav-title">Overview</span>
-                <span class="os-nav-num">4.1</span>
-            </a>
-            <a href="#" class="os-nav-row">
-                <span class="os-nav-title">Maturity by capability</span>
-                <span class="os-nav-num">4.2</span>
-            </a>
-            <a href="#" class="os-nav-row">
-                <span class="os-nav-title">How maturity changes how teams operate</span>
-                <span class="os-nav-num">4.3</span>
-            </a>
-            <a href="#" class="os-nav-row">
-                <span class="os-nav-title">Tooling that supports each level</span>
-                <span class="os-nav-num">4.4</span>
-            </a>
-        </div>
-
-        <div class="os-nav-rule"></div>
-
-        <div class="os-nav-group">
-            <div class="os-nav-group-label">Reference</div>
-            <a href="/reference" class="os-nav-row">
-                <span class="os-nav-title">Glossary</span>
-                <span class="os-nav-num">5.1</span>
-            </a>
-            <a href="#" class="os-nav-row">
-                <span class="os-nav-title">Constraints</span>
-                <span class="os-nav-num">5.2</span>
-            </a>
-            <a href="#" class="os-nav-row">
-                <span class="os-nav-title">Decision log</span>
-                <span class="os-nav-num">5.3</span>
-            </a>
-            <a href="#" class="os-nav-row">
-                <span class="os-nav-title">Changelog</span>
-                <span class="os-nav-num">5.4</span>
-            </a>
-        </div>
-    </nav>
+    <div class="os-closing">
+        <canvas id="closingCanvas" aria-hidden="true"></canvas>
+    </div>
 
     <footer class="os-colophon">
         v1.0 · Edition 2026.1 · Last updated May 2026 · Internal use only
@@ -238,92 +176,159 @@ function initHero() {
     if (!ctx) return;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    var COUNT = 1200;
-    var COLOR = '#E75437';
-    var STROKE_COLOR = '#F4845F';
+    // ── The "connecting" thinking-orb, ported from thinking-orbs (engine/web.ts):
+    // a constellation of nodes on a slowly-spinning sphere wires itself — nodes
+    // drift under value-noise, any pair closer than `thr` grows an edge, and
+    // bright packets ("signals") run along re-picked node pairs. Genuinely 3D:
+    // rotated, depth-shaded, z-sorted. Tinted to brand orange. ──
+    var COLOR = '#E75437';         // nodes + edges
+    var SIGNAL_COLOR = '#F4845F';  // the bright travelling packets
     var cx = SIZE / 2;
     var cy = SIZE / 2;
-    var radius = SIZE / 2 - 4;
 
-    var particles = [];
-    for (var i = 0; i < COUNT; i++) {
-        var x, y;
-        do { x = (Math.random() - 0.5) * 2; y = (Math.random() - 0.5) * 2; }
-        while (x * x + y * y > 1);
-        var speed = 0.0005 + Math.random() * 0.001;
-        var angle = Math.random() * Math.PI * 2;
-        particles.push({
-            x: x, y: y,
-            vx: Math.cos(angle) * speed,
-            vy: Math.sin(angle) * speed,
-            r: 1.0 + Math.random() * 2.5,
-            opacity: 0.15 + Math.random() * 0.55,
-        });
+    // Orb config (defaults from the library, nodeN/signals nudged up for a
+    // fuller constellation at hero scale).
+    var nodeN = 80;         // more dots than the library default (30) for a fuller orb
+    var thr = 0.68;         // edge threshold, unit-sphere distance
+    var nodeR = 2, nodeRDepth = 2.8;
+    var signals = 8;
+    var lineW = 0.5;
+    var SPEED = 1.8;        // demo's web-preset speed multiplier (base runs at 1×)
+    var spread = 1;
+    var ORB_R = (SIZE / 2) * 0.8 * spread;   // projector scale (carries the radius)
+    var rs = Math.pow(SIZE / 300, 0.3);      // sub-linear radius scale
+
+    // ── Shared primitives (core.ts) ──
+    function frac(x) { return x - Math.floor(x); }
+    function lerp(a, b, f) { return a + (b - a) * f; }
+    function hashD(a, b) {
+        var h = Math.sin(a * 12.9898 + b * 78.233) * 43758.5453;
+        return h - Math.floor(h);
+    }
+    function vnoise(x, y) {
+        var xi = Math.floor(x), yi = Math.floor(y);
+        var fx = x - xi, fy = y - yi;
+        fx = fx * fx * (3 - 2 * fx);
+        fy = fy * fy * (3 - 2 * fy);
+        var a = hashD(xi, yi), b = hashD(xi + 1, yi), c = hashD(xi, yi + 1), d = hashD(xi + 1, yi + 1);
+        return a + (b - a) * fx + (c - a) * fy + (a - b - c + d) * fx * fy;
+    }
+    var GOLDEN = Math.PI * (3 - Math.sqrt(5));
+    function fibDir(i, n) {
+        var y = 1 - (2 * (i + 0.5)) / n;
+        var rad = Math.sqrt(1 - y * y);
+        var a = i * GOLDEN;
+        return [rad * Math.cos(a), y, rad * Math.sin(a)];
+    }
+    // Spin (yaw) + tilt + orthographic projection. Returns [screenX, screenY, z].
+    function makeProj(yaw, tilt) {
+        var st = Math.sin(tilt), ct = Math.cos(tilt), sy = Math.sin(yaw), cyw = Math.cos(yaw);
+        return function (x, y, z) {
+            var x1 = x * cyw + z * sy;
+            var z1 = -x * sy + z * cyw;
+            var y1 = y * ct - z1 * st;
+            var z2 = y * st + z1 * ct;
+            return [cx + x1 * ORB_R, cy - y1 * ORB_R, z2];
+        };
     }
 
-    var LINK_DIST = 0.25;
-    var linkNodes = [];
-    for (var li = 0; li < 180; li++) {
-        linkNodes.push(particles[Math.floor(Math.random() * COUNT)]);
+    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var startT = performance.now();
+
+    function frame(t) {
+        ctx.clearRect(0, 0, SIZE, SIZE);
+        var pt = makeProj(t * 0.12, 0.32);
+
+        // Nodes: fibonacci lattice + slow noise wander, renormalised to the surface.
+        var nodes = [];
+        for (var i = 0; i < nodeN; i++) {
+            var dir = fibDir(i, nodeN);
+            var nx = dir[0] + 0.3 * (vnoise(i * 0.31 + 9, t * 0.24) - 0.5) * 2;
+            var ny = dir[1] + 0.3 * (vnoise(i * 0.53 + 27, t * 0.21) - 0.5) * 2;
+            var nz = dir[2] + 0.3 * (vnoise(i * 0.77 + 55, t * 0.27) - 0.5) * 2;
+            var nl = Math.sqrt(nx * nx + ny * ny + nz * nz);
+            nodes.push([nx / nl, ny / nl, nz / nl]);
+        }
+
+        // Edges between close neighbours, drawn first so nodes sit on top.
+        ctx.lineWidth = Math.max(0.6, lineW * rs);
+        for (var i2 = 0; i2 < nodeN; i2++) {
+            for (var j2 = i2 + 1; j2 < nodeN; j2++) {
+                var dx = nodes[i2][0] - nodes[j2][0];
+                var dy = nodes[i2][1] - nodes[j2][1];
+                var dz = nodes[i2][2] - nodes[j2][2];
+                var dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+                if (dist >= thr) continue;
+                var pa = pt(nodes[i2][0], nodes[i2][1], nodes[i2][2]);
+                var pb = pt(nodes[j2][0], nodes[j2][1], nodes[j2][2]);
+                var edepth = ((pa[2] + pb[2]) / 2 + 1) / 2;
+                ctx.globalAlpha = (1 - dist / thr) * (0.3 + 0.55 * edepth);
+                ctx.strokeStyle = COLOR;
+                ctx.beginPath();
+                ctx.moveTo(pa[0], pa[1]);
+                ctx.lineTo(pb[0], pb[1]);
+                ctx.stroke();
+            }
+        }
+
+        // Collect node + signal dots, then z-sort far→near so depth reads right.
+        var dots = [];
+        for (var i3 = 0; i3 < nodeN; i3++) {
+            var pn = pt(nodes[i3][0], nodes[i3][1], nodes[i3][2]);
+            var depth = (pn[2] + 1) / 2;
+            var pulse = 1 + 0.25 * Math.sin(t * 1.4 + i3 * 2.7);
+            dots.push({
+                x: pn[0], y: pn[1], z: pn[2],
+                r: (nodeR + nodeRDepth * depth) * pulse * rs,
+                color: COLOR,
+                a: 0.25 + 0.75 * depth,   // near = brighter
+            });
+        }
+        // Signals: bright packets running between paired nodes.
+        for (var s = 0; s < signals; s++) {
+            var seg = Math.floor(t * 0.55 + s * 7.31);
+            var ai = Math.floor(hashD(seg, s * 3.1 + 1.7) * nodeN);
+            var bi = Math.floor(hashD(seg, s * 5.7 + 4.2) * nodeN);
+            if (ai === bi) continue;
+            var f = frac(t * 0.55 + s * 7.31);
+            var sx = lerp(nodes[ai][0], nodes[bi][0], f);
+            var sy2 = lerp(nodes[ai][1], nodes[bi][1], f);
+            var sz = lerp(nodes[ai][2], nodes[bi][2], f);
+            var sl = Math.max(1e-6, Math.sqrt(sx * sx + sy2 * sy2 + sz * sz));
+            var ps = pt(sx / sl, sy2 / sl, sz / sl);
+            var sdepth = (ps[2] + 1) / 2;
+            dots.push({
+                x: ps[0], y: ps[1], z: ps[2],
+                r: (nodeR * 1.5 + nodeRDepth * sdepth) * rs,
+                color: SIGNAL_COLOR,
+                a: 0.5 + 0.5 * sdepth,
+            });
+        }
+
+        dots.sort(function (p, q) { return p.z - q.z; });
+        for (var k = 0; k < dots.length; k++) {
+            var dd = dots[k];
+            if (dd.a < 0.02) continue;
+            ctx.globalAlpha = dd.a;
+            ctx.fillStyle = dd.color;
+            ctx.beginPath();
+            ctx.arc(dd.x, dd.y, Math.max(0.3, dd.r), 0, Math.PI * 2);
+            ctx.fill();
+        }
+        ctx.globalAlpha = 1;
     }
 
     function tick() {
         if (!document.body.contains(el)) return;
-        ctx.clearRect(0, 0, SIZE, SIZE);
-
-        for (var j = 0; j < particles.length; j++) {
-            var p = particles[j];
-            p.x += (Math.random() - 0.5) * 0.002;
-            p.y += (Math.random() - 0.5) * 0.002;
-            p.x += p.vx;
-            p.y += p.vy;
-            var spd = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
-            var MAX_SPD = 0.002;
-            if (spd > MAX_SPD) { p.vx *= MAX_SPD / spd; p.vy *= MAX_SPD / spd; }
-            p.x *= 0.9998;
-            p.y *= 0.9998;
-            var dist = Math.sqrt(p.x * p.x + p.y * p.y);
-            if (dist > 0.95) {
-                var nx = p.x / dist, ny = p.y / dist;
-                var dot = p.vx * nx + p.vy * ny;
-                p.vx -= 2 * dot * nx;
-                p.vy -= 2 * dot * ny;
-                p.x *= 0.94 / dist;
-                p.y *= 0.94 / dist;
-            }
-        }
-
-        ctx.strokeStyle = STROKE_COLOR;
-        ctx.lineWidth = 0.8;
-        for (var a = 0; a < linkNodes.length; a++) {
-            var pi = linkNodes[a];
-            for (var b = a + 1; b < linkNodes.length; b++) {
-                var pj = linkNodes[b];
-                var dx = pi.x - pj.x, dy = pi.y - pj.y;
-                var d = Math.sqrt(dx * dx + dy * dy);
-                if (d < LINK_DIST) {
-                    ctx.globalAlpha = (1 - d / LINK_DIST) * 0.5;
-                    ctx.beginPath();
-                    ctx.moveTo(cx + pi.x * radius, cy + pi.y * radius);
-                    ctx.lineTo(cx + pj.x * radius, cy + pj.y * radius);
-                    ctx.stroke();
-                }
-            }
-        }
-
-        for (var j = 0; j < particles.length; j++) {
-            var p = particles[j];
-            ctx.beginPath();
-            ctx.arc(cx + p.x * radius, cy + p.y * radius, p.r, 0, Math.PI * 2);
-            ctx.fillStyle = COLOR;
-            ctx.globalAlpha = p.opacity;
-            ctx.fill();
-        }
-        ctx.globalAlpha = 1;
+        frame((performance.now() - startT) / 1000 * SPEED);
         requestAnimationFrame(tick);
     }
 
-    requestAnimationFrame(tick);
+    if (reduced) {
+        frame(1.2);  // one settled pose, no animation
+    } else {
+        requestAnimationFrame(tick);
+    }
 }
 
 function initNucleus() {
@@ -802,12 +807,147 @@ function initMaturity() {
     requestAnimationFrame(draw);
 }
 
+function initClosing() {
+    var el = document.getElementById('closingCanvas');
+    if (!el || el.dataset.init) return;
+    el.dataset.init = '1';
+
+    var SIZE = el.offsetWidth;
+    if (SIZE < 10) return;
+
+    var dpr = window.devicePixelRatio || 1;
+    el.width = SIZE * dpr;
+    el.height = SIZE * dpr;
+
+    var ctx = el.getContext('2d');
+    if (!ctx) return;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    var COLOR = '#E75437';
+    var STROKE_COLOR = '#F4845F';
+    var cx = SIZE / 2;
+    var cy = SIZE / 2;
+    var radius = SIZE / 2 - 4;
+
+    // Same flow-field swirl constant as initHero — a quiet echo of the same system.
+    var SWIRL = 1.7;
+    function flowAngle(x, y, t) {
+        return Math.sin(x * 2.3 + t * 0.30) * SWIRL
+             + Math.cos(y * 2.1 - t * 0.27) * SWIRL
+             + Math.sin((x + y) * 1.5 + t * 0.20);
+    }
+
+    var COUNT = 260;
+    var particles = [];
+    for (var i = 0; i < COUNT; i++) {
+        // Resting target somewhere inside the disc...
+        var tx, ty;
+        do { tx = (Math.random() - 0.5) * 2; ty = (Math.random() - 0.5) * 2; }
+        while (tx * tx + ty * ty > 1);
+        // ...spawned scattered well outside it.
+        var sa = Math.random() * Math.PI * 2;
+        var sr = 1.6 + Math.random() * 1.4;
+        particles.push({
+            x: Math.cos(sa) * sr, y: Math.sin(sa) * sr,
+            tx: tx, ty: ty,
+            vx: 0, vy: 0,
+            r: 0.8 + Math.random() * 1.8,
+            baseOpacity: 0.2 + Math.random() * 0.55,
+            pulsePhase: Math.random() * Math.PI * 2,
+            pulseSpeed: 0.006 + Math.random() * 0.02,
+            born: Math.random() * 0.7, // fraction of the assembly at which it appears
+        });
+    }
+
+    var LINK_DIST = 0.32;
+    var DURATION = 5000; // ms — the cluster assembles over ~5 seconds
+    var startTime = null;
+    var time = 0;
+
+    function tick(now) {
+        if (!document.body.contains(el)) return;
+        if (startTime === null) startTime = now;
+        var progress = Math.min(1, (now - startTime) / DURATION);
+        time += 0.01;
+        ctx.clearRect(0, 0, SIZE, SIZE);
+
+        for (var j = 0; j < particles.length; j++) {
+            var p = particles[j];
+            if (progress < p.born) continue;
+            // Pull toward the resting target, with a flow-field curl so paths
+            // arc inward rather than travelling in straight lines.
+            var fa = flowAngle(p.x, p.y, time);
+            p.vx += (p.tx - p.x) * 0.012 + Math.cos(fa) * 0.0006;
+            p.vy += (p.ty - p.y) * 0.012 + Math.sin(fa) * 0.0006;
+            p.vx *= 0.9;
+            p.vy *= 0.9;
+            p.x += p.vx;
+            p.y += p.vy;
+            p.pulsePhase += p.pulseSpeed;
+        }
+
+        ctx.strokeStyle = STROKE_COLOR;
+        ctx.lineWidth = 0.7;
+        for (var a = 0; a < particles.length; a++) {
+            var pi = particles[a];
+            if (progress < pi.born) continue;
+            for (var b = a + 1; b < particles.length; b++) {
+                var pj = particles[b];
+                if (progress < pj.born) continue;
+                var dx = pi.x - pj.x, dy = pi.y - pj.y;
+                var d = Math.sqrt(dx * dx + dy * dy);
+                if (d < LINK_DIST) {
+                    ctx.globalAlpha = (1 - d / LINK_DIST) * 0.4 * progress;
+                    ctx.beginPath();
+                    ctx.moveTo(cx + pi.x * radius, cy + pi.y * radius);
+                    ctx.lineTo(cx + pj.x * radius, cy + pj.y * radius);
+                    ctx.stroke();
+                }
+            }
+        }
+
+        for (var j = 0; j < particles.length; j++) {
+            var p = particles[j];
+            if (progress < p.born) continue;
+            var appear = Math.min(1, (progress - p.born) / 0.12);
+            ctx.beginPath();
+            ctx.arc(cx + p.x * radius, cy + p.y * radius, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = COLOR;
+            var pulse = 0.6 + 0.4 * Math.sin(p.pulsePhase);
+            ctx.globalAlpha = p.baseOpacity * pulse * appear;
+            ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+        requestAnimationFrame(tick);
+    }
+
+    // Assemble only once it scrolls into view — the story completing itself.
+    var started = false;
+    function start() {
+        if (started) return;
+        started = true;
+        requestAnimationFrame(tick);
+    }
+
+    if ('IntersectionObserver' in window) {
+        var obs = new IntersectionObserver(function(entries) {
+            for (var i = 0; i < entries.length; i++) {
+                if (entries[i].isIntersecting) { start(); obs.disconnect(); }
+            }
+        }, { threshold: 0.35 });
+        obs.observe(el);
+    } else {
+        start();
+    }
+}
+
 function initAll() {
     initHero();
     initNucleus();
     initMesh();
     initMiniLoop();
     initMaturity();
+    initClosing();
 }
 
 initAll();
@@ -900,6 +1040,19 @@ document.addEventListener('astro:page-load', function() {
         text-transform: uppercase;
         margin-top: 6px;
     }
+
+    .os-artifact-link {
+        display: inline-block;
+        margin-top: 20px;
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--ink-3);
+        text-decoration: none;
+        transition: color 0.15s;
+    }
+    .os-artifact-link:hover { color: var(--accent); }
 
     /* ── Premise ── */
 
@@ -1168,6 +1321,181 @@ document.addEventListener('astro:page-load', function() {
         margin: 40px 0;
     }
 
+    /* ── Primary entry cards ── */
+
+    .os-cards {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .os-card {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid var(--rule);
+        padding: 24px;
+        text-decoration: none;
+        color: inherit;
+        transition: background 0.15s, border-color 0.15s;
+    }
+
+    .os-card:hover {
+        background: var(--hover-bg);
+        border-color: var(--border2, var(--ink-3));
+    }
+
+    .os-card-title {
+        font-size: 20px;
+        font-weight: 500;
+        letter-spacing: -0.01em;
+        color: var(--ink);
+    }
+
+    .os-card:hover .os-card-title { color: var(--accent); }
+
+    .os-card-desc {
+        font-size: 15px;
+        font-weight: 400;
+        line-height: 1.45;
+        color: var(--ink-2);
+        margin-top: 8px;
+    }
+
+    .os-card-meta {
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--ink-3);
+        margin-top: 20px;
+    }
+
+    /* ── At a glance ── */
+
+    .os-glance {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+    }
+
+    .os-stat {
+        border: 1px solid var(--rule);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .os-stat-value {
+        font-size: 40px;
+        font-weight: 500;
+        letter-spacing: -0.02em;
+        color: var(--ink);
+        line-height: 1;
+    }
+
+    .os-stat-label {
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--ink-3);
+        margin-top: 12px;
+    }
+
+    .os-status {
+        margin-top: 32px;
+    }
+
+    .os-status-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 0;
+        border-top: 1px dashed var(--rule);
+    }
+
+    .os-status-row:last-child { border-bottom: 1px dashed var(--rule); }
+
+    .os-status-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        flex-shrink: 0;
+    }
+
+    .os-status-dot--defined { background: var(--accent); }
+    .os-status-dot--forming {
+        background: transparent;
+        border: 1px solid var(--ink-3);
+    }
+
+    .os-status-name {
+        font-size: 15px;
+        color: var(--ink-2);
+        flex: 1;
+    }
+
+    .os-status-state {
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--ink-3);
+    }
+
+    /* ── Sources (forward state) ── */
+
+    .os-source-row {
+        display: flex;
+        align-items: baseline;
+        gap: 16px;
+        padding: 12px 0;
+        border-top: 1px dashed var(--rule);
+    }
+
+    .os-source-row:last-child { border-bottom: 1px dashed var(--rule); }
+
+    .os-source-name {
+        font-size: 15px;
+        color: var(--ink-2);
+        flex: 1;
+    }
+
+    .os-source-type {
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--ink-3);
+    }
+
+    .os-source-status {
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--ink-3);
+        opacity: 0.7;
+        min-width: 120px;
+        text-align: right;
+    }
+
+    /* ── Closing echo ── */
+
+    .os-closing {
+        max-width: 700px;
+        margin: 96px auto 0;
+        padding: 0 24px;
+        display: flex;
+        justify-content: flex-end; /* far right within the content column */
+    }
+
+    #closingCanvas {
+        display: block;
+        width: 160px;
+        aspect-ratio: 1;
+    }
+
     /* ── Colophon ── */
 
     .os-colophon {
@@ -1207,12 +1535,17 @@ document.addEventListener('astro:page-load', function() {
 
         .os-diagram-loop-wrap { margin: 0 16px; }
 
-        .os-nav { margin-top: 64px; }
+        .os-cards { grid-template-columns: 1fr; }
 
-        .os-nav-title { font-size: 16px; }
+        .os-glance { grid-template-columns: repeat(2, 1fr); }
 
-        .os-nav-rule { margin: 28px 0; }
+        .os-stat-value { font-size: 34px; }
+
+        .os-source-status { min-width: 0; }
 
         .os-colophon { margin-top: 64px; }
+
+        .os-closing { margin-top: 64px; }
+        #closingCanvas { width: 120px; }
     }
 </style>
