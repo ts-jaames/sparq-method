@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Geist:ital,wght@0,300..900;1,300..900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400..700;1,400..700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap"
       rel="stylesheet"
     />
     <style is:inline>
@@ -25,10 +25,16 @@
         --line-soft: #ebe6dc;
         --orange: #e75437;
         --hover: #ece7dc;
-        --serif: "Geist", system-ui, sans-serif;
+        --font: "Inter", system-ui, sans-serif;
+        --font-serif: "Fraunces", Georgia, serif;
         --rail: 150px;
         --gap: 26px;
         --measure: 592px;
+        /* spacing scale: one step per relationship, no near-miss values */
+        --space-1: 6px; /* domain label to its capabilities */
+        --space-2: 10px; /* capability to capability */
+        --space-3: 18px; /* section eyebrow to first domain */
+        --space-4: 32px; /* domain to domain, and around the section */
       }
       * {
         box-sizing: border-box;
@@ -40,9 +46,10 @@
         margin: 0;
         background: var(--paper);
         color: var(--body);
-        font-family: var(--serif);
+        font-family: var(--font);
         font-weight: 400;
-        font-size: 13.5px;
+        font-size: 13px;
+        letter-spacing: .05px;
         line-height: 1.7;
         -webkit-font-smoothing: antialiased;
         text-rendering: optimizeLegibility;
@@ -84,7 +91,7 @@
         filter: blur(0);
       }
       .lin .anc {
-        font-size: 12.5px;
+        font-size: 12px;
         font-style: italic;
         color: var(--muted);
         line-height: 1.32;
@@ -94,7 +101,7 @@
         text-overflow: ellipsis;
       }
       .lin .cur {
-        font-size: 13.5px;
+        font-size: 13px;
         font-weight: 700;
         color: var(--orange);
         line-height: 1.3;
@@ -107,6 +114,29 @@
       .lin .cur .ar {
         color: var(--orange);
         flex: none;
+      }
+      .lin .feel-label {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--faint);
+        margin-bottom: 7px;
+      }
+      .lin .cur.feel {
+        display: inline-flex;
+        width: fit-content;
+        align-items: center;
+        font-family: var(--font-serif);
+        font-weight: 600;
+        font-style: normal;
+        font-size: 13px;
+        color: var(--ink);
+        background: var(--hover);
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 5px 14px;
+        line-height: 1.2;
       }
       .lin .sub-cur {
         font-size: 12px;
@@ -130,19 +160,36 @@
         background: var(--faint);
       }
       .col {
-        min-width: 0;
+        padding: 24px 18px;
+        margin: 0 -18px;
+      }
+      .story-orb-row {
+        margin-bottom: -8px;
+      }
+      .story-orb-wrap {
+        width: 84px;
+        height: 84px;
+      }
+      #storyOrbCanvas {
+        display: block;
+        width: 84px;
+        height: 84px;
       }
 
-      .col h2.hero {
+      body h1 {
+        font-family: var(--font-serif);
         font-weight: 700;
-        font-size: 24px;
-        line-height: 1.16;
-        letter-spacing: -0.01em;
+        font-size: 28px;
+        line-height: 1.2;
+        letter-spacing: 0;
         color: var(--ink);
         margin: 0 0 14px;
       }
       .opening {
         margin: 0;
+      }
+      .opening + .opening {
+        margin-top: 20px;
       }
       .opening .b {
         font-style: italic;
@@ -150,25 +197,17 @@
       }
 
       .row.b .col {
-        padding: 14px 18px;
-        margin: 6px -18px;
         border-radius: 9px;
         transition: background 0.18s ease;
       }
       .row.b:hover .col {
         background: var(--hover);
       }
-      .col h2 {
-        font-weight: 700;
-        font-size: 17px;
-        line-height: 1.3;
-        color: var(--ink);
-        margin: 0 0 9px;
-      }
-      .col h3 {
-        font-weight: 700;
-        font-size: 18px;
-        line-height: 1.3;
+      body h2 {
+        font-family: var(--font-serif);
+        font-weight: 600;
+        font-size: 19px;
+        line-height: 1.35;
         color: var(--ink);
         margin: 0 0 9px;
       }
@@ -185,11 +224,8 @@
 
       .endline {
         color: var(--ink);
-        font-weight: 700;
-        background: #f1ede5;
-        padding: 18px 20px;
-        border-radius: 9px;
-        margin: 34px 0 0;
+        font-weight: 400;
+        margin: 48px 0 0;
       }
 
       .brk {
@@ -207,7 +243,7 @@
       }
       .brk span {
         font-style: italic;
-        font-size: 13px;
+        font-size: 12px;
         color: var(--muted);
         white-space: nowrap;
       }
@@ -218,13 +254,13 @@
         gap: 7px;
         margin-top: 6px;
         font-style: italic;
-        font-size: 14px;
+        font-size: 13px;
         color: var(--orange);
         text-decoration: none;
         background: none;
         border: none;
         cursor: pointer;
-        font-family: var(--serif);
+        font-family: var(--font);
         padding: 0;
       }
       .godeep:hover {
@@ -258,8 +294,8 @@
         background: none;
         border: none;
         cursor: pointer;
-        font-family: var(--serif);
-        font-size: 13.5px;
+        font-family: var(--font);
+        font-size: 13px;
         font-style: italic;
         color: var(--orange);
         padding: 0;
@@ -267,18 +303,19 @@
         gap: 6px;
         opacity: 0;
         pointer-events: none;
-        transition: opacity 0.4s ease 0.35s;
+        transition: opacity 0.25s ease;
       }
       body.silo-open .silo-back {
         opacity: 1;
         pointer-events: auto;
+        transition: opacity 0.4s ease 0.7s;
       }
       .silo-back:hover {
         text-decoration: underline;
       }
       .ref-label {
         font-style: italic;
-        font-size: 11.5px;
+        font-size: 12px;
         color: var(--faint);
         margin-bottom: 14px;
       }
@@ -300,19 +337,19 @@
       }
       .ref-tier {
         font-style: italic;
-        font-size: 11px;
+        font-size: 12px;
         color: var(--orange);
         margin-bottom: 2px;
       }
       .ref-t {
         font-weight: 700;
-        font-size: 14px;
+        font-size: 13px;
         color: var(--ink);
         line-height: 1.3;
         margin-bottom: 4px;
       }
       .ref-x {
-        font-size: 13px;
+        font-size: 12px;
         color: var(--muted);
         line-height: 1.45;
         display: -webkit-box;
@@ -326,26 +363,33 @@
         max-width: 600px;
         padding-top: 72px;
         min-width: 0;
-        transform: translateX(100vw);
-        transition: transform 0.7s cubic-bezier(0.22, 0.9, 0.36, 1);
+        /* sits in its final position and blurs in; the flying paragraph
+           lands in the left column at ~0.68s, so the fade waits for it */
+        opacity: 0;
+        filter: blur(12px);
+        visibility: hidden;
+        transition:
+          opacity 0.3s ease,
+          filter 0.3s ease,
+          visibility 0s linear 0.3s;
       }
       body.silo-open .silo-main {
-        transform: translateX(0);
-        transition: transform 0.7s cubic-bezier(0.22, 0.9, 0.36, 1) 0.15s;
+        opacity: 1;
+        filter: blur(0);
+        visibility: visible;
+        transition:
+          opacity 0.5s ease 0.65s,
+          filter 0.55s cubic-bezier(0.22, 0.9, 0.36, 1) 0.65s,
+          visibility 0s linear 0.65s;
       }
       .main-eyebrow {
         font-style: italic;
         color: var(--muted);
-        font-size: 13px;
+        font-size: 12px;
         margin-bottom: 8px;
       }
       .silo-main h2 {
-        font-weight: 700;
-        font-size: 25px;
-        color: var(--ink);
         margin: 0 0 20px;
-        line-height: 1.18;
-        letter-spacing: -0.01em;
       }
       .silo-main p {
         margin: 0 0 14px;
@@ -372,21 +416,12 @@
           max-height 0.65s cubic-bezier(0.22, 0.9, 0.36, 1);
         transition-delay: 0.2s;
       }
-      .col.flying::before {
-        content: attr(data-tier);
-        display: block;
-        font-style: italic;
-        font-size: 10px;
-        color: var(--orange);
-        margin-bottom: 4px;
-      }
-      .col.flying h2,
-      .col.flying h3 {
+      .col.flying h2 {
         font-size: 14px;
         margin-bottom: 6px;
       }
       .col.flying p {
-        font-size: 12.5px;
+        font-size: 12px;
         line-height: 1.55;
       }
       .col.flying.ref-mode {
@@ -407,28 +442,146 @@
       }
       .sub {
         font-weight: 700;
-        font-size: 11px;
+        font-size: 12px;
         letter-spacing: 0.08em;
         text-transform: uppercase;
         color: var(--orange);
-        margin: 30px 0 14px;
+        margin: var(--space-4) 0 var(--space-3);
         padding-top: 0;
         border-top: none;
       }
 
+      .dom-label {
+        font-family: var(--font-serif);
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1.3;
+        color: var(--muted);
+        margin-bottom: var(--space-1);
+      }
+      .cap + .dom-label {
+        margin-top: var(--space-4);
+      }
+
       .cap {
-        margin: 0 0 20px;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        margin: 0;
+        overflow: hidden;
+        background: transparent;
+        transition:
+          background 0.25s ease,
+          border-color 0.25s ease,
+          border-radius 0.45s cubic-bezier(0.22, 0.9, 0.36, 1);
+      }
+      .cap + .cap {
+        margin-top: var(--space-2);
+      }
+      .cap:hover {
+        background: var(--hover);
+        border-color: var(--line-soft);
+      }
+      .cap.open {
+        background: var(--hover);
+        border-color: var(--line-soft);
+        border-radius: 16px;
+      }
+      .cap-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        width: 100%;
+        padding: 15px 18px;
+        background: none;
+        border: none;
+        margin: 0;
+        cursor: pointer;
+        font-family: var(--font);
+        text-align: left;
+        -webkit-tap-highlight-color: transparent;
       }
       .cap .nm {
+        display: inline-flex;
+        align-items: center;
         font-weight: 700;
-        font-size: 16px;
+        font-size: 15px;
+        line-height: 1;
         color: var(--ink);
-        margin-bottom: 5px;
+        transition: color 0.25s ease;
+      }
+      .cap.open .nm {
+        color: var(--orange);
+      }
+      .cap-icon {
+        position: relative;
+        width: 14px;
+        height: 14px;
+        flex: none;
+        align-self: center;
+      }
+      .cap-icon::before,
+      .cap-icon::after {
+        content: "";
+        position: absolute;
+        background: var(--orange);
+        border-radius: 1px;
+        transition: transform 0.35s cubic-bezier(0.22, 0.9, 0.36, 1);
+      }
+      .cap-icon::before {
+        top: 50%;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        transform: translateY(-50%);
+      }
+      .cap-icon::after {
+        left: 50%;
+        top: 0;
+        width: 2px;
+        height: 100%;
+        transform: translateX(-50%);
+      }
+      .cap.open .cap-icon::after {
+        transform: translateX(-50%) rotate(90deg);
+      }
+      .cap-body {
+        display: grid;
+        grid-template-rows: minmax(0, 0fr);
+        transition: grid-template-rows 0.5s cubic-bezier(0.22, 0.9, 0.36, 1);
+      }
+      .cap.open .cap-body {
+        grid-template-rows: minmax(0, 1fr);
+      }
+      .cap-body-in {
+        overflow: hidden;
+        min-height: 0;
+        padding: 0 18px 18px;
+        opacity: 0;
+        filter: blur(3px);
+        transform: translateY(-4px);
+        transition:
+          opacity 0.3s ease,
+          filter 0.3s ease,
+          transform 0.3s ease;
+      }
+      .cap.open .cap-body-in {
+        opacity: 1;
+        filter: blur(0);
+        transform: translateY(0);
+        transition-delay: 0.14s;
+      }
+      .cap-body-in::before {
+        content: "";
+        display: block;
+        height: 1px;
+        background: var(--line-soft);
+        margin-bottom: 14px;
       }
       .cap .r {
         display: block;
         margin-bottom: 4px;
-        font-size: 13.5px;
+        font-size: 14px;
         line-height: 1.5;
         color: var(--body);
       }
@@ -447,7 +600,7 @@
         color: var(--muted);
         font-size: 14px;
         line-height: 1.55;
-        margin-top: 18px;
+        margin: var(--space-4) 0;
         padding-top: 0;
         border-top: none;
       }
@@ -483,46 +636,73 @@
   </head>
   <body>
     <div class="doc-wrap">
+      <div class="row story-orb-row">
+        <div class="lin"></div><div class="col">
+          <div class="story-orb-wrap">
+            <canvas id="storyOrbCanvas" aria-hidden="true"></canvas>
+          </div>
+        </div>
+      </div>
+
       <!-- ===== THE NARRATIVE ===== -->
       <div class="row">
         <div class="lin"></div><div class="col">
-          <h2 class="hero">What it&rsquo;s like to work with us</h2>
+          <h1>What it&rsquo;s like to work with us</h1>
           <p class="opening">
             You have something that has to work. You also have a quiet fear
-            riding along with it. You know how this usually goes: the big team,
-            the long discovery, the deck that looks certain, and the
-            month&#8209;four meeting where the confidence turns out to have been
-            theater. We built a different kind of consultancy: not advisors, not
-            project managers, but <span class="b">builders</span>: engineers who
-            carry a product company&rsquo;s instincts into the work, whose pride
-            is in what actually ships and keeps shipping. Here&rsquo;s what it
-            feels like to build with us.
+            riding along with it, because you know how this usually goes. The
+            big team. The long discovery. The deck that looks certain. And the
+            month&#8209;four meeting where the confidence turns out to have
+            been theater, and the cost of it lands on you.
+          </p>
+          <p class="opening">
+            That fear isn&rsquo;t yours to carry. It&rsquo;s the tell of a
+            broken bargain: most firms sell you confidence they can&rsquo;t
+            back, and quietly price in the cost of being wrong, you just
+            don&rsquo;t see the bill until it&rsquo;s too late to change
+            course. We built the opposite. Not advisors, not project managers,
+            but builders: engineers who carry a product company&rsquo;s
+            instincts into the work, whose pride is in what ships and keeps
+            shipping. Here, confidence isn&rsquo;t asserted in a deck.
+            It&rsquo;s earned in front of you, week by week, where you can
+            watch it happen. Here&rsquo;s what that feels like.
           </p>
         </div>
       </div>
 
       <div class="row b">
-        <div class="lin"><div class="cur">Understood</div></div><div
+        <div class="lin">
+          <div class="feel-label">Feeling</div>
+          <div class="cur feel">Understood</div>
+        </div><div
           class="col"
         >
           <h2>
             The first conversation is about your business, not our process.
           </h2>
           <p>
-            Most firms open by telling you how they work. We open by asking what
-            has to be true for your business for this to have been worth doing.
-            We push past the feature request to the commercial lever underneath
-            it: the cost you&rsquo;re carrying, the market segment you
-            can&rsquo;t reach, the metric your board actually watches. You walk
-            out of that first conversation understanding your own problem more
-            clearly than when you walked in. That&rsquo;s the baseline with us,
-            not the exception: not just managed, understood.
+            Most firms open by telling you how they work, then build what you
+            asked for. We open by asking what has to be true for this to have
+            been worth the money and the year, and we don&rsquo;t stop at the
+            feature you requested. We push to the commercial lever underneath
+            it: the cost you&rsquo;re carrying, the segment you can&rsquo;t
+            reach, the number your board actually watches. Sometimes that means
+            telling you the thing you came to build isn&rsquo;t the thing worth
+            building, before a dollar is spent, not after. Because the most
+            expensive mistake in software isn&rsquo;t a bug; it&rsquo;s a year
+            spent shipping something that didn&rsquo;t move the business,
+            beautifully. You walk out understanding your own problem more
+            sharply than when you walked in, occasionally understanding it was
+            a different problem than you thought. Not just managed. Understood.
           </p>
         </div>
       </div>
 
       <div class="row b" id="beat-riskiest">
-        <div class="lin"><div class="cur">Confidence</div></div><div
+        <div class="lin">
+          <div class="feel-label">Feeling</div>
+          <div class="cur feel">Confident</div>
+        </div><div
           class="col"
         >
           <h2>We start by building the riskiest thing first.</h2>
@@ -530,150 +710,16 @@
             Every serious build rests on two or three assumptions that, if
             they&rsquo;re wrong, change everything: the integration
             nobody&rsquo;s tested, the constraint nobody&rsquo;s checked. Most
-            firms write those down as risks and move on. We build them. The
-            first real engineering we do is aimed straight at the part most
+            firms write those down as risks and keep moving; the risk surfaces
+            in month four, and by then it costs a quarter. We do the opposite.
+            The first real engineering we do aims straight at the part most
             likely to break, because the fastest way to know whether something
-            works is to make it work. You don&rsquo;t get a paragraph promising
-            it&rsquo;ll be fine; you get the hard thing, running, early enough
-            that a failure is cheap instead of a crisis. And when we finally
-            tell you what the whole thing will cost and how long it will take,
-            you believe the number. Not because we&rsquo;re persuasive. Because
-            you watched us build the proof.
-          </p>
-        </div>
-      </div>
-
-      <div class="row b">
-        <div class="lin"><div class="cur">Calm</div></div><div class="col">
-          <h2>You watch it get built.</h2>
-          <p>
-            There are no status meetings where people read slides at you,
-            because the build itself is the status: always something real
-            running in front of you, not a report about it. Decisions get made
-            in working code and written down with the same care as the code, so
-            the reasoning is never trapped in one person&rsquo;s head. Three
-            months in, no one asks you to re&#8209;explain a call from month
-            one. And the questioning that killed the early risks never switches
-            off; it just moves to smaller, later ones as the big ones die, so
-            the assumption everyone else stops checking around month four is
-            still being checked here. Somewhere around week six you notice
-            you&rsquo;ve stopped bracing. That&rsquo;s the build earning it,
-            week over week.
-          </p>
-        </div>
-      </div>
-
-      <div class="row b">
-        <div class="lin"><div class="cur">Empowered</div></div><div class="col">
-          <h2>You come out of this more capable than you went in.</h2>
-          <p>
-            You have the thing that works, but you also have the engineered
-            ground underneath it. Architecture your team can read, a codebase
-            they can own, systems clean enough to build the next thing on
-            without calling us to open a box we sealed. Your people understand
-            why it works because they watched it get built, not because we
-            briefed them at the end. The initiative you were quietly afraid of
-            became the one that proved what&rsquo;s possible. That&rsquo;s when
-            the real leverage starts: standing on ground you trust, with more
-            range than you had before, free to decide whether the next thing
-            even needs us.
-          </p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="lin"></div><div class="col">
-          <p class="endline">
-            Not a better consultancy. A different bet about what a consultancy
-            is for. Outcomes over hours. Confidence over theater.
-          </p>
-        </div>
-      </div>
-
-      <!-- ===== A LAYER DEEPER ===== -->
-      <div class="row">
-        <div class="lin"></div><div class="col">
-          <div class="brk"><span>Approach</span></div>
-        </div>
-      </div>
-
-      <div class="row b">
-        <div class="lin">
-          <div class="cur">Understood</div><div class="sub-cur">Approach</div>
-        </div><div class="col">
-          <h3>Finding the one sentence</h3>
-          <p>
-            Most firms run discovery to learn your business well enough to start
-            building. We&rsquo;re after something narrower and harder: the one
-            sentence that, if it turned out to be false, would mean the whole
-            project wasn&rsquo;t worth doing. Finding it is the real work of the
-            first weeks.
-          </p>
-          <p>
-            The move is simple and slightly uncomfortable. Whatever you first
-            ask for, we treat as a symptom rather than the problem, and we keep
-            asking what it gets you, one level at a time, until we reach
-            something with a number attached. A feature becomes a workflow
-            becomes a cost becomes a margin becomes the thing your board
-            actually asked you about. Most conversations stop three questions
-            too early, at the feature. We don&rsquo;t stop until the answer is
-            something the business would feel.
-          </p>
-          <p>
-            And the reason this matters isn&rsquo;t insight for its own sake.
-            That sentence becomes the tie&#8209;breaker for everything after it.
-            When two directions look equally good six weeks in, and they always
-            do, we don&rsquo;t argue taste; we ask which one serves the
-            sentence. Scope stops being a negotiation of opinions and becomes a
-            test against something we already agreed was true. That&rsquo;s what
-            the first conversation actually buys you: not a plan, a standard to
-            hold the plan to. And what we find doesn&rsquo;t live in a slide or
-            someone&rsquo;s memory; we capture it in a system, increasingly with
-            AI holding the threads, so month six still answers to the sentence
-            we found in week one.
-          </p>
-        </div>
-      </div>
-
-      <div class="row b" id="deeper-riskiest">
-        <div class="lin">
-          <div class="cur">Confidence</div><div class="sub-cur">Approach</div>
-        </div><div class="col">
-          <h3>Building the proof</h3>
-          <p>
-            Every build carries a handful of assumptions that, if they&rsquo;re
-            wrong, change everything, and a hundred that don&rsquo;t matter. The
-            skill isn&rsquo;t listing risks; anyone can produce a long column of
-            worries. It&rsquo;s knowing which two or three actually decide
-            whether this is viable, and having the discipline to set the rest
-            aside for now.
-          </p>
-          <p>
-            The test we use is narrow: if this assumption is false, does the
-            initiative collapse, and are we currently building as though
-            it&rsquo;s true? A risk that fails both is interesting but not
-            urgent. A risk that passes both is where the whole thing lives, and
-            it goes first. Usually it&rsquo;s something unglamorous: an
-            integration under real load, a workflow users won&rsquo;t actually
-            adopt, a constraint nobody has confirmed.
-          </p>
-          <p>
-            Then, instead of analyzing it, we build it, and that swap is less
-            obvious than it sounds. Talking about a risk changes how confident
-            you feel without changing whether it&rsquo;s true; only contact with
-            the real thing does that. So we make the smallest real version of
-            the part most likely to break and put it under real conditions. A
-            break in week two is a gift: it&rsquo;s the same break that costs
-            you a quarter in month four, bought at a fraction of the price.
-          </p>
-          <p>
-            That&rsquo;s also why the number holds. It&rsquo;s priced against
-            things we&rsquo;ve watched work, not things we hope will, and
-            what&rsquo;s still unproven we name as a bet, with a window to
-            settle it, because an estimate honest about its own uncertainty is
-            worth more than a confident one that&rsquo;s wrong. There&rsquo;s a
-            name for this discipline, we call it Evidence Work, and it&rsquo;s
-            the spine the rest of how we operate hangs on.
+            works is to make it work. A failure in week two is cheap; the same
+            failure in month four is a catastrophe. So the thing every other
+            engagement quietly charges you for (the cost of being wrong, late)
+            mostly disappears. And when we finally tell you what the whole
+            thing will cost and how long it will take, you don&rsquo;t hope the
+            number is right. You believe it, because you watched us earn it.
           </p>
           <button class="godeep" data-silo="riskiest"
             >&larr;&nbsp; A deeper dive into this one</button
@@ -683,91 +729,75 @@
 
       <div class="row b">
         <div class="lin">
-          <div class="cur">Calm</div><div class="sub-cur">Approach</div>
+          <div class="feel-label">Feeling</div>
+          <div class="cur feel">Calm</div>
         </div><div class="col">
-          <h3>The loop never closes</h3>
+          <h2>You watch it get built.</h2>
           <p>
-            The transparency isn&rsquo;t a reporting habit we impose on
-            ourselves; it&rsquo;s a side effect of how the work is built. When
-            the thing is always in a state you can run and look at,
-            there&rsquo;s nothing to hide, because there&rsquo;s no gap between
-            what&rsquo;s true and what&rsquo;s shown. Status meetings exist to
-            close that gap. We just don&rsquo;t have the gap.
-          </p>
-          <p>
-            And the questioning that killed the early risks never gets switched
-            off. Most firms treat discovery as a gate: prove enough to start,
-            then put the questions down and execute the plan. The trouble is
-            that reality keeps arriving after the plan is set, and by then
-            nobody is looking for it. We keep the same loop running the whole
-            way; it just moves to smaller, later questions as the big ones die.
-            We&rsquo;ve even begun building tools that do some of that watching
-            for us, AI that reads the work as it moves and surfaces the
-            assumption everyone quietly stopped checking, while it&rsquo;s still
-            small.
-          </p>
-          <p>
-            Here is the part that changes how the whole thing feels. On a
-            traditional project, confidence is highest at kickoff (the plan is
-            fresh, nothing has gone wrong yet), and it decays as reality shows
-            up. Ours runs the other direction: lowest at the start, when we know
-            the least, and climbing every week as questions get answered against
-            something real. That&rsquo;s why, around week six, you notice
-            you&rsquo;ve stopped bracing. It isn&rsquo;t reassurance. It&rsquo;s
-            your confidence finally pointing the same way as the facts.
+            On every project you&rsquo;ve run, confidence was highest the day
+            you signed (the plan fresh, nothing gone wrong yet) and it eroded
+            from there as reality arrived. With us it runs backwards: it
+            starts low, when we know the least, and climbs every week, because
+            the questioning that killed the early risks never switches off. It
+            just moves to smaller, later ones as the big ones die, so the
+            assumption everyone else stops checking around month four is still
+            being checked here. There are no status meetings, because the
+            build itself is the status: always something real running in
+            front of you, and every decision written down beside the work, so
+            the reasoning is never trapped in one head. Somewhere around week
+            six you notice you&rsquo;ve stopped bracing for the
+            bad&#8209;news meeting. It isn&rsquo;t coming. That&rsquo;s not
+            reassurance: it&rsquo;s your confidence finally pointing the same
+            direction as the facts.
           </p>
         </div>
       </div>
 
       <div class="row b">
         <div class="lin">
-          <div class="cur">Empowered</div><div class="sub-cur">Approach</div>
+          <div class="feel-label">Feeling</div>
+          <div class="cur feel">Empowered</div>
         </div><div class="col">
-          <h3>What becomes possible</h3>
+          <h2>You come out of this more capable than you went in.</h2>
           <p>
-            The most valuable thing you leave with isn&rsquo;t the software, or
-            even the understanding underneath it. It&rsquo;s a changed sense of
-            what&rsquo;s possible. Most engagements quietly lower your ceiling:
-            you come out having learned, in expensive detail, how hard and slow
-            the thing turned out to be. This one raises it.
-          </p>
-          <p>
-            Think about the idea that got laughed out of the room, the one you
-            filed under &lsquo;someday,&rsquo; or &lsquo;too risky to
-            touch,&rsquo; or &lsquo;maybe when we&rsquo;re bigger.&rsquo; After
-            building this way, you look at it differently, because you&rsquo;ve
-            now watched the scariest part of a real build get de-risked in weeks
-            and actually ship. Your gut sense of what&rsquo;s hard and
-            what&rsquo;s reachable has been recalibrated against something real,
-            and the thing that felt like a moonshot starts to look like a plan.
-          </p>
-          <p>
-            And it isn&rsquo;t only that you feel bolder; you&rsquo;re equipped
-            to act on it. Your people were in the room when the hard calls got
-            made, so they understand why the system works, not just that it
-            does; the architecture underneath is clean enough to build the next
-            thing on. The ambition and the means to chase it arrive together,
-            which is the rare part.
-          </p>
-          <p>
-            That&rsquo;s also why we treat any dependency you&rsquo;re left with
-            as a defect, not a feature. For most firms the next call you have to
-            make is the business model; here it&rsquo;s a choice you get to make
-            freely, including whether the next thing needs us at all. And
-            because the reasoning behind every decision was captured as we went,
-            not reconstructed at the end, what your team inherits is the <em
-              >why</em
-            >, not just the <em>what</em>.
+            You keep the thing that works, but the bigger inheritance is what
+            you now believe you can do. Most engagements quietly lower your
+            ceiling: you finish knowing, in expensive detail, how hard the
+            thing was. This one raises it. The idea that got laughed out of
+            the room (the one you filed under &ldquo;too risky&rdquo; or
+            &ldquo;someday&rdquo;), you look at it differently now, because
+            you&rsquo;ve watched the scariest part of a real build get
+            de&#8209;risked in weeks and ship. And you&rsquo;re not just
+            bolder; you&rsquo;re equipped: your people understand why it works
+            because they were in the room when the calls got made, and the
+            ground underneath is clean enough to build the next thing on.
+            Ambition and the means to act on it arrive together. The
+            initiative you were quietly afraid of became the one that proved
+            what&rsquo;s possible, and the next one no longer needs our
+            permission, or our presence, unless you decide it does.
           </p>
         </div>
       </div>
+
+      <div class="row">
+        <div class="lin"></div><div class="col">
+          <p class="endline">
+            This isn&rsquo;t a better consultancy. It&rsquo;s a different bet
+            about what a consultancy is for: that the job was never to look
+            certain, but to make certainty something you can watch being
+            earned, and to leave the fear behind for good.
+            <br><br>Outcomes over hours.<br> Confidence over theater.
+          </p>
+        </div>
+      </div>
+
     </div><!-- /.doc-wrap -->
 
     <!-- ===== SILO · third level ===== -->
     <div class="silo" id="silo-riskiest">
       <button class="silo-back">&larr;&nbsp; Back to the narrative</button>
       <main class="silo-main">
-        <h2>How it actually works</h2>
+        <h1>How it actually works</h1>
 
         <p>
           Early work has two jobs, not one. It has to find out whether the
@@ -840,84 +870,127 @@
 
         <div class="sub">The capabilities at work</div>
 
+        <div class="dom-label">Framing</div>
         <div class="cap">
-          <div class="nm">Risk framing</div>
-          <span class="r"
-            ><span class="lbl">Why it&rsquo;s here</span>You can&rsquo;t build
-            the riskiest thing first until you know which thing is riskiest,
-            and risk isn&rsquo;t only technical. This separates the two or
-            three collapse&#8209;level assumptions (whether it can be built,
-            and whether it&rsquo;s the right thing to build) from the hundred
-            that don&rsquo;t move the investment, ranked by impact if wrong,
-            uncertainty, and cost to test.</span
-          >
-          <span class="r out"
-            ><span class="lbl">Produces</span>A prioritized shortlist of the
-            assumptions that govern the commitment, feasibility and direction
-            alike.</span
-          >
+          <button class="cap-head" aria-expanded="false">
+            <span class="nm">Risk framing</span>
+            <span class="cap-icon" aria-hidden="true"></span>
+          </button>
+          <div class="cap-body">
+            <div class="cap-body-in">
+              <span class="r"
+                ><span class="lbl">Why it&rsquo;s here</span>You can&rsquo;t
+                build the riskiest thing first until you know which thing is
+                riskiest, and risk isn&rsquo;t only technical. This separates
+                the two or three collapse&#8209;level assumptions (whether it
+                can be built, and whether it&rsquo;s the right thing to
+                build) from the hundred that don&rsquo;t move the
+                investment, ranked by impact if wrong, uncertainty, and cost
+                to test.</span
+              >
+              <span class="r out"
+                ><span class="lbl">Produces</span>A prioritized shortlist of
+                the assumptions that govern the commitment, feasibility and
+                direction alike.</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="dom-label">Proving</div>
+        <div class="cap">
+          <button class="cap-head" aria-expanded="false">
+            <span class="nm">Thin&#8209;slice engineering</span>
+            <span class="cap-icon" aria-hidden="true"></span>
+          </button>
+          <div class="cap-body">
+            <div class="cap-body-in">
+              <span class="r"
+                ><span class="lbl">Why it&rsquo;s here</span>The fastest way
+                to know whether the hard part works is to build it: the
+                smallest real, instrumented version of the thing most likely
+                to break, not a mockup of the easy screens. And where the
+                risk is about direction or value, that same slice is the
+                artifact we put in front of the client, real enough to
+                provoke a sharper strategic decision than any deck would.
+                Where the risk is behavioral, the slice is a working
+                prototype real users touch.</span
+              >
+              <span class="r out"
+                ><span class="lbl">Produces</span>A running artifact that
+                generates real signal early: technical signal against a bar,
+                and strategic signal from a client reacting to something
+                real, before architecture is committed.</span
+              >
+            </div>
+          </div>
         </div>
         <div class="cap">
-          <div class="nm">Thin&#8209;slice engineering</div>
-          <span class="r"
-            ><span class="lbl">Why it&rsquo;s here</span>The fastest way to
-            know whether the hard part works is to build it: the smallest
-            real, instrumented version of the thing most likely to break, not
-            a mockup of the easy screens. And where the risk is about
-            direction or value, that same slice is the artifact we put in
-            front of the client, real enough to provoke a sharper strategic
-            decision than any deck would. Where the risk is behavioral, the
-            slice is a working prototype real users touch.</span
-          >
-          <span class="r out"
-            ><span class="lbl">Produces</span>A running artifact that
-            generates real signal early: technical signal against a bar, and
-            strategic signal from a client reacting to something real, before
-            architecture is committed.</span
-          >
+          <button class="cap-head" aria-expanded="false">
+            <span class="nm">Signal definition &amp; instrumentation</span>
+            <span class="cap-icon" aria-hidden="true"></span>
+          </button>
+          <div class="cap-body">
+            <div class="cap-body-in">
+              <span class="r"
+                ><span class="lbl">Why it&rsquo;s here</span>A slice with no
+                predefined bar produces a demo and opinions. This sets, in
+                advance, what counts as success and failure on feasibility,
+                and what decision the strategic conversation has to reach on
+                direction, then wires the slice to surface both.</span
+              >
+              <span class="r out"
+                ><span class="lbl">Produces</span>A clean,
+                assumption&#8209;linked result on both axes: evidence rather
+                than enthusiasm, and a direction call rather than a round of
+                reactions.</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="dom-label">Deciding</div>
+        <div class="cap">
+          <button class="cap-head" aria-expanded="false">
+            <span class="nm">Confidence evaluation</span>
+            <span class="cap-icon" aria-hidden="true"></span>
+          </button>
+          <div class="cap-body">
+            <div class="cap-body-in">
+              <span class="r"
+                ><span class="lbl">Why it&rsquo;s here</span>Signal only
+                matters if it changes a decision. This judges signal against
+                the evidence the next commitment demands (the more
+                irreversible the step, the higher the bar) and records an
+                explicit promote, iterate, pivot, or stop: on whether we can
+                build it, and on whether we should.</span
+              >
+              <span class="r out"
+                ><span class="lbl">Produces</span>A logged decision that
+                earns real build or redirects the effort, on feasibility and
+                direction both. No silent scaling.</span
+              >
+            </div>
+          </div>
         </div>
         <div class="cap">
-          <div class="nm">Signal definition &amp; instrumentation</div>
-          <span class="r"
-            ><span class="lbl">Why it&rsquo;s here</span>A slice with no
-            predefined bar produces a demo and opinions. This sets, in
-            advance, what counts as success and failure on feasibility, and
-            what decision the strategic conversation has to reach on
-            direction, then wires the slice to surface both.</span
-          >
-          <span class="r out"
-            ><span class="lbl">Produces</span>A clean, assumption&#8209;linked
-            result on both axes: evidence rather than enthusiasm, and a
-            direction call rather than a round of reactions.</span
-          >
-        </div>
-        <div class="cap">
-          <div class="nm">Confidence evaluation</div>
-          <span class="r"
-            ><span class="lbl">Why it&rsquo;s here</span>Signal only matters if
-            it changes a decision. This judges signal against the evidence the
-            next commitment demands (the more irreversible the step, the higher
-            the bar) and records an explicit promote, iterate, pivot, or stop:
-            on whether we can build it, and on whether we should.</span
-          >
-          <span class="r out"
-            ><span class="lbl">Produces</span>A logged decision that earns real
-            build or redirects the effort, on feasibility and direction both.
-            No silent scaling.</span
-          >
-        </div>
-        <div class="cap">
-          <div class="nm">Confidence&#8209;based estimation</div>
-          <span class="r"
-            ><span class="lbl">Why it&rsquo;s here</span>The number holds only
-            if it reflects what&rsquo;s known. This prices proven capabilities
-            tight, buffers the directional ones, and puts explicit windows on
-            what&rsquo;s still unsettled, technically or strategically.</span
-          >
-          <span class="r out"
-            ><span class="lbl">Produces</span>An estimate traceable to signal,
-            honest about fact versus bet.</span
-          >
+          <button class="cap-head" aria-expanded="false">
+            <span class="nm">Confidence&#8209;based estimation</span>
+            <span class="cap-icon" aria-hidden="true"></span>
+          </button>
+          <div class="cap-body">
+            <div class="cap-body-in">
+              <span class="r"
+                ><span class="lbl">Why it&rsquo;s here</span>The number holds
+                only if it reflects what&rsquo;s known. This prices proven
+                capabilities tight, buffers the directional ones, and puts
+                explicit windows on what&rsquo;s still unsettled, technically
+                or strategically.</span
+              >
+              <span class="r out"
+                ><span class="lbl">Produces</span>An estimate traceable to
+                signal, honest about fact versus bet.</span
+              >
+            </div>
+          </div>
         </div>
         <div class="cap-note">
           These run as one loop, not a sequence: framing points at the risk, a
@@ -956,6 +1029,15 @@
           closeSilo();
       });
 
+      document.querySelectorAll(".cap-head").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const item = btn.closest(".cap");
+          if (!item) return;
+          const isOpen = item.classList.toggle("open");
+          btn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+        });
+      });
+
       function openSilo(btn) {
         const col = btn.closest(".col");
         if (!col || flyer) return;
@@ -967,7 +1049,6 @@
         ph.style.height = r.height + "px";
         ph.className = "fly-ph";
         home.insertBefore(ph, col);
-        col.dataset.tier = "Approach";
         body.appendChild(col);
         col.classList.add("flying");
         col.style.top = r.top + "px";
@@ -1010,6 +1091,189 @@
           placeholder.remove();
         }, 950);
       }
+
+      // ── Thinking-orb, ported from the homepage hero (ported from
+      // thinking-orbs engine/web.ts): a constellation of nodes on a
+      // slowly-spinning sphere wires itself, drawn small here as a mark
+      // above the opening line. ──
+      function initStoryOrb() {
+        const el = document.getElementById("storyOrbCanvas");
+        if (!el || el.dataset.init) return;
+        el.dataset.init = "1";
+
+        const SIZE = el.offsetWidth;
+        if (SIZE < 10) return;
+
+        const dpr = window.devicePixelRatio || 1;
+        el.width = SIZE * dpr;
+        el.height = SIZE * dpr;
+
+        const ctx = el.getContext("2d");
+        if (!ctx) return;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        const COLOR = "#E75437";
+        const SIGNAL_COLOR = "#F4845F";
+        const cx = SIZE / 2;
+        const cy = SIZE / 2;
+
+        const nodeN = 80;
+        const thr = 0.68;
+        const nodeR = 2,
+          nodeRDepth = 2.8;
+        const signals = 8;
+        const lineW = 0.5;
+        const SPEED = 1.8;
+        const spread = 1;
+        const ORB_R = (SIZE / 2) * 0.8 * spread;
+        const rs = Math.pow(SIZE / 600, 0.3);
+
+        function frac(x) {
+          return x - Math.floor(x);
+        }
+        function lerp(a, b, f) {
+          return a + (b - a) * f;
+        }
+        function hashD(a, b) {
+          const h = Math.sin(a * 12.9898 + b * 78.233) * 43758.5453;
+          return h - Math.floor(h);
+        }
+        function vnoise(x, y) {
+          const xi = Math.floor(x),
+            yi = Math.floor(y);
+          let fx = x - xi,
+            fy = y - yi;
+          fx = fx * fx * (3 - 2 * fx);
+          fy = fy * fy * (3 - 2 * fy);
+          const a = hashD(xi, yi),
+            b = hashD(xi + 1, yi),
+            c = hashD(xi, yi + 1),
+            d = hashD(xi + 1, yi + 1);
+          return a + (b - a) * fx + (c - a) * fy + (a - b - c + d) * fx * fy;
+        }
+        const GOLDEN = Math.PI * (3 - Math.sqrt(5));
+        function fibDir(i, n) {
+          const y = 1 - (2 * (i + 0.5)) / n;
+          const rad = Math.sqrt(1 - y * y);
+          const a = i * GOLDEN;
+          return [rad * Math.cos(a), y, rad * Math.sin(a)];
+        }
+        function makeProj(yaw, tilt) {
+          const st = Math.sin(tilt),
+            ct = Math.cos(tilt),
+            sy = Math.sin(yaw),
+            cyw = Math.cos(yaw);
+          return function (x, y, z) {
+            const x1 = x * cyw + z * sy;
+            const z1 = -x * sy + z * cyw;
+            const y1 = y * ct - z1 * st;
+            const z2 = y * st + z1 * ct;
+            return [cx + x1 * ORB_R, cy - y1 * ORB_R, z2];
+          };
+        }
+
+        const reduced =
+          window.matchMedia &&
+          window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const startT = performance.now();
+
+        function frame(t) {
+          ctx.clearRect(0, 0, SIZE, SIZE);
+          const pt = makeProj(t * 0.12, 0.32);
+
+          const nodes = [];
+          for (let i = 0; i < nodeN; i++) {
+            const dir = fibDir(i, nodeN);
+            const nx = dir[0] + 0.3 * (vnoise(i * 0.31 + 9, t * 0.24) - 0.5) * 2;
+            const ny = dir[1] + 0.3 * (vnoise(i * 0.53 + 27, t * 0.21) - 0.5) * 2;
+            const nz = dir[2] + 0.3 * (vnoise(i * 0.77 + 55, t * 0.27) - 0.5) * 2;
+            const nl = Math.sqrt(nx * nx + ny * ny + nz * nz);
+            nodes.push([nx / nl, ny / nl, nz / nl]);
+          }
+
+          ctx.lineWidth = Math.max(0.6, lineW * rs);
+          for (let i2 = 0; i2 < nodeN; i2++) {
+            for (let j2 = i2 + 1; j2 < nodeN; j2++) {
+              const dx = nodes[i2][0] - nodes[j2][0];
+              const dy = nodes[i2][1] - nodes[j2][1];
+              const dz = nodes[i2][2] - nodes[j2][2];
+              const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+              if (dist >= thr) continue;
+              const pa = pt(nodes[i2][0], nodes[i2][1], nodes[i2][2]);
+              const pb = pt(nodes[j2][0], nodes[j2][1], nodes[j2][2]);
+              const edepth = ((pa[2] + pb[2]) / 2 + 1) / 2;
+              ctx.globalAlpha = (1 - dist / thr) * (0.3 + 0.55 * edepth);
+              ctx.strokeStyle = COLOR;
+              ctx.beginPath();
+              ctx.moveTo(pa[0], pa[1]);
+              ctx.lineTo(pb[0], pb[1]);
+              ctx.stroke();
+            }
+          }
+
+          const dots = [];
+          for (let i3 = 0; i3 < nodeN; i3++) {
+            const pn = pt(nodes[i3][0], nodes[i3][1], nodes[i3][2]);
+            const depth = (pn[2] + 1) / 2;
+            const pulse = 1 + 0.25 * Math.sin(t * 1.4 + i3 * 2.7);
+            dots.push({
+              x: pn[0],
+              y: pn[1],
+              z: pn[2],
+              r: (nodeR + nodeRDepth * depth) * pulse * rs,
+              color: COLOR,
+              a: 0.25 + 0.75 * depth,
+            });
+          }
+          for (let s = 0; s < signals; s++) {
+            const seg = Math.floor(t * 0.55 + s * 7.31);
+            const ai = Math.floor(hashD(seg, s * 3.1 + 1.7) * nodeN);
+            const bi = Math.floor(hashD(seg, s * 5.7 + 4.2) * nodeN);
+            if (ai === bi) continue;
+            const f = frac(t * 0.55 + s * 7.31);
+            const sx = lerp(nodes[ai][0], nodes[bi][0], f);
+            const sy2 = lerp(nodes[ai][1], nodes[bi][1], f);
+            const sz = lerp(nodes[ai][2], nodes[bi][2], f);
+            const sl = Math.max(1e-6, Math.sqrt(sx * sx + sy2 * sy2 + sz * sz));
+            const ps = pt(sx / sl, sy2 / sl, sz / sl);
+            const sdepth = (ps[2] + 1) / 2;
+            dots.push({
+              x: ps[0],
+              y: ps[1],
+              z: ps[2],
+              r: (nodeR * 1.5 + nodeRDepth * sdepth) * rs,
+              color: SIGNAL_COLOR,
+              a: 0.5 + 0.5 * sdepth,
+            });
+          }
+
+          dots.sort((p, q) => p.z - q.z);
+          for (let k = 0; k < dots.length; k++) {
+            const dd = dots[k];
+            if (dd.a < 0.02) continue;
+            ctx.globalAlpha = dd.a;
+            ctx.fillStyle = dd.color;
+            ctx.beginPath();
+            ctx.arc(dd.x, dd.y, Math.max(0.3, dd.r), 0, Math.PI * 2);
+            ctx.fill();
+          }
+          ctx.globalAlpha = 1;
+        }
+
+        function tick() {
+          if (!document.body.contains(el)) return;
+          frame(((performance.now() - startT) / 1000) * SPEED);
+          requestAnimationFrame(tick);
+        }
+
+        if (reduced) {
+          frame(1.2);
+        } else {
+          requestAnimationFrame(tick);
+        }
+      }
+
+      initStoryOrb();
     </script>
   </body>
 </html>
