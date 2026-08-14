@@ -33,7 +33,7 @@
         /* spacing scale: one step per relationship, no near-miss values */
         --space-1: 6px; /* domain label to its capabilities */
         --space-2: 10px; /* capability to capability */
-        --space-3: 18px; /* section eyebrow to first domain */
+        --space-3: 18px; /* section heading to first domain */
         --space-4: 32px; /* domain to domain, and around the section */
       }
       * {
@@ -58,7 +58,7 @@
 
       /* ---------- linear document ---------- */
       .doc-wrap {
-        padding: 76px 0 30vh;
+        padding: 48px 0 30vh;
         transition: transform 0.7s cubic-bezier(0.22, 0.9, 0.36, 1);
       }
       body.silo-open {
@@ -277,7 +277,9 @@
         overflow-y: auto;
         z-index: 60;
       }
-      body.silo-open .silo {
+      /* one panel per beat; only the one named by the button's data-silo
+         gets .open, so the rest stay hidden and untouchable */
+      .silo.open {
         pointer-events: auto;
       }
 
@@ -305,7 +307,7 @@
         pointer-events: none;
         transition: opacity 0.25s ease;
       }
-      body.silo-open .silo-back {
+      .silo.open .silo-back {
         opacity: 1;
         pointer-events: auto;
         transition: opacity 0.4s ease 0.7s;
@@ -373,7 +375,7 @@
           filter 0.3s ease,
           visibility 0s linear 0.3s;
       }
-      body.silo-open .silo-main {
+      .silo.open .silo-main {
         opacity: 1;
         filter: blur(0);
         visibility: visible;
@@ -409,6 +411,10 @@
         padding: 14px 16px;
         overflow: hidden;
         box-shadow: none;
+        /* stays scrollable on hover, but the bar never shows: it would
+           otherwise flash in while max-height is still animating open */
+        scrollbar-width: none;
+        -ms-overflow-style: none;
         transition:
           top 0.65s cubic-bezier(0.22, 0.9, 0.36, 1),
           left 0.65s cubic-bezier(0.22, 0.9, 0.36, 1),
@@ -425,38 +431,46 @@
         line-height: 1.55;
       }
       .col.flying.ref-mode {
-        -webkit-mask-image: linear-gradient(180deg, #000 72%, transparent);
-        mask-image: linear-gradient(180deg, #000 72%, transparent);
         max-height: 150px;
         transition-delay: 0s;
       }
+      /* the clipped edge is a veil in the card's own colour rather than a
+         mask-image, so it can fade out as the card opens */
+      .col.flying.ref-mode::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 46px;
+        background: linear-gradient(180deg, transparent, var(--hover));
+        pointer-events: none;
+        transition: opacity 0.45s ease;
+      }
       .col.flying:hover {
         max-height: 80vh !important;
-        -webkit-mask-image: none;
-        mask-image: none;
         overflow-y: auto;
-        transition: max-height 0.4s cubic-bezier(0.22, 0.9, 0.36, 1);
+        transition: max-height 0.55s cubic-bezier(0.22, 0.9, 0.36, 1);
+      }
+      .col.flying.ref-mode:hover::after {
+        opacity: 0;
+      }
+      .col.flying::-webkit-scrollbar {
+        display: none;
       }
       .col.flying .godeep {
         display: none;
       }
-      .sub {
-        font-weight: 700;
-        font-size: 12px;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: var(--orange);
+      .silo-main .caps-heading {
         margin: var(--space-4) 0 var(--space-3);
-        padding-top: 0;
-        border-top: none;
       }
 
       .dom-label {
         font-family: var(--font-serif);
-        font-size: 12px;
+        font-size: 15px;
         font-weight: 600;
-        line-height: 1.3;
-        color: var(--muted);
+        line-height: 1.35;
+        color: var(--ink);
         margin-bottom: var(--space-1);
       }
       .cap + .dom-label {
@@ -465,14 +479,13 @@
 
       .cap {
         border: 1px solid var(--line);
-        border-radius: 24px;
+        border-radius: 4px;
         margin: 0;
         overflow: hidden;
         background: transparent;
         transition:
           background 0.25s ease,
-          border-color 0.25s ease,
-          border-radius 0.45s cubic-bezier(0.22, 0.9, 0.36, 1);
+          border-color 0.25s ease;
       }
       .cap + .cap {
         margin-top: var(--space-2);
@@ -484,7 +497,6 @@
       .cap.open {
         background: var(--hover);
         border-color: var(--line-soft);
-        border-radius: 16px;
       }
       .cap-head {
         display: flex;
@@ -504,13 +516,13 @@
       .cap .nm {
         display: inline-flex;
         align-items: center;
-        font-weight: 700;
-        font-size: 15px;
+        font-size: 13px;
         line-height: 1;
         color: var(--ink);
         transition: color 0.25s ease;
       }
       .cap.open .nm {
+        font-weight: 700;
         color: var(--orange);
       }
       .cap-icon {
@@ -580,29 +592,20 @@
       }
       .cap .r {
         display: block;
-        margin-bottom: 4px;
-        font-size: 14px;
-        line-height: 1.5;
+        font-size: 13px;
+        line-height: 1.7;
         color: var(--body);
       }
+      .cap .r + .r {
+        margin-top: var(--space-2);
+      }
       .cap .r .lbl {
-        font-style: italic;
-        font-weight: 500;
-        color: var(--ink);
-        margin-right: 7px;
-      }
-      .cap .r.out .lbl {
-        font-weight: 500;
+        display: block;
+        font-weight: 700;
         color: var(--ink);
       }
-      .cap-note {
-        font-style: italic;
-        color: var(--muted);
-        font-size: 14px;
-        line-height: 1.55;
-        margin: var(--space-4) 0;
-        padding-top: 0;
-        border-top: none;
+      .silo-main .cap-note {
+        margin-top: var(--space-4);
       }
 
       @media (max-width: 800px) {
@@ -652,7 +655,7 @@
             You have something that has to work. You also have a quiet fear
             riding along with it, because you know how this usually goes. The
             big team. The long discovery. The deck that looks certain. And the
-            month&#8209;four meeting where the confidence turns out to have
+            month&#8209;three meeting where the confidence turns out to have
             been theater, and the cost of it lands on you.
           </p>
           <p class="opening">
@@ -695,6 +698,9 @@
             sharply than when you walked in, occasionally understanding it was
             a different problem than you thought. Not just managed. Understood.
           </p>
+          <button class="godeep" data-silo="understood"
+            >&larr;&nbsp; A deeper dive into this one</button
+          >
         </div>
       </div>
 
@@ -745,11 +751,14 @@
             build itself is the status: always something real running in
             front of you, and every decision written down beside the work, so
             the reasoning is never trapped in one head. Somewhere around week
-            six you notice you&rsquo;ve stopped bracing for the
+            two or three you notice you&rsquo;ve stopped bracing for the
             bad&#8209;news meeting. It isn&rsquo;t coming. That&rsquo;s not
             reassurance: it&rsquo;s your confidence finally pointing the same
             direction as the facts.
           </p>
+          <button class="godeep" data-silo="calm"
+            >&larr;&nbsp; A deeper dive into this one</button
+          >
         </div>
       </div>
 
@@ -776,6 +785,9 @@
             what&rsquo;s possible, and the next one no longer needs our
             permission, or our presence, unless you decide it does.
           </p>
+          <button class="godeep" data-silo="empowered"
+            >&larr;&nbsp; A deeper dive into this one</button
+          >
         </div>
       </div>
 
@@ -868,9 +880,9 @@
           direction, is named as a bet, with a window to settle it.
         </p>
 
-        <div class="sub">The capabilities at work</div>
+        <h2 class="caps-heading">The Domains & Capabilities at Work</h2>
 
-        <div class="dom-label">Framing</div>
+        <h3 class="dom-label">Framing</h3>
         <div class="cap">
           <button class="cap-head" aria-expanded="false">
             <span class="nm">Risk framing</span>
@@ -896,7 +908,7 @@
             </div>
           </div>
         </div>
-        <div class="dom-label">Proving</div>
+        <h3 class="dom-label">Proving</h3>
         <div class="cap">
           <button class="cap-head" aria-expanded="false">
             <span class="nm">Thin&#8209;slice engineering</span>
@@ -947,7 +959,7 @@
             </div>
           </div>
         </div>
-        <div class="dom-label">Deciding</div>
+        <h3 class="dom-label">Deciding</h3>
         <div class="cap">
           <button class="cap-head" aria-expanded="false">
             <span class="nm">Confidence evaluation</span>
@@ -992,14 +1004,14 @@
             </div>
           </div>
         </div>
-        <div class="cap-note">
+        <p class="cap-note">
           These run as one loop, not a sequence: framing points at the risk, a
           slice generates signal against a predefined bar and provokes the
           direction decision, evaluation turns both into a recorded call, and
           estimation prices what the decision made true. The loop repeats at
           the next&#8209;highest risk until there&rsquo;s enough earned
           confidence (that it works, and that it&rsquo;s right) to commit.
-        </div>
+        </p>
 
         <p>
           Ownership works the same way. The right capability is applied by
@@ -1010,12 +1022,551 @@
       </main>
     </div>
 
+    <!-- ===== SILO · beat 1, Understood ===== -->
+    <div class="silo" id="silo-understood">
+      <button class="silo-back">&larr;&nbsp; Back to the narrative</button>
+      <main class="silo-main">
+        <h2>How it actually works</h2>
+
+        <p>
+          The first conversation isn&rsquo;t discovery, exactly, and it
+          isn&rsquo;t sales. It&rsquo;s the gray zone in between (past the
+          point where you&rsquo;ve decided you might work with us, before a
+          delivery engagement is signed) where solution consultants and, when
+          it matters, practitioners are already doing real work. What makes it
+          different from most presales is that we run the same discipline here
+          that governs the build itself: we go after the riskiest question
+          first, and we&rsquo;re willing to build to answer it.
+        </p>
+        <p>
+          The target is one sentence: the single claim that, if it turned out
+          false, would mean the whole project wasn&rsquo;t worth doing.
+          Whatever you first ask for, we treat as a symptom rather than the
+          problem, and we keep asking what it gets you (one level at a time)
+          until we reach something with a number attached. A feature becomes a
+          workflow becomes a cost becomes a margin becomes the thing your board
+          actually asked you about. Most conversations stop three questions too
+          early, at the feature. We don&rsquo;t stop until the answer is
+          something the business would feel, and that sentence becomes the
+          tie&#8209;breaker for everything after it.
+        </p>
+        <p>
+          None of it is done cold. We&rsquo;ve built things shaped like yours
+          before, and that pattern tells us where problems like this usually
+          hide their real risk. But pattern only points; it can&rsquo;t prove
+          your case for your specific situation. So we do the thing most
+          presales won&rsquo;t.
+        </p>
+        <p>
+          We build. When a direction question is what&rsquo;s in doubt (which
+          segment to serve, which approach to commit to, whether the hard part
+          is even possible) a consultant or a practitioner makes the smallest
+          real version of it, right here in the gray zone, and puts it in front
+          of you. Not a production slice: a proof slice, lighter and scrappier,
+          built to do one thing, turn an abstract &ldquo;which way&rdquo; into
+          a decision you can make by reacting to something real. An abstract
+          question stays abstract on a slide; it gets answered the moment
+          there&rsquo;s a working thing to point at.
+        </p>
+        <p>
+          And the proof slice carries the same rule the build does: the
+          conversation it provokes has to close on a recorded call (proceed,
+          redirect, or stop), not a warm feeling. A working thing that produces
+          a great discussion and no decision is a demo, and we&rsquo;re careful
+          not to build those. Sometimes the call is &ldquo;not yet,&rdquo; and
+          that&rsquo;s the cheapest good outcome there is: a redirect before
+          you&rsquo;ve paid for delivery.
+        </p>
+        <p>
+          Everything the gray zone learns (the sentence, the risks, the
+          reasoning, the calls made to win the work) is captured as we go, so
+          it survives the seam into delivery. This is the part most firms drop:
+          presales learns something real, then kickoff starts discovery over
+          from zero because none of it was written anywhere that lasts. We
+          treat the handoff as a capability, not a courtesy. The delivery team
+          inherits the gray zone&rsquo;s context, so month one of the build
+          begins where presales left off, not from a blank page.
+        </p>
+
+        <h2 class="caps-heading">The Domains &amp; Capabilities at Work</h2>
+
+        <h3 class="dom-label">Framing</h3>
+        <div class="cap">
+          <button class="cap-head" aria-expanded="false">
+            <span class="nm">Problem framing</span>
+            <span class="cap-icon" aria-hidden="true"></span>
+          </button>
+          <div class="cap-body">
+            <div class="cap-body-in">
+              <span class="r"
+                ><span class="lbl">Why it&rsquo;s here</span>Whatever you ask
+                for is treated as a symptom; we ladder it (feature to workflow
+                to cost to margin) until we reach something the business would
+                feel. Most conversations stop three questions too early, at the
+                feature.</span
+              >
+              <span class="r out"
+                ><span class="lbl">Produces</span>The one sentence: the single
+                claim the whole initiative has to serve, with a number
+                attached.</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="cap">
+          <button class="cap-head" aria-expanded="false">
+            <span class="nm">Pattern recall</span>
+            <span class="cap-icon" aria-hidden="true"></span>
+          </button>
+          <div class="cap-body">
+            <div class="cap-body-in">
+              <span class="r"
+                ><span class="lbl">Why it&rsquo;s here</span>We&rsquo;ve built
+                things shaped like yours before, so we bring pattern to the
+                search (recognizing where problems like this usually hide their
+                real risk) faster than reading it cold. Pattern points; it
+                doesn&rsquo;t decide.</span
+              >
+              <span class="r out"
+                ><span class="lbl">Produces</span>A short list of where to look
+                first: the candidate risks a cold read would miss.</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="cap">
+          <button class="cap-head" aria-expanded="false">
+            <span class="nm">Direction qualification</span>
+            <span class="cap-icon" aria-hidden="true"></span>
+          </button>
+          <div class="cap-body">
+            <div class="cap-body-in">
+              <span class="r"
+                ><span class="lbl">Why it&rsquo;s here</span>Risk isn&rsquo;t
+                only whether it can be built; it&rsquo;s whether it&rsquo;s
+                worth building. This asks, early and out loud, whether the
+                thing you came for actually moves the sentence, before a dollar
+                is spent on the wrong target.</span
+              >
+              <span class="r out"
+                ><span class="lbl">Produces</span>The direction risk named and
+                a recommendation to proceed, redirect, or stop: surfaced in the
+                gray zone, not deferred into the build.</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <h3 class="dom-label">Building</h3>
+        <div class="cap">
+          <button class="cap-head" aria-expanded="false">
+            <span class="nm">Proof slicing</span>
+            <span class="cap-icon" aria-hidden="true"></span>
+          </button>
+          <div class="cap-body">
+            <div class="cap-body-in">
+              <span class="r"
+                ><span class="lbl">Why it&rsquo;s here</span>When a direction
+                question is what&rsquo;s in doubt, the fastest way to settle it
+                is to make it real. A solution consultant or practitioner
+                builds the smallest real version (lighter and scrappier than a
+                production slice) aimed at forcing the choice into the open, not
+                at clearing a feasibility bar.</span
+              >
+              <span class="r out"
+                ><span class="lbl">Produces</span>A real artifact the room can
+                react to, turning an abstract &ldquo;which direction&rdquo; into
+                a decision, in the gray zone, before delivery is
+                committed.</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <h3 class="dom-label">Evidence</h3>
+        <div class="cap">
+          <button class="cap-head" aria-expanded="false">
+            <span class="nm">Confidence evaluation</span>
+            <span class="cap-icon" aria-hidden="true"></span>
+          </button>
+          <div class="cap-body">
+            <div class="cap-body-in">
+              <span class="r"
+                ><span class="lbl">Why it&rsquo;s here</span>Signal only
+                matters if it changes a decision. This judges signal against
+                the evidence the next commitment demands (the more irreversible
+                the step, the higher the bar) and records an explicit promote,
+                iterate, pivot, or stop: on whether we can build it, and on
+                whether we should. (Here, the commitment in question is
+                proceeding to delivery.)</span
+              >
+              <span class="r out"
+                ><span class="lbl">Produces</span>A logged decision that earns
+                the engagement or redirects it, on feasibility and direction
+                both. No silent scaling.</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <h3 class="dom-label">Continuity</h3>
+        <div class="cap">
+          <button class="cap-head" aria-expanded="false">
+            <span class="nm">Context &amp; decision capture</span>
+            <span class="cap-icon" aria-hidden="true"></span>
+          </button>
+          <div class="cap-body">
+            <div class="cap-body-in">
+              <span class="r"
+                ><span class="lbl">Why it&rsquo;s here</span>Decisions,
+                reasoning, risks and confidence can&rsquo;t live in a slide or
+                one person&rsquo;s memory, or later work can&rsquo;t remember
+                why earlier work decided what it did. This records them in one
+                place as we go, increasingly with AI holding the threads.</span
+              >
+              <span class="r out"
+                ><span class="lbl">Produces</span>A durable, queryable record
+                that governs later decisions and carries the why forward,
+                instead of being reconstructed.</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="cap">
+          <button class="cap-head" aria-expanded="false">
+            <span class="nm">Handoff continuity</span>
+            <span class="cap-icon" aria-hidden="true"></span>
+          </button>
+          <div class="cap-body">
+            <div class="cap-body-in">
+              <span class="r"
+                ><span class="lbl">Why it&rsquo;s here</span>The gray zone
+                learns things (the sentence, the risks, the reasoning, the calls
+                made to win the work) that delivery must inherit, or the
+                engagement pays to rediscover them at kickoff. Most firms drop
+                this; we treat the seam as a capability, not a courtesy.</span
+              >
+              <span class="r out"
+                ><span class="lbl">Produces</span>A presales-to-delivery record
+                that carries context across the seam, so kickoff starts where
+                presales left off, not from zero.</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <p class="cap-note">
+          These run together, not in sequence: the ladder finds the sentence,
+          pattern says where to dig, a proof slice makes the hard direction
+          question decidable, the call gets recorded, and the whole of it is
+          captured to survive into delivery. It&rsquo;s the
+          riskiest&#8209;first loop from Beat 2, run early and cheap, to earn
+          the right to proceed rather than to commit. The most valuable thing it
+          can produce is sometimes a &ldquo;not yet,&rdquo; before a dollar of
+          delivery is spent.
+        </p>
+      </main>
+    </div>
+
+    <!-- ===== SILO · beat 3, Calm ===== -->
+    <div class="silo" id="silo-calm">
+      <button class="silo-back">&larr;&nbsp; Back to the narrative</button>
+      <main class="silo-main">
+        <h2>How it actually works</h2>
+
+        <p>
+          The transparency you feel here isn&rsquo;t a reporting habit we
+          impose on ourselves. It&rsquo;s a property of how the work is built.
+          When the thing is always in a state you can run and look at,
+          there&rsquo;s no gap between what&rsquo;s true and what&rsquo;s
+          shown, and status meetings exist precisely to close that gap. We just
+          don&rsquo;t have the gap to close.
+        </p>
+        <p>
+          The other half is that the questioning which killed the early risks
+          never switches off. Most firms treat discovery as a gate: prove
+          enough to start, then put the questions down and execute the plan.
+          The trouble is that reality keeps arriving after the plan is set, and
+          by then no one is looking for it. We keep the same loop running the
+          whole way; it just moves to smaller, later questions as the big ones
+          die. The assumption everyone else stops checking around month four is
+          still being checked here.
+        </p>
+        <p>
+          Increasingly, some of that watching is done for us. An agent reads
+          the work as it moves and surfaces the assumption that quietly stopped
+          being tracked (the one that becomes a month&#8209;five surprise)
+          while it&rsquo;s still small and cheap to address. The judgment about
+          what to do stays human; the vigilance is what we hand to the machine,
+          because machines don&rsquo;t get tired of checking.
+        </p>
+        <p>
+          And because decisions get made in working code, they get written down
+          beside the code with the same care: what was chosen, and why. Three
+          months in, no one asks you to re&#8209;explain a call from month one,
+          and no departure walks the reasoning out the door. The record
+          isn&rsquo;t documentation produced after the fact; it&rsquo;s a
+          byproduct of deciding in the open.
+        </p>
+        <p>
+          Put those together and you get the thing that changes how the whole
+          engagement feels. On a traditional project, confidence is highest the
+          day you sign (the plan is fresh, nothing has gone wrong yet) and it
+          decays as reality shows up. Here it runs the other direction: lowest
+          at the start, when we know the least, and climbing every week as
+          questions get answered against something real. That&rsquo;s why,
+          somewhere around week six, you notice you&rsquo;ve stopped bracing
+          for the bad&#8209;news meeting. It isn&rsquo;t reassurance.
+          It&rsquo;s your confidence finally pointing the same direction as the
+          facts.
+        </p>
+
+        <h2 class="caps-heading">The Domains &amp; Capabilities at Work</h2>
+
+        <h3 class="dom-label">Building</h3>
+        <div class="cap">
+          <button class="cap-head" aria-expanded="false">
+            <span class="nm">Always&#8209;runnable delivery</span>
+            <span class="cap-icon" aria-hidden="true"></span>
+          </button>
+          <div class="cap-body">
+            <div class="cap-body-in">
+              <span class="r"
+                ><span class="lbl">Why it&rsquo;s here</span>The build is kept
+                in a state you can run and look at, always, so the status is
+                the thing itself, not a report about it. Nothing has to be
+                reconstructed for a review, because nothing is hidden between
+                reviews.</span
+              >
+              <span class="r out"
+                ><span class="lbl">Produces</span>A continuously demonstrable
+                system: the honest status of the work, available without a
+                meeting.</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <h3 class="dom-label">Evidence</h3>
+        <div class="cap">
+          <button class="cap-head" aria-expanded="false">
+            <span class="nm">Continuous risk surfacing</span>
+            <span class="cap-icon" aria-hidden="true"></span>
+          </button>
+          <div class="cap-body">
+            <div class="cap-body-in">
+              <span class="r"
+                ><span class="lbl">Why it&rsquo;s here</span>Most teams put the
+                questions down once the plan is set; reality keeps arriving
+                after that. This keeps the loop running the whole way, and
+                increasingly has an agent read the work as it moves to surface
+                the assumption everyone quietly stopped checking, while
+                it&rsquo;s still small.</span
+              >
+              <span class="r out"
+                ><span class="lbl">Produces</span>Late risk caught early: the
+                month&#8209;five surprise raised in week five instead.</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="cap">
+          <button class="cap-head" aria-expanded="false">
+            <span class="nm">Confidence tracking</span>
+            <span class="cap-icon" aria-hidden="true"></span>
+          </button>
+          <div class="cap-body">
+            <div class="cap-body-in">
+              <span class="r"
+                ><span class="lbl">Why it&rsquo;s here</span>If confidence
+                isn&rsquo;t tracked explicitly, &ldquo;we feel good&rdquo;
+                quietly replaces &ldquo;we know.&rdquo; This keeps confidence
+                tied to signal and visible over time, per capability, so the
+                climb is real and legible rather than a mood.</span
+              >
+              <span class="r out"
+                ><span class="lbl">Produces</span>A visible confidence
+                trajectory that rises as questions close, and exposes the ones
+                that aren&rsquo;t closing.</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <h3 class="dom-label">Continuity</h3>
+        <div class="cap">
+          <button class="cap-head" aria-expanded="false">
+            <span class="nm">Context &amp; decision capture</span>
+            <span class="cap-icon" aria-hidden="true"></span>
+          </button>
+          <div class="cap-body">
+            <div class="cap-body-in">
+              <span class="r"
+                ><span class="lbl">Why it&rsquo;s here</span>Decisions,
+                reasoning, risks and confidence can&rsquo;t live in a slide or
+                one person&rsquo;s memory, or later work can&rsquo;t remember
+                why earlier work decided what it did. This records them in one
+                place as we go, increasingly with AI holding the threads.</span
+              >
+              <span class="r out"
+                ><span class="lbl">Produces</span>A durable, queryable record
+                that governs later decisions and carries the why forward,
+                instead of being reconstructed.</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <p class="cap-note">
+          These run as one continuous loop, the same loop from the
+          riskiest&#8209;first work, narrowed: the build stays visible, risk
+          surfacing keeps finding the next small question, confidence tracking
+          shows the climb, and capture makes every call durable. Evidence
+          intensity decreases as the big risks die. It never reaches zero.
+        </p>
+      </main>
+    </div>
+
+    <!-- ===== SILO · beat 4, Empowered ===== -->
+    <div class="silo" id="silo-empowered">
+      <button class="silo-back">&larr;&nbsp; Back to the narrative</button>
+      <main class="silo-main">
+        <h2>How it actually works</h2>
+
+        <p>
+          The most valuable thing you leave with is capability, and capability
+          doesn&rsquo;t transfer through a handoff document. It transfers
+          through participation. Your people understand why the system works
+          because they were in the room when the decisions got made: watching
+          the tradeoffs, hearing why one path won over another. Understanding
+          is the residue of having been there, and you can&rsquo;t brief it
+          into someone at the end.
+        </p>
+        <p>
+          That participation is backed by a record. Because the reasoning
+          behind every decision was captured as we went, not reconstructed at
+          the close, what your team inherits includes the <em>why</em>, not
+          just the <em>what</em>. They can ask why a thing is the way it is and
+          get an answer, long after the people who decided it have moved on.
+        </p>
+        <p>
+          And what they inherit is buildable&#8209;on. Not a black box we hand
+          over and hope you never need to open, but architecture your team can
+          read, a codebase they can change without fear, systems clean enough
+          to carry the next initiative. Clean isn&rsquo;t an aesthetic here;
+          it&rsquo;s the difference between owning the thing and being hostage
+          to it.
+        </p>
+        <p>
+          This runs against the grain of how most firms are built, and
+          it&rsquo;s worth being blunt about why. For many consultancies your
+          dependency is the business model: the reason you have to call them
+          back is the reason they stay in business. Leaving you genuinely
+          capable works against their own incentive, so, mostly without anyone
+          deciding it, they don&rsquo;t. We treat the dependency you&rsquo;re
+          left with as a defect in the work, not a feature of the contract.
+        </p>
+        <p>
+          The result isn&rsquo;t just competence; it&rsquo;s ambition. Because
+          you&rsquo;ve watched the scariest part of a real build get
+          de&#8209;risked in weeks and ship, your sense of what&rsquo;s hard
+          and what&rsquo;s reachable has been recalibrated against something
+          real. The idea that got laughed out of the room starts to look like a
+          plan, and this time you have the team and the ground to chase it.
+          Whether the next thing needs us becomes a choice you make, not a
+          position we engineered you into.
+        </p>
+
+        <h2 class="caps-heading">The Domains &amp; Capabilities at Work</h2>
+
+        <h3 class="dom-label">Building</h3>
+        <div class="cap">
+          <button class="cap-head" aria-expanded="false">
+            <span class="nm">Durable architecture</span>
+            <span class="cap-icon" aria-hidden="true"></span>
+          </button>
+          <div class="cap-body">
+            <div class="cap-body-in">
+              <span class="r"
+                ><span class="lbl">Why it&rsquo;s here</span>What you keep has
+                to be buildable&#8209;on, not a sealed box. Architecture your
+                team can read, a codebase they can change without fear, systems
+                clean enough to carry the next initiative without calling us to
+                open one we sealed.</span
+              >
+              <span class="r out"
+                ><span class="lbl">Produces</span>Production&#8209;grade ground
+                your team can own and extend on its own.</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <h3 class="dom-label">Continuity</h3>
+        <div class="cap">
+          <button class="cap-head" aria-expanded="false">
+            <span class="nm">Capability transfer</span>
+            <span class="cap-icon" aria-hidden="true"></span>
+          </button>
+          <div class="cap-body">
+            <div class="cap-body-in">
+              <span class="r"
+                ><span class="lbl">Why it&rsquo;s here</span>Understanding is
+                the residue of having been there. Your people are in the room
+                when the hard calls get made (watching the tradeoffs, hearing
+                why one path won) so they understand why the system works, not
+                because we briefed them at the end.</span
+              >
+              <span class="r out"
+                ><span class="lbl">Produces</span>A team that can operate and
+                extend the system on its own judgment, not on our
+                availability.</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="cap">
+          <button class="cap-head" aria-expanded="false">
+            <span class="nm">Context &amp; decision capture</span>
+            <span class="cap-icon" aria-hidden="true"></span>
+          </button>
+          <div class="cap-body">
+            <div class="cap-body-in">
+              <span class="r"
+                ><span class="lbl">Why it&rsquo;s here</span>Decisions,
+                reasoning, risks and confidence can&rsquo;t live in a slide or
+                one person&rsquo;s memory, or later work can&rsquo;t remember
+                why earlier work decided what it did. This records them in one
+                place as we go, increasingly with AI holding the threads.</span
+              >
+              <span class="r out"
+                ><span class="lbl">Produces</span>A durable, queryable record
+                that governs later decisions and carries the why forward,
+                instead of being reconstructed.</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <p class="cap-note">
+          These don&rsquo;t run as a loop; they accumulate. Every decision made
+          in the open, every reason captured, every hour your people spend in
+          the room compounds into a team that doesn&rsquo;t need us, which is
+          the point. Ownership is the same principle turned outward: the
+          capability leaves with you, and the last call we want to own is the
+          one where you decide you can take it from here.
+        </p>
+      </main>
+    </div>
+
     <script is:inline>
       const body = document.body;
       let flyer = null,
         ph = null,
         home = null,
-        homeRect = null;
+        homeRect = null,
+        panel = null;
 
       document.querySelectorAll(".godeep").forEach((a) =>
         a.addEventListener("click", (e) => {
@@ -1023,7 +1574,9 @@
           openSilo(a);
         }),
       );
-      document.querySelector(".silo-back").addEventListener("click", closeSilo);
+      document
+        .querySelectorAll(".silo-back")
+        .forEach((b) => b.addEventListener("click", closeSilo));
       document.addEventListener("keydown", (e) => {
         if (e.key === "Escape" && body.classList.contains("silo-open"))
           closeSilo();
@@ -1040,7 +1593,8 @@
 
       function openSilo(btn) {
         const col = btn.closest(".col");
-        if (!col || flyer) return;
+        const target = document.getElementById("silo-" + btn.dataset.silo);
+        if (!col || !target || flyer) return;
         const r = col.getBoundingClientRect();
         flyer = col;
         home = col.parentNode;
@@ -1055,9 +1609,10 @@
         col.style.left = r.left + "px";
         col.style.width = r.width + "px";
         col.style.maxHeight = r.height + "px";
+        panel = target;
+        panel.scrollTop = 0;
+        panel.classList.add("open");
         body.classList.add("silo-open");
-        const s = document.querySelector(".silo");
-        if (s) s.scrollTop = 0;
         requestAnimationFrame(() =>
           requestAnimationFrame(() => {
             col.classList.add("ref-mode");
@@ -1071,6 +1626,10 @@
 
       function closeSilo() {
         body.classList.remove("silo-open");
+        if (panel) {
+          panel.classList.remove("open");
+          panel = null;
+        }
         if (!flyer || !ph) return;
         const col = flyer,
           placeholder = ph,
