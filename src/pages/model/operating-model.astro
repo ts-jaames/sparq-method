@@ -116,49 +116,490 @@ import PageNav from '../../components/PageNav.astro';
         </figure>
 
         <figure id="fig-2b">
-            <div class="fig-label">Fig. 2B — Build Lifecycle Intensity Model</div>
-            <div class="diagram">
-                <div class="mixing-board-container">
-                    <div class="mixing-board">
-                        <div></div>
-                        <div class="mixing-column-header">Concept</div>
-                        <div class="mixing-column-header">Validation</div>
-                        <div class="mixing-column-header">Commitment</div>
+            <div class="fig-label">Fig. 2B — Capability Intensity Dial</div>
 
-                        <div class="mixing-label">Defining Strategy</div>
-                        <div class="mixing-column"><div class="mixing-bar-wrapper"><div class="mixing-bar-track"><div class="mixing-bar-fill" style="width:80%;color:#E75437"></div></div></div><div class="mixing-intensity" style="color:#E75437">High</div></div>
-                        <div class="mixing-column"><div class="mixing-bar-wrapper"><div class="mixing-bar-track"><div class="mixing-bar-fill" style="width:50%"></div></div></div><div class="mixing-intensity">Med</div></div>
-                        <div class="mixing-column"><div class="mixing-bar-wrapper"><div class="mixing-bar-track"><div class="mixing-bar-fill" style="width:50%"></div></div></div><div class="mixing-intensity">Med</div></div>
+            <!-- Global: the meter rows are built in JS, so Astro's scoped-style hash never lands on them. -->
+            <style is:global>
+                .dial-wrap {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 48px;
+                    align-items: start;
+                    margin: 24px 0 0;
+                }
+                @media (max-width: 720px) { .dial-wrap { grid-template-columns: 1fr; gap: 32px; } }
 
-                        <div class="mixing-label">Designing User Experience</div>
-                        <div class="mixing-column"><div class="mixing-bar-wrapper"><div class="mixing-bar-track"><div class="mixing-bar-fill" style="width:70%;color:#E75437"></div></div></div><div class="mixing-intensity" style="color:#E75437">High</div></div>
-                        <div class="mixing-column"><div class="mixing-bar-wrapper"><div class="mixing-bar-track"><div class="mixing-bar-fill" style="width:50%"></div></div></div><div class="mixing-intensity">Med</div></div>
-                        <div class="mixing-column"><div class="mixing-bar-wrapper"><div class="mixing-bar-track"><div class="mixing-bar-fill" style="width:50%"></div></div></div><div class="mixing-intensity">Med</div></div>
+                .dial-side { display: flex; flex-direction: column; align-items: center; }
+                canvas#dial-canvas { display: block; width: 100%; max-width: 380px; aspect-ratio: 1; cursor: grab; }
+                canvas#dial-canvas:active { cursor: grabbing; }
+                .dial-signal-name {
+                    margin-top: 12px;
+                    font-family: 'Satoshi', sans-serif;
+                    font-size: 18px; font-weight: 700;
+                    color: #1a1a1a; text-align: center;
+                    min-height: 28px;
+                }
+                .dial-signal-hint {
+                    font-family: 'IBM Plex Mono', monospace;
+                    font-size: 10px; letter-spacing: 0.08em;
+                    text-transform: uppercase; color: #999;
+                    margin-top: 2px; text-align: center;
+                }
 
-                        <div class="mixing-label">Experimenting with Spikes</div>
-                        <div class="mixing-column"><div class="mixing-bar-wrapper"><div class="mixing-bar-track"><div class="mixing-bar-fill" style="width:60%"></div></div></div><div class="mixing-intensity">Med</div></div>
-                        <div class="mixing-column"><div class="mixing-bar-wrapper"><div class="mixing-bar-track"><div class="mixing-bar-fill" style="width:40%"></div></div></div><div class="mixing-intensity">Med</div></div>
-                        <div class="mixing-column"><div class="mixing-bar-wrapper"><div class="mixing-bar-track"><div class="mixing-bar-fill" style="width:20%"></div></div></div><div class="mixing-intensity">Low</div></div>
+                .meters-side {
+                    background: #1a1a1a;
+                    border-radius: 12px;
+                    padding: 24px 20px;
+                    display: flex; flex-direction: column; gap: 16px;
+                    box-shadow: inset 0 2px 8px rgba(0,0,0,0.4),
+                                0 1px 0 rgba(255,255,255,0.05);
+                }
+                .vu-row { display: flex; align-items: center; gap: 12px; }
+                .vu-label {
+                    flex: 0 0 150px;
+                    font-family: 'Satoshi', sans-serif;
+                    font-size: 12px; font-weight: 500;
+                    color: rgba(255,255,255,0.6);
+                    text-align: right;
+                }
+                .vu-segments {
+                    display: flex; gap: 3px; flex: 1;
+                    align-items: center;
+                }
+                .vu-seg {
+                    width: 0; flex: 1;
+                    height: 22px;
+                    border-radius: 2px;
+                    background: #2a2a2a;
+                    border: 1px solid #333;
+                    transition: background 0.12s ease,
+                                box-shadow 0.12s ease,
+                                border-color 0.12s ease;
+                }
+                .vu-seg.lit-lo {
+                    background: #4ade80;
+                    border-color: #22c55e;
+                    box-shadow: 0 0 6px rgba(74,222,128,0.5),
+                                inset 0 1px 0 rgba(255,255,255,0.25);
+                }
+                .vu-seg.lit-mid {
+                    background: #facc15;
+                    border-color: #eab308;
+                    box-shadow: 0 0 6px rgba(250,204,21,0.5),
+                                inset 0 1px 0 rgba(255,255,255,0.25);
+                }
+                .vu-seg.lit-hi {
+                    background: #ef4444;
+                    border-color: #dc2626;
+                    box-shadow: 0 0 8px rgba(239,68,68,0.6),
+                                0 0 16px rgba(239,68,68,0.25),
+                                inset 0 1px 0 rgba(255,255,255,0.2);
+                }
 
-                        <div class="mixing-label">Engineering for Production</div>
-                        <div class="mixing-column"><div class="mixing-bar-wrapper"><div class="mixing-bar-track"><div class="mixing-bar-fill" style="width:20%"></div></div></div><div class="mixing-intensity">Low</div></div>
-                        <div class="mixing-column"><div class="mixing-bar-wrapper"><div class="mixing-bar-track"><div class="mixing-bar-fill" style="width:60%"></div></div></div><div class="mixing-intensity">Med</div></div>
-                        <div class="mixing-column"><div class="mixing-bar-wrapper"><div class="mixing-bar-track"><div class="mixing-bar-fill" style="width:90%;color:#E75437"></div></div></div><div class="mixing-intensity" style="color:#E75437">High</div></div>
+                @media (max-width: 720px) {
+                    .vu-label { flex: 0 0 100px; font-size: 11px; }
+                    .vu-seg { height: 18px; }
+                    .meters-side { padding: 16px 12px; }
+                }
+            </style>
 
-                        <div class="mixing-label">Generating Active Evidence</div>
-                        <div class="mixing-column"><div class="mixing-bar-wrapper"><div class="mixing-bar-track"><div class="mixing-bar-fill" style="width:90%;color:#E75437"></div></div></div><div class="mixing-intensity" style="color:#E75437">High</div></div>
-                        <div class="mixing-column"><div class="mixing-bar-wrapper"><div class="mixing-bar-track"><div class="mixing-bar-fill" style="width:60%"></div></div></div><div class="mixing-intensity">Med</div></div>
-                        <div class="mixing-column"><div class="mixing-bar-wrapper"><div class="mixing-bar-track"><div class="mixing-bar-fill" style="width:40%"></div></div></div><div class="mixing-intensity">Med</div></div>
-                    </div>
+            <div class="dial-wrap">
+                <div class="dial-side">
+                    <canvas id="dial-canvas"></canvas>
+                    <div class="dial-signal-name" id="dial-signal-name"></div>
+                    <div class="dial-signal-hint">Drag dial or click a stop</div>
                 </div>
+                <div class="meters-side" id="meters-side"></div>
             </div>
+
             <figcaption>
-                Capabilities remain present throughout the lifecycle; only their intensity shifts.
-                Evidence Work governs these shifts. Strategy and design de-escalate, engineering
-                transitions from spike to production, and active evidence generation decreases but
-                never reaches zero.
+                Turn the dial to a type of work and watch how capability intensities shift.
+                Every signal activates a different mix — nothing ever reaches zero, but the
+                emphasis changes based on what the work demands.
             </figcaption>
         </figure>
+
+        <script>
+        (function(){
+            /* ── Data ── */
+            var SIGNALS = [
+                { name: "Unknown Territory",  short: "Unknown" },
+                { name: "Problem Discovery",  short: "Discover" },
+                { name: "Solution Shaping",   short: "Shape" },
+                { name: "Validation",         short: "Validate" },
+                { name: "Production Build",   short: "Build" },
+                { name: "Optimization",       short: "Optimize" },
+            ];
+
+            var CAPS = [
+                "Defining Strategy",
+                "Designing User Experience",
+                "Experimenting with Spikes",
+                "Engineering for Production",
+                "Generating Active Evidence",
+            ];
+
+            var MATRIX = [
+                [0.90, 0.30, 0.70, 0.10, 0.95],
+                [0.80, 0.70, 0.60, 0.15, 0.85],
+                [0.55, 0.90, 0.50, 0.25, 0.65],
+                [0.35, 0.55, 0.80, 0.40, 0.90],
+                [0.15, 0.25, 0.15, 0.90, 0.45],
+                [0.25, 0.40, 0.25, 0.75, 0.35],
+            ];
+
+            var SEG_COUNT = 12;
+
+            /* ── State ── */
+            var currentAngle = -Math.PI / 2;
+            var targetAngle  = currentAngle;
+            var activeIdx    = 0;
+            var dragging     = false;
+            var displayVals  = MATRIX[0].slice();
+
+            /* ── Canvas ── */
+            var cvs = document.getElementById("dial-canvas");
+            var ctx = cvs.getContext("2d");
+            var namEl = document.getElementById("dial-signal-name");
+            var metersEl = document.getElementById("meters-side");
+
+            var dpr = window.devicePixelRatio || 1;
+            var CX, CY, R, STOP_R, OUTER_R, KNURL_R;
+
+            function resize() {
+                var rect = cvs.getBoundingClientRect();
+                var w = rect.width;
+                cvs.width  = w * dpr;
+                cvs.height = w * dpr;
+                cvs.style.height = w + "px";
+                CX = (w * dpr) / 2;
+                CY = (w * dpr) / 2;
+                R        = CX * 0.42;
+                KNURL_R  = CX * 0.47;
+                STOP_R   = CX * 0.65;
+                OUTER_R  = CX * 0.82;
+            }
+            resize();
+            window.addEventListener("resize", resize);
+
+            /* ── Build VU meter rows ── */
+            CAPS.forEach(function(cap, ci) {
+                var row = document.createElement("div");
+                row.className = "vu-row";
+                var lbl = document.createElement("div");
+                lbl.className = "vu-label";
+                lbl.textContent = cap;
+                row.appendChild(lbl);
+
+                var segs = document.createElement("div");
+                segs.className = "vu-segments";
+                for (var s = 0; s < SEG_COUNT; s++) {
+                    var seg = document.createElement("div");
+                    seg.className = "vu-seg";
+                    seg.id = "vs-" + ci + "-" + s;
+                    segs.appendChild(seg);
+                }
+                row.appendChild(segs);
+                metersEl.appendChild(row);
+            });
+
+            function updateMeters(values) {
+                for (var ci = 0; ci < CAPS.length; ci++) {
+                    var v = values[ci];
+                    var litCount = Math.round(v * SEG_COUNT);
+                    for (var s = 0; s < SEG_COUNT; s++) {
+                        var seg = document.getElementById("vs-" + ci + "-" + s);
+                        if (s < litCount) {
+                            var frac = s / (SEG_COUNT - 1);
+                            if (frac < 0.45)      seg.className = "vu-seg lit-lo";
+                            else if (frac < 0.75)  seg.className = "vu-seg lit-mid";
+                            else                   seg.className = "vu-seg lit-hi";
+                        } else {
+                            seg.className = "vu-seg";
+                        }
+                    }
+                }
+            }
+
+            /* ── Angle helpers ── */
+            var N = SIGNALS.length;
+            var STEP = (Math.PI * 2) / N;
+
+            function stopAngle(idx) { return -Math.PI / 2 + idx * STEP; }
+
+            function normalizeAngle(a) {
+                while (a < -Math.PI) a += Math.PI * 2;
+                while (a >  Math.PI) a -= Math.PI * 2;
+                return a;
+            }
+
+            function nearestStop(angle) {
+                var best = 0, bestDist = Infinity;
+                for (var i = 0; i < N; i++) {
+                    var d = Math.abs(normalizeAngle(angle - stopAngle(i)));
+                    if (d < bestDist) { bestDist = d; best = i; }
+                }
+                return best;
+            }
+
+            function lerpValues(angle) {
+                var idx = nearestStop(angle);
+                var sa  = stopAngle(idx);
+                var diff = normalizeAngle(angle - sa);
+                var absDiff = Math.abs(diff);
+                if (absDiff < 0.01) return MATRIX[idx].slice();
+
+                var neighborIdx = diff > 0 ? (idx + 1) % N : (idx - 1 + N) % N;
+                var t = Math.min(absDiff / (STEP / 2), 1);
+                t = t * t * (3 - 2 * t);
+                var a = MATRIX[idx], b = MATRIX[neighborIdx];
+                return a.map(function(v, i) { return v + (b[i] - v) * t; });
+            }
+
+            /* ── Knob Drawing ── */
+            function draw() {
+                ctx.clearRect(0, 0, cvs.width, cvs.height);
+                var s = dpr;
+
+                // tick marks between stops (subtle)
+                ctx.strokeStyle = "#e0e0e0";
+                ctx.lineWidth = 1 * s;
+                for (var t = 0; t < N * 4; t++) {
+                    var ta = -Math.PI / 2 + t * (Math.PI * 2 / (N * 4));
+                    var isMajor = t % 4 === 0;
+                    var innerT = isMajor ? STOP_R - 8 * s : STOP_R - 4 * s;
+                    ctx.beginPath();
+                    ctx.moveTo(CX + Math.cos(ta) * innerT, CY + Math.sin(ta) * innerT);
+                    ctx.lineTo(CX + Math.cos(ta) * (STOP_R + 2 * s), CY + Math.sin(ta) * (STOP_R + 2 * s));
+                    ctx.strokeStyle = isMajor ? "#ccc" : "#e8e8e8";
+                    ctx.lineWidth = (isMajor ? 1.5 : 0.75) * s;
+                    ctx.stroke();
+                }
+
+                // stop dots + labels
+                for (var i = 0; i < N; i++) {
+                    var a = stopAngle(i);
+                    var sx = CX + Math.cos(a) * STOP_R;
+                    var sy = CY + Math.sin(a) * STOP_R;
+                    var isActive = i === activeIdx;
+
+                    ctx.beginPath();
+                    ctx.arc(sx, sy, (isActive ? 6 : 4) * s, 0, Math.PI * 2);
+                    ctx.fillStyle = isActive ? "#E75437" : "#bbb";
+                    ctx.fill();
+                    if (isActive) {
+                        ctx.beginPath();
+                        ctx.arc(sx, sy, 10 * s, 0, Math.PI * 2);
+                        ctx.strokeStyle = "rgba(231,84,55,0.25)";
+                        ctx.lineWidth = 2 * s;
+                        ctx.stroke();
+                    }
+
+                    var lx = CX + Math.cos(a) * OUTER_R;
+                    var ly = CY + Math.sin(a) * OUTER_R;
+                    ctx.font = (isActive ? "700 " : "400 ") + (12 * s) + "px Satoshi, sans-serif";
+                    ctx.fillStyle = isActive ? "#1a1a1a" : "#888";
+                    ctx.textAlign = "center";
+                    ctx.textBaseline = "middle";
+
+                    var offy = 0;
+                    var sinA = Math.sin(a);
+                    if (sinA < -0.6) offy = -14 * s;
+                    else if (sinA > 0.6) offy = 14 * s;
+                    ctx.fillText(SIGNALS[i].short, lx, ly + offy);
+                }
+
+                // ── Knob shadow ──
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(CX, CY + 4 * s, KNURL_R + 2 * s, 0, Math.PI * 2);
+                ctx.fillStyle = "rgba(0,0,0,0.10)";
+                ctx.filter = "blur(" + (6 * s) + "px)";
+                ctx.fill();
+                ctx.restore();
+
+                // ── Knob outer ring (knurled) ──
+                var knurlGrad = ctx.createRadialGradient(CX, CY - R * 0.3, R * 0.1, CX, CY, KNURL_R);
+                knurlGrad.addColorStop(0, "#d8d8d8");
+                knurlGrad.addColorStop(0.7, "#b0b0b0");
+                knurlGrad.addColorStop(1, "#909090");
+                ctx.beginPath();
+                ctx.arc(CX, CY, KNURL_R, 0, Math.PI * 2);
+                ctx.fillStyle = knurlGrad;
+                ctx.fill();
+
+                // knurl ridges
+                var ridgeCount = 48;
+                for (var r = 0; r < ridgeCount; r++) {
+                    var ra = (r / ridgeCount) * Math.PI * 2;
+                    var rx1 = CX + Math.cos(ra) * (KNURL_R - 3 * s);
+                    var ry1 = CY + Math.sin(ra) * (KNURL_R - 3 * s);
+                    var rx2 = CX + Math.cos(ra) * KNURL_R;
+                    var ry2 = CY + Math.sin(ra) * KNURL_R;
+                    ctx.beginPath();
+                    ctx.moveTo(rx1, ry1);
+                    ctx.lineTo(rx2, ry2);
+                    ctx.strokeStyle = r % 2 === 0 ? "rgba(255,255,255,0.35)" : "rgba(0,0,0,0.12)";
+                    ctx.lineWidth = 1 * s;
+                    ctx.stroke();
+                }
+
+                // ── Knob face ──
+                var faceGrad = ctx.createRadialGradient(
+                    CX - R * 0.15, CY - R * 0.2, R * 0.05,
+                    CX, CY, R
+                );
+                faceGrad.addColorStop(0, "#f5f5f5");
+                faceGrad.addColorStop(0.5, "#e8e8e8");
+                faceGrad.addColorStop(1, "#d0d0d0");
+
+                ctx.beginPath();
+                ctx.arc(CX, CY, R, 0, Math.PI * 2);
+                ctx.fillStyle = faceGrad;
+                ctx.fill();
+
+                // inner bevel ring
+                ctx.beginPath();
+                ctx.arc(CX, CY, R, 0, Math.PI * 2);
+                ctx.strokeStyle = "rgba(255,255,255,0.5)";
+                ctx.lineWidth = 1.5 * s;
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.arc(CX, CY, R - 2 * s, 0, Math.PI * 2);
+                ctx.strokeStyle = "rgba(0,0,0,0.08)";
+                ctx.lineWidth = 1 * s;
+                ctx.stroke();
+
+                // concentric rings on face for texture
+                for (var cr = 0.25; cr < 0.9; cr += 0.15) {
+                    ctx.beginPath();
+                    ctx.arc(CX, CY, R * cr, 0, Math.PI * 2);
+                    ctx.strokeStyle = "rgba(0,0,0,0.04)";
+                    ctx.lineWidth = 0.5 * s;
+                    ctx.stroke();
+                }
+
+                // ── Indicator notch ──
+                var notchInner = R * 0.55;
+                var notchOuter = R * 0.92;
+                var nx1 = CX + Math.cos(currentAngle) * notchInner;
+                var ny1 = CY + Math.sin(currentAngle) * notchInner;
+                var nx2 = CX + Math.cos(currentAngle) * notchOuter;
+                var ny2 = CY + Math.sin(currentAngle) * notchOuter;
+
+                ctx.beginPath();
+                ctx.moveTo(nx1, ny1);
+                ctx.lineTo(nx2, ny2);
+                ctx.strokeStyle = "#E75437";
+                ctx.lineWidth = 3.5 * s;
+                ctx.lineCap = "round";
+                ctx.stroke();
+
+                // indicator glow
+                ctx.beginPath();
+                ctx.moveTo(nx1, ny1);
+                ctx.lineTo(nx2, ny2);
+                ctx.strokeStyle = "rgba(231,84,55,0.25)";
+                ctx.lineWidth = 8 * s;
+                ctx.stroke();
+
+                // ── Center cap ──
+                var capGrad = ctx.createRadialGradient(
+                    CX - 2 * s, CY - 3 * s, 1,
+                    CX, CY, 10 * s
+                );
+                capGrad.addColorStop(0, "#666");
+                capGrad.addColorStop(0.6, "#4a4a4a");
+                capGrad.addColorStop(1, "#333");
+
+                ctx.beginPath();
+                ctx.arc(CX, CY, 10 * s, 0, Math.PI * 2);
+                ctx.fillStyle = capGrad;
+                ctx.fill();
+
+                // cap highlight
+                ctx.beginPath();
+                ctx.arc(CX - 2 * s, CY - 2 * s, 4 * s, 0, Math.PI * 2);
+                ctx.fillStyle = "rgba(255,255,255,0.25)";
+                ctx.fill();
+            }
+
+            /* ── Animation loop ── */
+            function tick() {
+                if (!dragging && Math.abs(normalizeAngle(currentAngle - targetAngle)) > 0.003) {
+                    var diff = normalizeAngle(targetAngle - currentAngle);
+                    currentAngle += diff * 0.12;
+                } else if (!dragging) {
+                    currentAngle = targetAngle;
+                }
+
+                activeIdx = nearestStop(currentAngle);
+                var targetVals = lerpValues(currentAngle);
+
+                // smooth VU meter animation — lerp displayed values toward target
+                for (var i = 0; i < displayVals.length; i++) {
+                    displayVals[i] += (targetVals[i] - displayVals[i]) * 0.15;
+                }
+                updateMeters(displayVals);
+                namEl.textContent = SIGNALS[activeIdx].name;
+
+                draw();
+                requestAnimationFrame(tick);
+            }
+
+            /* ── Interaction ── */
+            function getAngleFromEvent(e) {
+                var rect = cvs.getBoundingClientRect();
+                var x = (e.clientX || (e.touches && e.touches[0].clientX) || 0) - rect.left - rect.width / 2;
+                var y = (e.clientY || (e.touches && e.touches[0].clientY) || 0) - rect.top  - rect.height / 2;
+                return Math.atan2(y, x);
+            }
+
+            cvs.addEventListener("mousedown", function(e) {
+                dragging = true;
+                currentAngle = getAngleFromEvent(e);
+                targetAngle = currentAngle;
+            });
+            window.addEventListener("mousemove", function(e) {
+                if (!dragging) return;
+                currentAngle = getAngleFromEvent(e);
+                targetAngle  = currentAngle;
+            });
+            window.addEventListener("mouseup", function() {
+                if (!dragging) return;
+                dragging = false;
+                targetAngle = stopAngle(nearestStop(currentAngle));
+            });
+
+            cvs.addEventListener("touchstart", function(e) {
+                e.preventDefault();
+                dragging = true;
+                currentAngle = getAngleFromEvent(e);
+                targetAngle  = currentAngle;
+            }, { passive: false });
+            window.addEventListener("touchmove", function(e) {
+                if (!dragging) return;
+                currentAngle = getAngleFromEvent(e);
+                targetAngle  = currentAngle;
+            });
+            window.addEventListener("touchend", function() {
+                if (!dragging) return;
+                dragging = false;
+                targetAngle = stopAngle(nearestStop(currentAngle));
+            });
+
+            cvs.addEventListener("click", function(e) {
+                targetAngle = stopAngle(nearestStop(getAngleFromEvent(e)));
+            });
+
+            /* ── Init ── */
+            targetAngle  = stopAngle(0);
+            currentAngle = targetAngle;
+            updateMeters(MATRIX[0]);
+            namEl.textContent = SIGNALS[0].name;
+            tick();
+        })();
+        </script>
     </section>
 
     <PageNav
