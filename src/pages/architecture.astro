@@ -124,7 +124,80 @@ main:not(.view-list) .list-wrap { display: none; }
 .edge { transition: opacity .25s; }
 .edge.dim { opacity: 0.06; }
 .edge.active .edge-line { stroke-width: 1.6; }
-.edge:hover .edge-line { stroke: var(--text) !important; stroke-width: 1.8; }
+.edge:hover .edge-line {
+  stroke: var(--text) !important;
+  stroke-width: 1.8;
+  marker-end: url(#arw-hover);
+}
+.edge.bi:hover .edge-line { marker-start: url(#arw-hover); }
+
+.pulse-dot { pointer-events: none; }
+@media (prefers-reduced-motion: reduce) {
+  .edge-pulses { display: none; }
+}
+
+/* ── AGENT NODES ── */
+.agent {
+  position: absolute; z-index: 2;
+  width: 22px; height: 22px;
+  margin-left: -11px; margin-top: -11px;
+  padding: 0;
+  border-radius: 50%;
+  border: 0.5px solid var(--border2);
+  background: var(--bg2);
+  color: var(--text3);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: opacity .25s, transform .2s, box-shadow .2s;
+}
+.agent svg { width: 11px; height: 11px; }
+.agent:hover { transform: scale(1.12); box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
+.agent:focus-visible { outline: 1.5px solid var(--text); outline-offset: 2px; }
+.agent.dim { opacity: 0.12; }
+.agent.dim:hover { opacity: 0.25; transform: none; box-shadow: none; }
+.agent-found { color: var(--amber); background: var(--amber-dim); border-color: var(--amber-border); }
+.agent-store { color: var(--domain); background: var(--domain-dim); border-color: var(--domain-border); }
+.agent-surface { color: var(--green); background: var(--green-dim); border-color: var(--green-border); }
+.agent-gtm { color: var(--red); background: var(--red-dim); border-color: var(--red-border); }
+.agent.selected { box-shadow: 0 0 0 1.5px currentColor; }
+.agent-tip {
+  position: absolute;
+  left: 50%; bottom: calc(100% + 10px);
+  transform: translateX(-50%);
+  width: 240px;
+  padding: 10px 12px;
+  background: var(--bg3);
+  border: 0.5px solid var(--border2);
+  border-radius: 8px;
+  text-align: left;
+  white-space: normal;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .15s;
+  z-index: 5;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+}
+.agent:hover .agent-tip,
+.agent:focus-visible .agent-tip { opacity: 1; }
+.agent.flip .agent-tip { left: auto; right: 0; transform: none; }
+.agent-tip-name {
+  display: block;
+  font-family: var(--font);
+  font-size: 12px; font-weight: 500;
+  color: var(--text); margin-bottom: 4px; line-height: 1.35;
+}
+.agent-tip-copy {
+  display: block;
+  font-size: 11px; color: var(--text2); line-height: 1.5;
+}
+.legend-agent {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  border: 0.5px solid var(--border2);
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--text3);
+}
+.legend-agent svg { width: 8px; height: 8px; }
 
 /* ── NODES ── */
 .node {
@@ -172,17 +245,74 @@ main:not(.view-list) .list-wrap { display: none; }
 .node-engagement { background: rgba(229,229,229,0.06); border-color: rgba(229,229,229,0.4); }
 .node-engagement .node-name { color: var(--text); }
 
-/* ── DEPTH MARKER ── */
-.depth-mark {
-  position: absolute; right: 9px; bottom: 7px;
-  font-family: var(--mono); font-size: 11px; line-height: 1;
-  color: var(--text3); transition: color .2s, transform .2s;
+/* ── DRILL BUTTON ── */
+.drill-btn {
+  display: flex; align-items: center; justify-content: center;
+  margin-top: 8px;
+  height: 22px; width: 22px; padding: 0;
+  border: 0.5px solid var(--border2);
+  border-radius: 6px;
+  background: var(--bg3);
+  color: var(--text3);
+  gap: 0; cursor: pointer;
+  overflow: hidden; white-space: nowrap;
+  transition: width .25s ease, padding .25s ease, gap .25s ease,
+              color .2s, background .2s, border-color .2s;
 }
-.node.drilled .depth-mark { color: var(--text); transform: rotate(180deg); }
+.drill-btn svg { width: 12px; height: 12px; flex-shrink: 0; }
+.drill-btn .drill-label {
+  font-family: var(--mono); font-size: 8px; letter-spacing: .06em;
+  text-transform: uppercase;
+  opacity: 0; max-width: 0; overflow: hidden;
+  transition: opacity .2s ease, max-width .25s ease;
+}
+.drill-btn .drill-label-close { display: none; }
+
+.node-found .drill-btn {
+  color: var(--amber);
+  background: var(--amber-dim);
+  border-color: var(--amber-border);
+}
+.node-delivery .drill-btn {
+  color: var(--purple);
+  background: var(--purple-dim);
+  border-color: var(--purple-border);
+}
+.node-store .drill-btn {
+  color: var(--domain);
+  background: var(--domain-dim);
+  border-color: var(--domain-border);
+}
+
+.node.selected .drill-btn,
+.node.drilled .drill-btn {
+  width: 114px; padding: 0 8px 0 5px; gap: 5px;
+  justify-content: flex-start;
+}
+.node.selected .drill-btn .drill-label,
+.node.drilled .drill-btn .drill-label {
+  opacity: 1; max-width: 80px;
+}
+.node.drilled .drill-label-open { display: none; }
+.node.drilled .drill-label-close { display: inline; }
+
+.node-found:hover .drill-btn,
+.node-found.selected .drill-btn,
+.node-found.drilled .drill-btn { background: rgba(239,159,39,0.22); }
+.node-delivery:hover .drill-btn,
+.node-delivery.selected .drill-btn,
+.node-delivery.drilled .drill-btn { background: rgba(127,119,221,0.22); }
+.node-store:hover .drill-btn,
+.node-store.selected .drill-btn,
+.node-store.drilled .drill-btn { background: rgba(123,178,212,0.22); }
+
 .depth-key {
-  font-family: var(--mono); font-size: 11px; color: var(--text3);
-  width: 8px; display: inline-block; text-align: center;
+  width: 16px; height: 16px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 0.5px solid var(--border2); border-radius: 4px;
+  color: var(--text3);
 }
+.depth-key svg { width: 10px; height: 10px; }
 
 /* ── SIDEBAR ── */
 .sidebar {
@@ -191,6 +321,7 @@ main:not(.view-list) .list-wrap { display: none; }
   overflow-y: auto;
 }
 .sidebar-section { padding: 20px 24px; border-bottom: 0.5px solid var(--border); }
+.sidebar.node-selected .sidebar-context { display: none; }
 .sidebar-title {
   font-family: var(--mono); font-size: 9px; letter-spacing: .08em;
   text-transform: uppercase; color: var(--text3); margin-bottom: 12px;
@@ -333,7 +464,7 @@ footer {
 <header>
   <div class="header-left">
     <h1>SparqOS relationships</h1>
-    <p>Not a hierarchy — a set of things that inform each other. Every line is a claim about direction: who feeds whom, and where the feed runs both ways. The engagement is what drives it; ADLC is the engine it moves through; the store is the memory underneath; GTM is what the two of them make sellable. Click a node to isolate what it touches, and again to drop one altitude inside it — where an interior has actually been defined.</p>
+    <p>Not a hierarchy — a set of things that inform each other. Every line is a claim about direction: who feeds whom, and where the feed runs both ways. The engagement is what drives it; ADLC is the engine it moves through; the store is the memory underneath; GTM is what the two of them make sellable. Click a node to isolate what it touches. Nodes with a shovel can be dug one altitude deeper — where an interior has actually been defined.</p>
   </div>
   <div class="header-right">
     <div class="legend" id="legend"></div>
@@ -360,7 +491,7 @@ footer {
       <div id="node-placeholder" class="detail-empty">Click any node — or any lens — to see what it informs, what informs it, and where the relationship runs both ways.</div>
       <div id="node-detail"></div>
     </div>
-    <div class="sidebar-section">
+    <div class="sidebar-section sidebar-context">
       <div class="sidebar-title">The two stores</div>
       <div class="def-row">
         <div class="def-term">SPOT — the data lake</div>
@@ -379,7 +510,7 @@ footer {
         <div class="def-body">The live state of one engagement, between the Engagement and the lake. Still an open question, so it is not drawn.</div>
       </div>
     </div>
-    <div class="sidebar-section">
+    <div class="sidebar-section sidebar-context">
       <div class="sidebar-title">Open questions</div>
       <div id="open-body"></div>
     </div>
@@ -458,7 +589,7 @@ var NODES = [
   {
     id: 'talent', name: 'Talent & resourcing', sub: 'who does the work',
     cat: 'found', x: 30, y: 430,
-    desc: 'Who we put on the work, and how we source and place them. Downstream of the capability model, in a loop with both ADLC (delivery shows what the staffing actually needs to be) and commercials (what we can staff sets what we can price, and what we price sets what we can staff).',
+    desc: 'Who we put on the work, and how we source and place them. Downstream of the capability model, in a loop with ADLC — delivery shows what the staffing actually needs to be. It does not feed commercials: the offer is capabilities at levels, packaged as an outcome, not seats.',
     depth: 'none',
     needs: 'The bench, the roles, and how a capability level maps to a person exist in practice but are not written down anywhere this map can point to. Until they are, drilling in here would be invention.'
   },
@@ -556,14 +687,14 @@ var NODES = [
   {
     id: 'gtm', name: 'GTM IQs & accelerators', sub: 'packaged proof',
     cat: 'gtm', x: 530, y: 60,
-    desc: 'The reusable, packaged form of what Sparq already knows how to do. Fed by ADLC (what delivery proves), by The Shop (what gets built there), and by institutional intelligence (what the record teaches). Feeds commercials.',
+    desc: 'The reusable, packaged form of what Sparq already knows how to do. Fed by ADLC (what delivery proves), by The Shop (what gets built there), and by institutional intelligence (what the record teaches). Feeds commercials, and Intelligence Studio.',
     depth: 'none',
     needs: 'The IQs and accelerators are not enumerated anywhere this map can point to, so there is no inside to open — only a claim that the category exists.'
   },
   {
     id: 'ii', name: 'Institutional intelligence', sub: 'what the lake teaches',
     cat: 'store', x: 530, y: 430,
-    desc: 'The store of what the data lake teaches — the patterns, benchmarks and judgment extracted from the record. It is not the record. It informs Solutions and GTM IQs & accelerators, is in a loop with ADLC, and is in a loop with the store it reads from. It is also where the economic return lands: commercials feeds back what actually paid off.',
+    desc: 'The store of what the data lake teaches — the patterns, benchmarks and judgment extracted from the record. It is not the record. It informs Solutions, GTM IQs & accelerators, and commercials — pricing from historical actuals. It is in a loop with ADLC, and in a loop with the store it reads from. Commercials also feeds back what actually paid off.',
     depth: 'none',
     needs: 'Described as a store, not yet as a structure. What a unit of institutional intelligence actually is — a pattern, a benchmark, a rule — is undefined, so there is nothing honest to open.'
   },
@@ -591,15 +722,15 @@ var NODES = [
   {
     id: 'comm', name: 'Commercials', sub: 'how it is priced and packaged',
     cat: 'gtm', x: 780, y: 60,
-    desc: 'How the work is priced and packaged. The convergence point: the capability model, talent, ADLC, Solutions and GTM IQs & accelerators all feed it, and it prices the engagement. It is not terminal — what actually paid off returns to institutional intelligence, which is the loop that makes execution cheaper the more of it there is.',
+    desc: 'How the work is priced and packaged. The convergence point: the capability model, ADLC, Solutions, GTM IQs & accelerators, and institutional intelligence all feed it — capabilities at levels, not seats — and it prices the engagement. It is not terminal — what actually paid off returns to institutional intelligence, which is the loop that makes execution cheaper the more of it there is.',
     depth: 'none',
     needs: 'Pricing shapes, rate structure, and how a price is rebuilt when scope moves are not written down anywhere this map can point to.'
   },
   {
     id: 'studio', name: 'Intelligence Studio', sub: 'embedded in client systems',
     cat: 'gtm', x: 780, y: 620, open: true,
-    desc: 'Embedded externally, in the client’s own systems — deliberately distinct from the client experience surface, which is Sparq’s surface. Drawn with one relationship out and none in.',
-    note: 'Open: what feeds Intelligence Studio — GTM IQs, institutional intelligence, ADLC? Undrawn for now.',
+    desc: 'Embedded externally, in the client’s own systems — deliberately distinct from the client experience surface, which is Sparq’s surface. GTM IQs & accelerators feed it; it reaches into the client’s own systems. Whether institutional intelligence and ADLC also feed it is still open.',
+    note: 'Open: GTM IQs feed it now. Whether institutional intelligence and ADLC also do is still uncalled.',
     depth: 'none',
     needs: 'No interior while its inbound relationships are still open. What supplies it has to be called before what is inside it can be.'
   },
@@ -624,7 +755,6 @@ var EDGES = [
   ['cap', 'comm', '>'],
   ['cap', 'solutions', '<>'],
   /* talent & resourcing */
-  ['talent', 'comm', '<>'],
   ['talent', 'adlc', '<>'],
   /* the engagement */
   ['engage', 'adlc', '>', 'flows through'],
@@ -651,12 +781,45 @@ var EDGES = [
   ['ii', 'gtm', '>'],
   ['gtm', 'comm', '>'],
   ['ii', 'solutions', '>'],
+  ['gtm', 'studio', '>'],
   ['studio', 'clientsys', '>'],
   /* the shop */
   ['shop', 'gtm', '>'],
   /* the economic return — what paid off comes back as learning */
-  ['comm', 'ii', '>', 'returns what actually paid off to']
+  ['comm', 'ii', '>', 'returns what actually paid off to'],
+  ['ii', 'comm', '>', 'feeds pricing from']
 ];
+
+/* ──────────────────────────────────────────────────────────────
+   PULSES  keyed by from>to or from<>to — only the living paths.
+   ────────────────────────────────────────────────────────────── */
+var PULSES = {
+  'flow>cx': 'fast',
+  'cx>spot': 'fast',
+  'talent<>adlc': 'fast',
+  'spot<>ii': 'slow',
+  'ii>comm': 'slow'
+};
+
+/* ──────────────────────────────────────────────────────────────
+   AGENTS  sit on the midpoint of a named path.
+   ────────────────────────────────────────────────────────────── */
+var AGENTS = [
+  { id: 'sanitize',  a: 'spot',   b: 'ii',   cat: 'store',
+    name: 'Data Sanitization & Synthesis Agent',
+    copy: 'Auto-scrubs client IP, anonymizes telemetry, extracts reusable pattern embeddings, and proposes new playbook rules.' },
+  { id: 'routing',   a: 'talent', b: 'adlc', cat: 'found',
+    name: 'Synthetic Execution & Routing Engine',
+    copy: 'Matches human experts with domain-specific LLM agent toolkits to execute ADLC stages.' },
+  { id: 'harvest',   a: 'cx',     b: 'spot', cat: 'surface',
+    name: 'Telemetry & Eval Harvester',
+    copy: 'Captures user feedback, retrieval accuracy, and model drift, feeding execution telemetry back to the lake.' },
+  { id: 'benchmark', a: 'ii',     b: 'comm', cat: 'gtm', directed: true,
+    name: 'Value Benchmark Agent',
+    copy: 'Translates historical effort actuals and client outcomes into dynamic pricing packages and proof points.' }
+];
+var byAgent = {};
+AGENTS.forEach(function (ag) { byAgent[ag.id] = ag; });
 
 /* ──────────────────────────────────────────────────────────────
    OPEN QUESTIONS
@@ -674,8 +837,8 @@ var OPEN = [
   },
   {
     label: 'Intelligence Studio',
-    text: 'One relationship out — into the client’s own systems — and nothing in. Whatever feeds it (GTM IQs, institutional intelligence, ADLC) is not yet called, so it sits deliberately unconnected rather than guessed at.',
-    focus: ['studio', 'clientsys']
+    text: 'GTM IQs & accelerators now feed it, and it still reaches into the client’s own systems. Whether institutional intelligence and ADLC also feed it is not yet called — so those inbound edges stay off the map rather than guessed at.',
+    focus: ['studio', 'clientsys', 'gtm']
   }
 ];
 
@@ -693,25 +856,25 @@ var LENSES = [
     id: 'spine',
     label: 'Capability spine',
     nodes: ['cap', 'talent', 'adlc', 'comm', 'solutions'],
-    explanation: '<div class="detail-name">Capability spine</div><div class="detail-kind">Lens</div><div class="detail-desc">What Sparq can do, who does it, how it runs, what it is sold as, and what it costs — the load-bearing chain.</div><ul class="detail-bullets"><li><strong>The shape:</strong> the capability model is the only node here that is purely upstream of the others, and even it is corrected by ADLC and Solutions. Everything else in the spine is in at least one loop.</li><li><strong>Commercials is the convergence point:</strong> capability, talent, ADLC and Solutions all price through it, and it pushes back on three of the four.</li><li><strong>What to watch:</strong> a capability model that is not corrected by delivery becomes a brochure. The two bidirectional edges — ADLC and Solutions — are the ones that keep it honest.</li></ul>'
+    explanation: '<div class="detail-name">Capability spine</div><div class="detail-kind">Lens</div><div class="detail-desc">What Sparq can do, who does it, how it runs, what it is sold as, and what it costs — the load-bearing chain.</div><ul class="detail-bullets"><li><strong>The shape:</strong> the capability model is the only node here that is purely upstream of the others, and even it is corrected by ADLC and Solutions. Everything else in the spine is in at least one loop.</li><li><strong>Commercials is the convergence point:</strong> capability, ADLC and Solutions price through it, and it pushes back on ADLC and Solutions. Talent fills the work; it is not on the commercial inbound — the offer is capabilities at levels, packaged as an outcome.</li><li><strong>What to watch:</strong> a capability model that is not corrected by delivery becomes a brochure. The two bidirectional edges — ADLC and Solutions — are the ones that keep it honest.</li></ul>'
   },
   {
     id: 'gtm',
     label: 'GTM',
     nodes: ['solutions', 'gtm', 'studio', 'comm', 'ii', 'cx', 'clientsys'],
-    explanation: '<div class="detail-name">GTM</div><div class="detail-kind">Lens</div><div class="detail-desc">The market-facing edge: Solutions as the promise, IQs and accelerators as packaged proof, commercials as the price, Intelligence Studio as the piece that lives in the client’s estate.</div><ul class="detail-bullets"><li><strong>Where the proof comes from:</strong> institutional intelligence feeds both Solutions and the IQs. The client experience surface is what actually proves the promise — GTM claims nothing the surface has not carried.</li><li><strong>Two different externals:</strong> the client experience surface is Sparq’s surface that the client meets. Intelligence Studio is embedded in the client’s own systems. Same market, different side of the boundary.</li><li><strong>The hole:</strong> Intelligence Studio has no inbound relationships drawn. Until they are called, it is a claim without a supply chain.</li></ul>'
+    explanation: '<div class="detail-name">GTM</div><div class="detail-kind">Lens</div><div class="detail-desc">The market-facing edge: Solutions as the promise, IQs and accelerators as packaged proof, commercials as the price, Intelligence Studio as the piece that lives in the client’s estate.</div><ul class="detail-bullets"><li><strong>Where the proof comes from:</strong> institutional intelligence feeds both Solutions and the IQs. The client experience surface is what actually proves the promise — GTM claims nothing the surface has not carried.</li><li><strong>Two different externals:</strong> the client experience surface is Sparq’s surface that the client meets. Intelligence Studio is embedded in the client’s own systems. Same market, different side of the boundary.</li><li><strong>The hole:</strong> GTM IQs now feed Intelligence Studio. Institutional intelligence and ADLC still have no inbound drawn — until they are called, Studio’s supply chain is incomplete.</li></ul>'
   },
   {
     id: 'compound',
     label: 'Compounding loop',
     nodes: ['engage', 'adlc', 'spot', 'ii', 'gtm', 'comm'],
-    explanation: '<div class="detail-name">Compounding loop</div><div class="detail-kind">Lens</div><div class="detail-desc">Why the more Sparq executes, the less the next execution costs — drawn, not implied.</div><ul class="detail-bullets"><li><strong>The circuit:</strong> commercials prices an engagement → the engagement flows through ADLC → it deposits evidence into the lake → the lake teaches institutional intelligence → that gets packaged as IQs and accelerators → which feed commercials → which prices the next engagement.</li><li><strong>The return edge:</strong> commercials also feeds institutional intelligence directly with what actually paid off. Without it, commercials is terminal — money in, nothing back — and the system has no way to learn which promises were worth making.</li><li><strong>What makes it compound:</strong> each pass through leaves something reusable behind. Nothing here is a new capability; it is the same work, cheaper, because the record of the last one is still available.</li></ul>'
+    explanation: '<div class="detail-name">Compounding loop</div><div class="detail-kind">Lens</div><div class="detail-desc">Why the more Sparq executes, the less the next execution costs — drawn, not implied.</div><ul class="detail-bullets"><li><strong>The circuit:</strong> commercials prices an engagement → the engagement flows through ADLC → it deposits evidence into the lake → the lake teaches institutional intelligence → that feeds commercials directly (pricing from historical actuals) and is packaged as IQs and accelerators → which also feed commercials → which prices the next engagement.</li><li><strong>The return edge:</strong> commercials also feeds institutional intelligence with what actually paid off. Without both directions, commercials is terminal — money in, nothing back — and the system has no way to learn which promises were worth making.</li><li><strong>What makes it compound:</strong> each pass through leaves something reusable behind. Nothing here is a new capability; it is the same work, cheaper, because the record of the last one is still available.</li></ul>'
   },
   {
     id: 'open',
     label: 'Open questions',
-    nodes: ['shop', 'spot', 'engage', 'studio', 'clientsys'],
-    explanation: '<div class="detail-name">Open questions</div><div class="detail-kind">Lens</div><div class="detail-desc">The three places this map is asserting something it cannot yet defend.</div><ul class="detail-bullets"><li><strong>One store or two:</strong> SPOT is the history-wide lake. Whether the live state of an engagement is its own store, between the Engagement and SPOT, is unresolved — and it changes the shape of the evidence loop.</li><li><strong>The Shop:</strong> feeding GTM IQs is clear enough. The loop back into ADLC rests on it being a playground that surfaces new ways of working. Not confirmed.</li><li><strong>Intelligence Studio:</strong> drawn with one edge out and none in.</li><li><strong>Read the rest as settled:</strong> everything not lit here is a relationship the map is willing to defend. Depth is a separate claim — a node without the ⌄ marker has no defined interior, which is a gap, not a question.</li></ul>'
+    nodes: ['shop', 'spot', 'engage', 'studio', 'clientsys', 'gtm'],
+    explanation: '<div class="detail-name">Open questions</div><div class="detail-kind">Lens</div><div class="detail-desc">The three places this map is asserting something it cannot yet defend.</div><ul class="detail-bullets"><li><strong>One store or two:</strong> SPOT is the history-wide lake. Whether the live state of an engagement is its own store, between the Engagement and SPOT, is unresolved — and it changes the shape of the evidence loop.</li><li><strong>The Shop:</strong> feeding GTM IQs is clear enough. The loop back into ADLC rests on it being a playground that surfaces new ways of working. Not confirmed.</li><li><strong>Intelligence Studio:</strong> GTM IQs now feed it. Institutional intelligence and ADLC still have no inbound drawn.</li><li><strong>Read the rest as settled:</strong> everything not lit here is a relationship the map is willing to defend. Depth is a separate claim — a node without a shovel has no defined interior, which is a gap, not a question.</li></ul>'
   }
 ];
 
@@ -741,6 +904,9 @@ function edgeSentence(e) {
   return e[2] === '<>' ? a + ' ↔ ' + b + ' — each informs the other' : a + ' ' + verb + ' ' + b;
 }
 
+var SHOVEL_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 22v-5l5-5 5 5-5 5z"/><path d="M9.5 14.5 16 8"/><path d="m17 2 5 5-.5.5a3.53 3.53 0 0 1-5 0 3.53 3.53 0 0 1 0-5L17 2"/></svg>';
+var SPARK_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg>';
+
 /* ──────────────────────────────────────────────────────────────
    RENDER: legend, controls, nodes, list, open questions
    ────────────────────────────────────────────────────────────── */
@@ -749,7 +915,8 @@ function edgeSentence(e) {
   Object.keys(CATS).forEach(function (k) {
     html += '<div class="legend-item"><span class="legend-dot" style="background:' + CATS[k].color + '"></span>' + CATS[k].label + '</div>';
   });
-  html += '<div class="legend-item" title="Click a marked node twice to drive one altitude down"><span class="depth-key">⌄</span>Has a defined interior</div>';
+  html += '<div class="legend-item" title="Select the node, then Dig deeper"><span class="depth-key">' + SHOVEL_SVG + '</span>Has a defined interior</div>';
+  html += '<div class="legend-item" title="An agent governs this flow"><span class="legend-agent">' + SPARK_SVG + '</span>Agent on a flow</div>';
   document.getElementById('legend').innerHTML = html;
 })();
 
@@ -779,7 +946,12 @@ function edgeSentence(e) {
       '<div class="node-name">' + n.name + '</div>' +
       '<div class="node-sub">' + n.sub + '</div>' +
       (n.open ? '<span class="open-flag">Open</span>' : '') +
-      (n.depth === 'defined' ? '<span class="depth-mark" title="Defined interior — click again to drill in">⌄</span>' : '') +
+      (n.depth === 'defined'
+        ? '<button type="button" class="drill-btn" onclick="onDrillBtn(event, \'' + n.id + '\')" aria-label="Dig deeper">' +
+          SHOVEL_SVG +
+          '<span class="drill-label drill-label-open">Dig deeper</span>' +
+          '<span class="drill-label drill-label-close">Close</span></button>'
+        : '') +
       '</div>';
   });
   html += '<div class="band-label" style="left:32px;top:212px">Foundations</div>';
@@ -850,6 +1022,7 @@ document.getElementById('edge-count').textContent =
 var SVGNS = 'http://www.w3.org/2000/svg';
 var MARKER_FILL = {
   idle: 'rgba(229,229,229,0.42)',
+  hover: '#E5E5E5',
   found: CATS.found.color,
   delivery: CATS.delivery.color,
   store: CATS.store.color,
@@ -900,6 +1073,39 @@ function trim(pts, ba, bb) {
   return pts.slice(s, e + 1);
 }
 
+function pulseOf(a, b, bi) {
+  if (bi) return PULSES[a + '<>' + b] || PULSES[b + '<>' + a] || null;
+  return PULSES[a + '>' + b] || null;
+}
+
+function pairKey(a, b) {
+  return a < b ? a + '|' + b : b + '|' + a;
+}
+
+function addPulseDot(g, pathId, speed, reverse, delay) {
+  var c = el('circle', {
+    class: 'pulse-dot pulse-' + speed,
+    r: '1.4',
+    fill: 'rgba(229,229,229,0.8)'
+  });
+  var motion = el('animateMotion', {
+    dur: speed === 'slow' ? '5s' : '1.2s',
+    repeatCount: 'indefinite',
+    begin: delay + 's'
+  });
+  if (reverse) {
+    motion.setAttribute('keyPoints', '1;0');
+    motion.setAttribute('keyTimes', '0;1');
+    motion.setAttribute('calcMode', 'linear');
+  }
+  var mp = el('mpath', {});
+  mp.setAttribute('href', '#' + pathId);
+  mp.setAttributeNS('http://www.w3.org/1999/xlink', 'href', '#' + pathId);
+  motion.appendChild(mp);
+  c.appendChild(motion);
+  g.appendChild(c);
+}
+
 function drawEdges() {
   var svg = document.getElementById('edges');
   svg.innerHTML = '';
@@ -918,16 +1124,29 @@ function drawEdges() {
 
   var boxes = {};
   NODES.forEach(function (n) { boxes[n.id] = boxOf(n.id); });
+  var pairBows = {};
 
-  EDGES.forEach(function (edge) {
+  EDGES.forEach(function (edge, idx) {
     var a = edge[0], b = edge[1], bi = edge[2] === '<>';
     var ba = boxes[a], bb = boxes[b];
     var p1 = { x: ba.x + ba.w / 2, y: ba.y + ba.h / 2 };
     var p2 = { x: bb.x + bb.w / 2, y: bb.y + bb.h / 2 };
+    var usedBows = pairBows[pairKey(a, b)] || [];
+    var search = BOWS;
+    if (usedBows.length) {
+      var prev = usedBows[0];
+      var preferred = BOWS.filter(function (bow) {
+        if (usedBows.indexOf(bow) !== -1) return false;
+        if (prev === 0) return Math.abs(bow) >= 210;
+        return bow * prev < 0 && Math.abs(bow) >= 150;
+      });
+      var rest = BOWS.filter(function (bow) { return usedBows.indexOf(bow) === -1 && preferred.indexOf(bow) === -1; });
+      search = preferred.concat(rest);
+    }
 
-    var best = null, bestHits = Infinity;
-    for (var i = 0; i < BOWS.length; i++) {
-      var pts = trim(curvePoints(p1, p2, BOWS[i]), ba, bb);
+    var best = null, bestHits = Infinity, bestBow = null;
+    for (var i = 0; i < search.length; i++) {
+      var pts = trim(curvePoints(p1, p2, search[i]), ba, bb);
       var hits = 0;
       for (var j = 0; j < pts.length; j++) {
         for (var k = 0; k < NODES.length; k++) {
@@ -936,24 +1155,72 @@ function drawEdges() {
           if (inBox(boxes[nid], pts[j], 9)) { hits++; break; }
         }
       }
-      if (hits < bestHits) { bestHits = hits; best = pts; }
+      if (hits < bestHits) { bestHits = hits; best = pts; bestBow = search[i]; }
       if (hits === 0) break;
     }
+    pairBows[pairKey(a, b)] = usedBows.concat([bestBow]);
 
+    var pathId = 'elp-' + idx;
     var d = 'M' + best.map(function (p) { return p.x.toFixed(1) + ' ' + p.y.toFixed(1); }).join(' L');
 
-    var g = el('g', { class: 'edge' });
+    var g = el('g', { class: bi ? 'edge bi' : 'edge' });
     g.appendChild(el('title', {})).textContent = edgeSentence(edge);
     var hit = el('path', { class: 'edge-hit', d: d });
-    var line = el('path', { class: 'edge-line', d: d, 'marker-end': 'url(#arw-idle)' });
+    var line = el('path', { class: 'edge-line', id: pathId, d: d, 'marker-end': 'url(#arw-idle)' });
     if (bi) line.setAttribute('marker-start', 'url(#arw-idle)');
     g.appendChild(hit);
     g.appendChild(line);
+
+    var speed = pulseOf(a, b, bi);
+    if (speed) {
+      var pulses = el('g', { class: 'edge-pulses' });
+      var count = speed === 'slow' ? (bi ? 1 : 2) : (bi ? 2 : 3);
+      var gap = speed === 'slow' ? 2.5 : 0.4;
+      for (var p = 0; p < count; p++) addPulseDot(pulses, pathId, speed, false, p * gap);
+      if (bi) {
+        for (var r = 0; r < count; r++) addPulseDot(pulses, pathId, speed, true, r * gap + gap / 2);
+      }
+      g.appendChild(pulses);
+    }
+
     svg.appendChild(g);
-    edgeEls.push({ g: g, line: line, a: a, b: b, bi: bi });
+    edgeEls.push({ g: g, line: line, a: a, b: b, bi: bi, pts: best });
   });
 
+  placeAgents();
   paint();
+}
+
+function placeAgents() {
+  var canvas = document.getElementById('canvas');
+  canvas.querySelectorAll('.agent').forEach(function (x) { x.remove(); });
+  AGENTS.forEach(function (ag) {
+    var e = null;
+    for (var i = 0; i < edgeEls.length; i++) {
+      var ed = edgeEls[i];
+      var match = ag.directed
+        ? (ed.a === ag.a && ed.b === ag.b)
+        : ((ed.a === ag.a && ed.b === ag.b) || (ed.a === ag.b && ed.b === ag.a));
+      if (match) { e = ed; break; }
+    }
+    if (!e || !e.pts || !e.pts.length) return;
+    var mid = e.pts[Math.floor(e.pts.length / 2)];
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'agent agent-' + ag.cat + (mid.x > 760 ? ' flip' : '');
+    btn.id = 'agent-' + ag.id;
+    btn.style.left = mid.x + 'px';
+    btn.style.top = mid.y + 'px';
+    btn.setAttribute('aria-label', ag.name);
+    btn.innerHTML = SPARK_SVG +
+      '<span class="agent-tip"><span class="agent-tip-name">' + ag.name + '</span>' +
+      '<span class="agent-tip-copy">' + ag.copy + '</span></span>';
+    btn.addEventListener('click', function (ev) {
+      ev.stopPropagation();
+      selectAgent(ag.id);
+    });
+    canvas.appendChild(btn);
+  });
 }
 
 /* ──────────────────────────────────────────────────────────────
@@ -961,25 +1228,81 @@ function drawEdges() {
    ────────────────────────────────────────────────────────────── */
 var currentNode = null;
 var currentLens = null;
+var currentAgent = null;
 var drilled = false;
+
+function agentOnEdge(ag, e) {
+  if (ag.directed) return e.a === ag.a && e.b === ag.b;
+  return (e.a === ag.a && e.b === ag.b) || (e.a === ag.b && e.b === ag.a);
+}
+
+function paintAgents() {
+  var agents = document.querySelectorAll('.agent');
+  if (currentAgent) {
+    agents.forEach(function (el2) {
+      el2.classList.toggle('selected', el2.id === 'agent-' + currentAgent);
+      el2.classList.toggle('dim', el2.id !== 'agent-' + currentAgent);
+    });
+    return;
+  }
+  if (currentNode) {
+    agents.forEach(function (el2) {
+      var ag = byAgent[el2.id.replace('agent-', '')];
+      var on = ag && (ag.a === currentNode || ag.b === currentNode);
+      el2.classList.toggle('dim', !on);
+      el2.classList.remove('selected');
+    });
+    return;
+  }
+  if (currentLens) {
+    var set = {};
+    currentLens.nodes.forEach(function (id) { set[id] = true; });
+    agents.forEach(function (el2) {
+      var ag = byAgent[el2.id.replace('agent-', '')];
+      el2.classList.toggle('dim', !(ag && set[ag.a] && set[ag.b]));
+      el2.classList.remove('selected');
+    });
+    return;
+  }
+  agents.forEach(function (el2) { el2.classList.remove('dim', 'selected'); });
+}
 
 function setEdge(e, state, mk) {
   e.g.classList.remove('dim', 'active');
   if (state === 'dim') e.g.classList.add('dim');
+  var pulseFill = 'rgba(229,229,229,0.8)';
   if (state === 'active') {
     e.g.classList.add('active');
     e.line.style.stroke = MARKER_FILL[mk];
     e.line.setAttribute('marker-end', 'url(#arw-' + mk + ')');
     if (e.bi) e.line.setAttribute('marker-start', 'url(#arw-' + mk + ')');
+    pulseFill = MARKER_FILL[mk];
   } else {
     e.line.style.stroke = '';
     e.line.setAttribute('marker-end', 'url(#arw-idle)');
     if (e.bi) e.line.setAttribute('marker-start', 'url(#arw-idle)');
   }
+  e.g.querySelectorAll('.pulse-dot').forEach(function (p) { p.setAttribute('fill', pulseFill); });
 }
 
 function paint() {
   var nodes = document.querySelectorAll('.node');
+
+  if (currentAgent) {
+    var ag = byAgent[currentAgent];
+    edgeEls.forEach(function (e) {
+      setEdge(e, agentOnEdge(ag, e) ? 'active' : 'dim', ag.cat);
+    });
+    nodes.forEach(function (el2) {
+      var on = el2.dataset.id === ag.a || el2.dataset.id === ag.b;
+      el2.classList.toggle('dim', !on);
+      el2.classList.remove('selected');
+      el2.style.outline = on ? '1px solid ' + CATS[byId[el2.dataset.id].cat].color : '';
+      el2.style.outlineOffset = on ? '2px' : '';
+    });
+    paintAgents();
+    return;
+  }
 
   if (currentNode) {
     var n = byId[currentNode];
@@ -995,9 +1318,11 @@ function paint() {
     });
     nodes.forEach(function (el2) {
       el2.classList.toggle('dim', !touched[el2.dataset.id]);
+      el2.classList.toggle('selected', el2.dataset.id === currentNode);
       el2.style.outline = el2.dataset.id === currentNode ? '1.5px solid ' + CATS[n.cat].color : '';
       el2.style.outlineOffset = el2.dataset.id === currentNode ? '2px' : '';
     });
+    paintAgents();
     return;
   }
 
@@ -1010,18 +1335,21 @@ function paint() {
     nodes.forEach(function (el2) {
       var on = !!set[el2.dataset.id];
       el2.classList.toggle('dim', !on);
+      el2.classList.remove('selected');
       el2.style.outline = on ? '1px solid ' + CATS[byId[el2.dataset.id].cat].color : '';
       el2.style.outlineOffset = on ? '2px' : '';
     });
+    paintAgents();
     return;
   }
 
   edgeEls.forEach(function (e) { setEdge(e, 'idle'); });
   nodes.forEach(function (el2) {
-    el2.classList.remove('dim');
+    el2.classList.remove('dim', 'selected');
     el2.style.outline = '';
     el2.style.outlineOffset = '';
   });
+  paintAgents();
 }
 
 /* ──────────────────────────────────────────────────────────────
@@ -1033,8 +1361,27 @@ function chip(rel) {
   return '<span class="chip chip-' + n.cat + '"' + title + ' onclick="selectNode(\'' + rel.id + '\')">' + n.name + '</span>';
 }
 
+function onDrillBtn(ev, id) {
+  ev.stopPropagation();
+  if (currentNode === id) {
+    if (drilled) undrill();
+    else drillNode();
+    return;
+  }
+  selectNode(id);
+}
+
+function clearDrilled() {
+  document.querySelectorAll('.node.drilled').forEach(function (x) {
+    x.classList.remove('drilled');
+    var btn = x.querySelector('.drill-btn');
+    if (btn) btn.setAttribute('aria-label', 'Dig deeper');
+  });
+}
+
 /* Click once to isolate, again to drill one altitude down, again to clear. */
 function selectNode(id) {
+  currentAgent = null;
   if (currentNode === id) {
     if (!drilled) { drillNode(); return; }
     currentNode = null;
@@ -1047,6 +1394,31 @@ function selectNode(id) {
   drilled = false;
   paint();
   renderSelection();
+}
+
+function selectAgent(id) {
+  if (currentAgent === id) {
+    currentAgent = null;
+    paint();
+    if (currentLens) showLens(); else clearDetail();
+    return;
+  }
+  currentAgent = id;
+  currentNode = null;
+  drilled = false;
+  clearDrilled();
+  paint();
+  var ag = byAgent[id];
+  var html = '<div class="detail-name">' + ag.name + '</div>';
+  html += '<div class="detail-kind">Agent on a flow</div>';
+  html += '<div class="detail-desc">' + ag.copy + '</div>';
+  html += '<div class="detail-meta"><div class="meta-row"><div class="meta-label">Governs</div><div class="chip-list">' +
+    chip({ id: ag.a }) + chip({ id: ag.b }) + '</div></div></div>';
+  document.getElementById('node-placeholder').style.display = 'none';
+  var d = document.getElementById('node-detail');
+  d.classList.add('visible');
+  d.innerHTML = html;
+  setSidebarNodeSelected(true);
 }
 
 function renderSelection() {
@@ -1073,8 +1445,8 @@ function renderSelection() {
   }
   html += '<div class="meta-row"><div class="meta-label">Interior</div><div class="meta-value">' +
     (n.depth === 'defined'
-      ? 'Defined — <a href="#" onclick="drillNode();return false" style="color:' + CATS[n.cat].color + '">drill in ⌄</a> (or click the node again)'
-      : 'Not defined yet — <a href="#" onclick="drillNode();return false" style="color:var(--text3)">why ⌄</a>') +
+      ? 'Defined — <a href="#" onclick="drillNode();return false" style="color:' + CATS[n.cat].color + '">Dig deeper</a> (or the shovel on the node)'
+      : 'Not defined yet — <a href="#" onclick="drillNode();return false" style="color:var(--text3)">why</a>') +
     '</div></div>';
   html += '</div>';
 
@@ -1082,6 +1454,7 @@ function renderSelection() {
   var d = document.getElementById('node-detail');
   d.classList.add('visible');
   d.innerHTML = html;
+  setSidebarNodeSelected(true);
 }
 
 /* One altitude down. Nodes without a defined interior say so; they
@@ -1091,8 +1464,10 @@ function drillNode() {
   drilled = true;
   var n = byId[currentNode];
   var el2 = document.getElementById('n-' + currentNode);
-  document.querySelectorAll('.node.drilled').forEach(function (x) { x.classList.remove('drilled'); });
+  clearDrilled();
   if (el2) el2.classList.add('drilled');
+  var btn = el2 && el2.querySelector('.drill-btn');
+  if (btn) btn.setAttribute('aria-label', 'Close');
 
   var html = '<button class="drill-back" onclick="undrill()">← ' + n.name + '</button>';
   html += '<div class="detail-name">Inside ' + n.name + '</div>';
@@ -1119,11 +1494,12 @@ function drillNode() {
   var d = document.getElementById('node-detail');
   d.classList.add('visible');
   d.innerHTML = html;
+  setSidebarNodeSelected(true);
 }
 
 function undrill() {
   drilled = false;
-  document.querySelectorAll('.node.drilled').forEach(function (x) { x.classList.remove('drilled'); });
+  clearDrilled();
   if (currentNode) renderSelection(); else clearDetail();
 }
 
@@ -1132,20 +1508,25 @@ function toggleLens(id, btn) {
   if (currentLens && currentLens.id === id) {
     currentLens = null;
     currentNode = null;
+    currentAgent = null;
     drilled = false;
+    clearDrilled();
     paint();
     clearDetail();
     return;
   }
   currentLens = LENSES.filter(function (l) { return l.id === id; })[0];
   currentNode = null;
+  currentAgent = null;
   drilled = false;
+  clearDrilled();
   if (btn) btn.classList.add('active');
   paint();
   showLens();
 }
 
 function showLens() {
+  setSidebarNodeSelected(false);
   document.getElementById('node-placeholder').style.display = 'none';
   var d = document.getElementById('node-detail');
   d.classList.add('visible');
@@ -1156,10 +1537,12 @@ function focusOpen(i) {
   var q = OPEN[i];
   currentLens = { id: 'open-' + i, nodes: q.focus };
   currentNode = null;
+  currentAgent = null;
   drilled = false;
-  document.querySelectorAll('.node.drilled').forEach(function (x) { x.classList.remove('drilled'); });
+  clearDrilled();
   document.querySelectorAll('.pill.lens').forEach(function (b) { b.classList.remove('active'); });
   paint();
+  setSidebarNodeSelected(false);
   document.getElementById('node-placeholder').style.display = 'none';
   var d = document.getElementById('node-detail');
   d.classList.add('visible');
@@ -1169,9 +1552,14 @@ function focusOpen(i) {
     q.focus.map(function (fid) { return chip({ id: fid }); }).join('') + '</div></div></div>';
 }
 
+function setSidebarNodeSelected(on) {
+  document.querySelector('.sidebar').classList.toggle('node-selected', on);
+}
+
 function clearDetail() {
   drilled = false;
-  document.querySelectorAll('.node.drilled').forEach(function (x) { x.classList.remove('drilled'); });
+  clearDrilled();
+  setSidebarNodeSelected(false);
   document.getElementById('node-placeholder').style.display = 'block';
   var d = document.getElementById('node-detail');
   d.classList.remove('visible');
@@ -1186,11 +1574,12 @@ function setView(v, btn) {
 }
 
 document.querySelector('.diagram').addEventListener('click', function (ev) {
-  if (ev.target.closest('.node') || ev.target.closest('.edge')) return;
-  if (currentNode) {
+  if (ev.target.closest('.node') || ev.target.closest('.edge') || ev.target.closest('.agent')) return;
+  if (currentNode || currentAgent) {
     currentNode = null;
+    currentAgent = null;
     drilled = false;
-    document.querySelectorAll('.node.drilled').forEach(function (x) { x.classList.remove('drilled'); });
+    clearDrilled();
     paint();
     if (currentLens) showLens(); else clearDetail();
   }
