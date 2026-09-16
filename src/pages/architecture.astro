@@ -169,6 +169,20 @@ main:not(.view-list) .list-wrap { display: none; }
 .node-gtm .node-name { color: var(--red); }
 .node-external { background: rgba(229,229,229,0.02); border-color: var(--border); border-style: dashed; }
 .node-external .node-name { color: var(--text2); }
+.node-engagement { background: rgba(229,229,229,0.06); border-color: rgba(229,229,229,0.4); }
+.node-engagement .node-name { color: var(--text); }
+
+/* ── DEPTH MARKER ── */
+.depth-mark {
+  position: absolute; right: 9px; bottom: 7px;
+  font-family: var(--mono); font-size: 11px; line-height: 1;
+  color: var(--text3); transition: color .2s, transform .2s;
+}
+.node.drilled .depth-mark { color: var(--text); transform: rotate(180deg); }
+.depth-key {
+  font-family: var(--mono); font-size: 11px; color: var(--text3);
+  width: 8px; display: inline-block; text-align: center;
+}
 
 /* ── SIDEBAR ── */
 .sidebar {
@@ -204,6 +218,9 @@ main:not(.view-list) .list-wrap { display: none; }
   font-family: var(--mono); font-size: 9px; letter-spacing: .07em;
   text-transform: uppercase; color: var(--text3);
 }
+.meta-value { font-size: 12px; color: var(--text2); line-height: 1.5; }
+.meta-value a { text-decoration: none; }
+.meta-value a:hover { text-decoration: underline; }
 .chip-list { display: flex; flex-wrap: wrap; gap: 4px; }
 .chip {
   display: inline-block; font-size: 10px; font-weight: 500;
@@ -219,6 +236,44 @@ main:not(.view-list) .list-wrap { display: none; }
 .chip-surface { background: var(--green-dim); border-color: var(--green-border); color: var(--green); }
 .chip-gtm { background: var(--red-dim); border-color: var(--red-border); color: var(--red); }
 .chip-external { background: rgba(229,229,229,0.02); border-color: var(--border); color: var(--text3); }
+.chip-engagement { background: rgba(229,229,229,0.06); border-color: rgba(229,229,229,0.4); color: var(--text); }
+
+/* ── DRILL-IN ── */
+.drill-back {
+  font-family: var(--mono); font-size: 9px; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--text3);
+  background: none; border: none; padding: 0; margin-bottom: 10px;
+  cursor: pointer; transition: color .2s;
+}
+.drill-back:hover { color: var(--text); }
+.drill-group { margin-bottom: 16px; }
+.drill-group:last-child { margin-bottom: 0; }
+.drill-group-label {
+  font-family: var(--mono); font-size: 9px; letter-spacing: .07em;
+  text-transform: uppercase; color: var(--text3);
+  margin-bottom: 6px; padding-bottom: 5px;
+  border-bottom: 0.5px solid var(--border);
+}
+.drill-item {
+  font-size: 12px; color: var(--text2); line-height: 1.55;
+  padding-left: 12px; position: relative; margin-bottom: 7px;
+}
+.drill-item::before { content: '·'; position: absolute; left: 0; color: var(--text3); }
+.drill-source {
+  font-family: var(--mono); font-size: 9px; letter-spacing: .04em;
+  color: var(--text3); margin-top: 6px; display: block;
+}
+.drill-source a { color: var(--domain); text-decoration: none; }
+.drill-source a:hover { text-decoration: underline; }
+.drill-none {
+  padding: 12px; border-radius: 6px; margin-top: 4px;
+  background: rgba(229,229,229,0.03); border: 0.5px dashed var(--border2);
+}
+.drill-none-label {
+  font-family: var(--mono); font-size: 9px; letter-spacing: .07em;
+  text-transform: uppercase; color: var(--text3); margin-bottom: 6px;
+}
+.drill-none-text { font-size: 12px; color: var(--text2); line-height: 1.55; }
 
 .def-row { margin-bottom: 12px; }
 .def-row:last-child { margin-bottom: 0; }
@@ -278,7 +333,7 @@ footer {
 <header>
   <div class="header-left">
     <h1>SparqOS relationships</h1>
-    <p>Not a hierarchy — a set of things that inform each other. Every line is a claim about direction: who feeds whom, and where the feed runs both ways. ADLC is the engine in the middle; the store is the memory underneath it; GTM is what the two of them make sellable. Click any node to isolate what it touches.</p>
+    <p>Not a hierarchy — a set of things that inform each other. Every line is a claim about direction: who feeds whom, and where the feed runs both ways. The engagement is what drives it; ADLC is the engine it moves through; the store is the memory underneath; GTM is what the two of them make sellable. Click a node to isolate what it touches, and again to drop one altitude inside it — where an interior has actually been defined.</p>
   </div>
   <div class="header-right">
     <div class="legend" id="legend"></div>
@@ -319,6 +374,10 @@ footer {
         <div class="def-term">Context flow / retrieval</div>
         <div class="def-body">Neither store — the layer that gets what is stored in front of the work.</div>
       </div>
+      <div class="def-row">
+        <div class="def-term">A third, if it exists</div>
+        <div class="def-body">The live state of one engagement, between the Engagement and the lake. Still an open question, so it is not drawn.</div>
+      </div>
     </div>
     <div class="sidebar-section">
       <div class="sidebar-title">Open questions</div>
@@ -337,90 +396,226 @@ footer {
    CATEGORIES
    ────────────────────────────────────────────────────────────── */
 var CATS = {
-  found:    { label: 'Capability & talent', color: '#F4B84A' },
-  delivery: { label: 'Delivery',            color: '#B0AAEE' },
-  store:    { label: 'Store & flow',        color: '#7BB2D4' },
-  surface:  { label: 'Client surface',      color: '#35B98F' },
-  gtm:      { label: 'GTM & commercial',    color: '#E87070' },
-  external: { label: 'Outside SparqOS',     color: '#9A9A9A' }
+  engagement: { label: 'The engagement',      color: '#E5E5E5' },
+  found:      { label: 'Capability & talent', color: '#F4B84A' },
+  delivery:   { label: 'Delivery',            color: '#B0AAEE' },
+  store:      { label: 'Store & flow',        color: '#7BB2D4' },
+  surface:    { label: 'Client surface',      color: '#35B98F' },
+  gtm:        { label: 'GTM & commercial',    color: '#E87070' },
+  external:   { label: 'Outside SparqOS',     color: '#9A9A9A' }
 };
 
 /* ──────────────────────────────────────────────────────────────
-   NODES  (x/y = position on the 1190x900 canvas)
+   NODES  (x/y = position on the 990x900 canvas)
+
+   depth is a confidence claim, not a UI flag:
+     'defined' — there is real internal structure, written down
+                 somewhere in this repo, and `interior` reproduces it.
+     'none'    — nothing defined inside yet. `needs` says what is
+                 missing. Never fabricate an interior to fill this.
    ────────────────────────────────────────────────────────────── */
 var NODES = [
   {
     id: 'cap', name: 'Capability model', sub: 'what we can do, evidenced',
     cat: 'found', x: 30, y: 250,
-    desc: 'What Sparq can do, at what level, and how that is evidenced. It sits upstream of nearly everything: it informs who we hire and place, how the work is run, what we sell, and what we charge. Two of those relationships run back the other way — ADLC and Solutions are where the model gets corrected by contact with reality.'
+    desc: 'What Sparq can do, at what level, and how that is evidenced. It sits upstream of nearly everything: it informs who we hire and place, how the work is run, what we sell, and what we charge. Two of those relationships run back the other way — ADLC and Solutions are where the model gets corrected by contact with reality.',
+    depth: 'defined',
+    interior: {
+      summary: 'Domains hold capabilities; capabilities carry levels. Two level systems are defined — how hard a capability runs for the work at hand, and how it operates with AI.',
+      groups: [
+        {
+          label: 'Domains → capabilities',
+          items: [
+            'Framing — risk framing, problem framing, direction qualification, pattern recall.',
+            'Proving — thin-slice engineering, signal definition & instrumentation, proof slicing.',
+            'Deciding — confidence evaluation, confidence-based estimation.',
+            'Building — always-runnable delivery, durable architecture.',
+            'Evidence — continuous risk surfacing, confidence tracking.',
+            'Continuity — context & decision capture, handoff continuity, capability transfer.'
+          ],
+          source: { label: '/SparqStory/', href: '/SparqStory/' }
+        },
+        {
+          label: 'Intensity levels',
+          items: [
+            'Five intensities: defining strategy, designing user experience, experimenting with spikes, engineering for production, generating active evidence.',
+            'They shift with the type of work — unknown territory, problem discovery, solution shaping, validation, production build, optimization.',
+            'Nothing ever reaches zero. The mix changes, not the roster.'
+          ],
+          source: { label: '/model/operating-model/', href: '/model/operating-model/' }
+        },
+        {
+          label: 'AI maturity levels',
+          items: [
+            'Assisted → integrated → AI-native.',
+            'Maturity is held per capability, not per project — mixed maturity inside one engagement is normal.'
+          ],
+          source: { label: '/sparqos/', href: '/sparqos/' }
+        }
+      ]
+    }
   },
   {
     id: 'talent', name: 'Talent & resourcing', sub: 'who does the work',
     cat: 'found', x: 30, y: 430,
-    desc: 'Who we put on the work, and how we source and place them. Downstream of the capability model, in a loop with both ADLC (delivery shows what the staffing actually needs to be) and commercials (what we can staff sets what we can price, and what we price sets what we can staff).'
+    desc: 'Who we put on the work, and how we source and place them. Downstream of the capability model, in a loop with both ADLC (delivery shows what the staffing actually needs to be) and commercials (what we can staff sets what we can price, and what we price sets what we can staff).',
+    depth: 'none',
+    needs: 'The bench, the roles, and how a capability level maps to a person exist in practice but are not written down anywhere this map can point to. Until they are, drilling in here would be invention.'
   },
   {
     id: 'shop', name: 'The Shop', sub: 'definition open',
     cat: 'delivery', x: 280, y: 60, open: true,
     desc: 'Currently reads as a build space that feeds GTM IQs & accelerators. Drawn in a loop with ADLC on the assumption that it is a playground where new ways of working get found — if it turns out to be an output channel only, that back-edge comes off the map.',
-    note: 'Still unresolved: what The Shop is, and what it turns into.'
+    note: 'Still unresolved: what The Shop is, and what it turns into.',
+    depth: 'none',
+    needs: 'No interior, because the node itself is still open. What it is has to be settled before what is inside it can be.'
   },
   {
     id: 'adlc', name: 'ADLC', sub: 'how the work moves',
     cat: 'delivery', x: 280, y: 260,
-    desc: 'The engine. ADLC generates the evidence that lands in the data lake, drives the client experience surface, and produces the raw material for GTM IQs & accelerators. Almost every relationship it has runs both ways — the capability model, Solutions, commercials, talent, The Shop and institutional intelligence all shape delivery and get reshaped by it.'
+    desc: 'The engine. ADLC generates the evidence that lands in the data lake, drives the client experience surface, and produces the raw material for GTM IQs & accelerators. Almost every relationship it has runs both ways — the capability model, Solutions, commercials, talent, The Shop and institutional intelligence all shape delivery and get reshaped by it. The engagement is what moves through it.',
+    depth: 'defined',
+    interior: {
+      summary: 'Three types of work, not three phases. They are not sequential and none of them belongs to a single role — all three can be live at once across different capabilities in the same engagement.',
+      groups: [
+        {
+          label: 'Types of work',
+          items: [
+            'Evidence — build to validate. Active uncertainty reduction through measurable signal.',
+            'Commitment — build to operate. Deepening investment where confidence has been earned.',
+            'Production learning — signal generation from whatever is already live, software or not.'
+          ],
+          source: { label: '/sparqos/', href: '/sparqos/' }
+        },
+        {
+          label: 'Loops inside the modes',
+          items: [
+            'Evidence loop: explore → prototype → validate.',
+            'Delivery loop: build → test → deploy → observe.',
+            'Both may run at once. The SDLC lives inside the loops; it is not the loops.'
+          ],
+          source: { label: '/sparqos/', href: '/sparqos/' }
+        },
+        {
+          label: 'What governs movement',
+          items: [
+            'The governing question: what must be proven — technically, behaviorally, or operationally — before we can responsibly commit further?',
+            'Confidence gate: promote, iterate, or pivot.',
+            'Evidence backlog → validated solution → delivery backlog → production feature.',
+            'Capabilities promote independently. The engagement does not move as a block.'
+          ],
+          source: { label: '/reference/', href: '/reference/' }
+        }
+      ]
+    }
+  },
+  {
+    id: 'engage', name: 'Engagement', sub: 'one client engagement, as an object',
+    cat: 'engagement', x: 280, y: 430,
+    desc: 'A single client engagement, treated as an object rather than a timeline. It is what drives the machine: it moves through ADLC, it deposits the evidence the lake stores, it instantiates the client experience surface the client actually meets, and commercials prices it. Not a phase and not a lifecycle — the thing that has a state, and that all four of those relationships act on.',
+    depth: 'none',
+    needs: 'Its live state — assumptions open, decisions taken, confidence now, who is on it, what it is priced at — is exactly what the per-engagement store question is about. Answering that question is what would give this node an interior.'
   },
   {
     id: 'spot', name: 'SPOT', sub: 'the data lake',
     cat: 'store', x: 280, y: 620,
-    desc: 'The store of what happened in Sparq history. ADLC writes the evidence into it, the client experience surface writes interactions into it, and the retrieval layer reads out of it. In a loop with institutional intelligence: the lake teaches, and what is learned is written back.',
-    note: 'Open: is a per-engagement store needed as its own object, or does SPOT cover that too?'
+    desc: 'The store of what happened in Sparq history. The engagement deposits its evidence into it, ADLC generates that evidence, the client experience surface writes interactions into it, and the retrieval layer reads out of it. In a loop with institutional intelligence: the lake teaches, and what is learned is written back.',
+    note: 'Open: is the live state of an engagement its own store, sitting between the Engagement and SPOT, or does the lake cover that too?',
+    depth: 'defined',
+    interior: {
+      summary: 'What the lake holds is the evidence ledger: the record of uncertainty reduction, engagement by engagement. The structure of a record is defined even where the storage split is not.',
+      groups: [
+        {
+          label: 'Record types',
+          items: [
+            'Assumptions — what was believed at the time.',
+            'Signals — measurable evidence from experiments, user validation, technical testing.',
+            'Decisions — what was committed, and when.',
+            'Confidence state — where belief stood at the moment of the decision.'
+          ],
+          source: { label: '/reference/', href: '/reference/' }
+        },
+        {
+          label: 'What writes the records',
+          items: [
+            'Spikes: time-boxed experiments, instrumented to generate usable signal.',
+            'Confidence gates: every promote / iterate / pivot call is itself a record.',
+            'The client experience surface: client interactions arrive as signal.'
+          ],
+          source: { label: '/reference/', href: '/reference/' }
+        },
+        {
+          label: 'Undefined inside',
+          items: [
+            'Whether the live state of one engagement is a separate store or a view over this one. Open — see the question in the panel.'
+          ]
+        }
+      ]
+    }
   },
   {
     id: 'gtm', name: 'GTM IQs & accelerators', sub: 'packaged proof',
     cat: 'gtm', x: 530, y: 60,
-    desc: 'The reusable, packaged form of what Sparq already knows how to do. Fed by ADLC (what delivery proves), by The Shop (what gets built there), and by institutional intelligence (what the record teaches). Feeds commercials.'
+    desc: 'The reusable, packaged form of what Sparq already knows how to do. Fed by ADLC (what delivery proves), by The Shop (what gets built there), and by institutional intelligence (what the record teaches). Feeds commercials.',
+    depth: 'none',
+    needs: 'The IQs and accelerators are not enumerated anywhere this map can point to, so there is no inside to open — only a claim that the category exists.'
   },
   {
     id: 'ii', name: 'Institutional intelligence', sub: 'what the lake teaches',
     cat: 'store', x: 530, y: 430,
-    desc: 'The store of what the data lake teaches — the patterns, benchmarks and judgment extracted from the record. It is not the record. It informs Solutions and GTM IQs & accelerators, is in a loop with ADLC, and is in a loop with the store it reads from.'
+    desc: 'The store of what the data lake teaches — the patterns, benchmarks and judgment extracted from the record. It is not the record. It informs Solutions and GTM IQs & accelerators, is in a loop with ADLC, and is in a loop with the store it reads from. It is also where the economic return lands: commercials feeds back what actually paid off.',
+    depth: 'none',
+    needs: 'Described as a store, not yet as a structure. What a unit of institutional intelligence actually is — a pattern, a benchmark, a rule — is undefined, so there is nothing honest to open.'
   },
   {
     id: 'flow', name: 'Context flow', sub: 'retrieval layer',
     cat: 'store', x: 530, y: 620,
-    desc: 'The layer between the store and the work. It reads from SPOT and puts context in front of the client experience surface. It stores nothing itself — which is exactly why it is drawn separately from the lake.'
+    desc: 'The layer between the store and the work. It reads from SPOT and puts context in front of the client experience surface. It stores nothing itself — which is exactly why it is drawn separately from the lake.',
+    depth: 'none',
+    needs: 'Its mechanism — what gets retrieved, on what trigger, and how relevance is decided — is not defined yet.'
   },
   {
     id: 'solutions', name: 'Solutions', sub: 'the promise',
     cat: 'gtm', x: 780, y: 230,
-    desc: 'What Sparq takes to market. Shaped from three directions — the capability model (what we can credibly claim), ADLC (what delivery can actually carry), and institutional intelligence (what the record says works) — and proven by the client experience surface. It informs commercials and, in return, commercials shapes it.'
+    desc: 'What Sparq takes to market. Shaped from three directions — the capability model (what we can credibly claim), ADLC (what delivery can actually carry), and institutional intelligence (what the record says works) — and proven by the client experience surface. It informs commercials and, in return, commercials shapes it.',
+    depth: 'none',
+    needs: 'The solution set itself — what is actually on the shelf — is not written down. The node is a real claim; its interior is not defined yet.'
   },
   {
     id: 'cx', name: 'Client experience surface', sub: 'where the client meets the work',
     cat: 'surface', x: 780, y: 400,
-    desc: 'Where the client meets the work. Fed by ADLC and by the retrieval layer. Two things flow out of it: client interactions become signal back into the store, and the experience itself becomes the proof of the promise Solutions makes.'
+    desc: 'Where the client meets the work. Instantiated by an engagement, fed by ADLC and by the retrieval layer. Two things flow out of it: client interactions become signal back into the store, and the experience itself becomes the proof of the promise Solutions makes.',
+    depth: 'none',
+    needs: 'What the surface concretely consists of — which touchpoints, in what state, with what the client can see and do — is not defined yet.'
   },
   {
     id: 'comm', name: 'Commercials', sub: 'how it is priced and packaged',
     cat: 'gtm', x: 780, y: 60,
-    desc: 'How the work is priced and packaged. The convergence point: the capability model, talent, ADLC, Solutions and GTM IQs & accelerators all feed it. Three of those are loops — commercials pushes back on talent, ADLC and Solutions.'
+    desc: 'How the work is priced and packaged. The convergence point: the capability model, talent, ADLC, Solutions and GTM IQs & accelerators all feed it, and it prices the engagement. It is not terminal — what actually paid off returns to institutional intelligence, which is the loop that makes execution cheaper the more of it there is.',
+    depth: 'none',
+    needs: 'Pricing shapes, rate structure, and how a price is rebuilt when scope moves are not written down anywhere this map can point to.'
   },
   {
     id: 'studio', name: 'Intelligence Studio', sub: 'embedded in client systems',
     cat: 'gtm', x: 780, y: 620, open: true,
     desc: 'Embedded externally, in the client’s own systems — deliberately distinct from the client experience surface, which is Sparq’s surface. Drawn with one relationship out and none in.',
-    note: 'Open: what feeds Intelligence Studio — GTM IQs, institutional intelligence, ADLC? Undrawn for now.'
+    note: 'Open: what feeds Intelligence Studio — GTM IQs, institutional intelligence, ADLC? Undrawn for now.',
+    depth: 'none',
+    needs: 'No interior while its inbound relationships are still open. What supplies it has to be called before what is inside it can be.'
   },
   {
     id: 'clientsys', name: 'Client’s own systems', sub: 'outside Sparq’s surface',
     cat: 'external', x: 780, y: 790,
-    desc: 'Not part of SparqOS. On the map because Intelligence Studio reaches into it — that is the distinction being drawn between something embedded in the client’s estate and something the client visits on ours.'
+    desc: 'Not part of SparqOS. On the map because Intelligence Studio reaches into it — that is the distinction being drawn between something embedded in the client’s estate and something the client visits on ours.',
+    depth: 'none',
+    needs: 'Outside SparqOS. Its interior is the client’s business, not this map’s.'
   }
 ];
 
 /* ──────────────────────────────────────────────────────────────
-   EDGES  [from, to, '>' one-way | '<>' both ways]
+   EDGES  [from, to, '>' one-way | '<>' both ways, verb?]
+   The optional 4th element replaces the default "informs" where a
+   more exact verb is the actual claim.
    ────────────────────────────────────────────────────────────── */
 var EDGES = [
   /* capability model */
@@ -431,6 +626,11 @@ var EDGES = [
   /* talent & resourcing */
   ['talent', 'comm', '<>'],
   ['talent', 'adlc', '<>'],
+  /* the engagement */
+  ['engage', 'adlc', '>', 'flows through'],
+  ['engage', 'spot', '>', 'deposits evidence into'],
+  ['engage', 'cx', '>', 'instantiates'],
+  ['comm', 'engage', '>', 'prices'],
   /* ADLC */
   ['adlc', 'cx', '>'],
   ['adlc', 'gtm', '>'],
@@ -453,7 +653,9 @@ var EDGES = [
   ['ii', 'solutions', '>'],
   ['studio', 'clientsys', '>'],
   /* the shop */
-  ['shop', 'gtm', '>']
+  ['shop', 'gtm', '>'],
+  /* the economic return — what paid off comes back as learning */
+  ['comm', 'ii', '>', 'returns what actually paid off to']
 ];
 
 /* ──────────────────────────────────────────────────────────────
@@ -462,8 +664,8 @@ var EDGES = [
 var OPEN = [
   {
     label: 'Per-engagement store',
-    text: 'SPOT is defined here as the history-wide lake. Is a per-engagement store needed as its own object — the live state of one engagement — or is SPOT doing that job as well? If it is separate, it belongs on this map between ADLC and SPOT. An earlier version of this page carried a per-engagement evidence layer as a distinct thing; this version does not.',
-    focus: ['spot', 'adlc']
+    text: 'Now that the Engagement is on the map, the question sharpens: the per-engagement store, if it exists, is the live state of the Engagement node — assumptions open, decisions taken, confidence now — sitting between the engagement and SPOT. Live state versus history-wide lake. Still open, so it is not drawn: the Engagement deposits evidence straight into the lake here. Resolving it either gives the Engagement node an interior or adds one node between it and SPOT.',
+    focus: ['engage', 'spot']
   },
   {
     label: 'The Shop',
@@ -484,8 +686,8 @@ var LENSES = [
   {
     id: 'evidence',
     label: 'Evidence loop',
-    nodes: ['adlc', 'spot', 'flow', 'cx', 'ii'],
-    explanation: '<div class="detail-name">Evidence loop</div><div class="detail-kind">Lens</div><div class="detail-desc">The closed circuit: delivery produces evidence, the lake keeps it, the retrieval layer serves it, the client surface uses it — and what happens there goes back into the lake.</div><ul class="detail-bullets"><li><strong>The path:</strong> ADLC writes evidence into SPOT. SPOT feeds the retrieval layer. Retrieval feeds the client experience surface. The surface writes interactions back into the store. Institutional intelligence sits across the loop, reading the lake and being read by ADLC.</li><li><strong>Why it matters:</strong> this is the only loop on the map that closes without passing through a commercial or capability decision. It is the part of SparqOS that compounds on its own.</li><li><strong>Where it is thin:</strong> the loop assumes one store. If per-engagement state is really a separate object, it sits inside this loop, between ADLC and SPOT, and the circuit has a node missing.</li></ul>'
+    nodes: ['engage', 'adlc', 'spot', 'flow', 'cx', 'ii'],
+    explanation: '<div class="detail-name">Evidence loop</div><div class="detail-kind">Lens</div><div class="detail-desc">The closed circuit: an engagement moves through delivery and deposits evidence, the lake keeps it, the retrieval layer serves it, the client surface uses it — and what happens there goes back into the lake.</div><ul class="detail-bullets"><li><strong>The path:</strong> the engagement flows through ADLC and deposits its evidence into SPOT. SPOT feeds the retrieval layer. Retrieval feeds the client experience surface — which the same engagement instantiated. The surface writes interactions back into the store. Institutional intelligence sits across the loop, reading the lake and being read by ADLC.</li><li><strong>Why it matters:</strong> this is the only loop on the map that closes without passing through a commercial or capability decision. It is the part of SparqOS that compounds on its own.</li><li><strong>Where it is thin:</strong> the loop assumes one store. If the live state of an engagement is really its own object, it sits inside this loop between the Engagement and SPOT, and the circuit has a node missing.</li></ul>'
   },
   {
     id: 'spine',
@@ -500,10 +702,16 @@ var LENSES = [
     explanation: '<div class="detail-name">GTM</div><div class="detail-kind">Lens</div><div class="detail-desc">The market-facing edge: Solutions as the promise, IQs and accelerators as packaged proof, commercials as the price, Intelligence Studio as the piece that lives in the client’s estate.</div><ul class="detail-bullets"><li><strong>Where the proof comes from:</strong> institutional intelligence feeds both Solutions and the IQs. The client experience surface is what actually proves the promise — GTM claims nothing the surface has not carried.</li><li><strong>Two different externals:</strong> the client experience surface is Sparq’s surface that the client meets. Intelligence Studio is embedded in the client’s own systems. Same market, different side of the boundary.</li><li><strong>The hole:</strong> Intelligence Studio has no inbound relationships drawn. Until they are called, it is a claim without a supply chain.</li></ul>'
   },
   {
+    id: 'compound',
+    label: 'Compounding loop',
+    nodes: ['engage', 'adlc', 'spot', 'ii', 'gtm', 'comm'],
+    explanation: '<div class="detail-name">Compounding loop</div><div class="detail-kind">Lens</div><div class="detail-desc">Why the more Sparq executes, the less the next execution costs — drawn, not implied.</div><ul class="detail-bullets"><li><strong>The circuit:</strong> commercials prices an engagement → the engagement flows through ADLC → it deposits evidence into the lake → the lake teaches institutional intelligence → that gets packaged as IQs and accelerators → which feed commercials → which prices the next engagement.</li><li><strong>The return edge:</strong> commercials also feeds institutional intelligence directly with what actually paid off. Without it, commercials is terminal — money in, nothing back — and the system has no way to learn which promises were worth making.</li><li><strong>What makes it compound:</strong> each pass through leaves something reusable behind. Nothing here is a new capability; it is the same work, cheaper, because the record of the last one is still available.</li></ul>'
+  },
+  {
     id: 'open',
     label: 'Open questions',
-    nodes: ['shop', 'spot', 'studio', 'adlc', 'clientsys'],
-    explanation: '<div class="detail-name">Open questions</div><div class="detail-kind">Lens</div><div class="detail-desc">The three places this map is asserting something it cannot yet defend.</div><ul class="detail-bullets"><li><strong>One store or two:</strong> SPOT is the history-wide lake. Whether a per-engagement store is a separate object is unresolved — and it changes the shape of the evidence loop.</li><li><strong>The Shop:</strong> feeding GTM IQs is clear enough. The loop back into ADLC rests on it being a playground that surfaces new ways of working. Not confirmed.</li><li><strong>Intelligence Studio:</strong> drawn with one edge out and none in.</li><li><strong>Read the rest as settled:</strong> everything not lit here is a relationship the map is willing to defend.</li></ul>'
+    nodes: ['shop', 'spot', 'engage', 'studio', 'clientsys'],
+    explanation: '<div class="detail-name">Open questions</div><div class="detail-kind">Lens</div><div class="detail-desc">The three places this map is asserting something it cannot yet defend.</div><ul class="detail-bullets"><li><strong>One store or two:</strong> SPOT is the history-wide lake. Whether the live state of an engagement is its own store, between the Engagement and SPOT, is unresolved — and it changes the shape of the evidence loop.</li><li><strong>The Shop:</strong> feeding GTM IQs is clear enough. The loop back into ADLC rests on it being a playground that surfaces new ways of working. Not confirmed.</li><li><strong>Intelligence Studio:</strong> drawn with one edge out and none in.</li><li><strong>Read the rest as settled:</strong> everything not lit here is a relationship the map is willing to defend. Depth is a separate claim — a node without the ⌄ marker has no defined interior, which is a gap, not a question.</li></ul>'
   }
 ];
 
@@ -516,21 +724,21 @@ NODES.forEach(function (n) { byId[n.id] = n; });
 function relations(id) {
   var out = [], inn = [], both = [];
   EDGES.forEach(function (e) {
-    var a = e[0], b = e[1], bi = e[2] === '<>';
+    var a = e[0], b = e[1], bi = e[2] === '<>', verb = e[3] || 'informs';
     if (bi) {
-      if (a === id) both.push(b);
-      else if (b === id) both.push(a);
+      if (a === id) both.push({ id: b, verb: verb });
+      else if (b === id) both.push({ id: a, verb: verb });
     } else {
-      if (a === id) out.push(b);
-      else if (b === id) inn.push(a);
+      if (a === id) out.push({ id: b, verb: verb });
+      else if (b === id) inn.push({ id: a, verb: verb });
     }
   });
   return { out: out, inn: inn, both: both };
 }
 
 function edgeSentence(e) {
-  var a = byId[e[0]].name, b = byId[e[1]].name;
-  return e[2] === '<>' ? a + ' ↔ ' + b + ' — each informs the other' : a + ' informs ' + b;
+  var a = byId[e[0]].name, b = byId[e[1]].name, verb = e[3] || 'informs';
+  return e[2] === '<>' ? a + ' ↔ ' + b + ' — each informs the other' : a + ' ' + verb + ' ' + b;
 }
 
 /* ──────────────────────────────────────────────────────────────
@@ -541,6 +749,7 @@ function edgeSentence(e) {
   Object.keys(CATS).forEach(function (k) {
     html += '<div class="legend-item"><span class="legend-dot" style="background:' + CATS[k].color + '"></span>' + CATS[k].label + '</div>';
   });
+  html += '<div class="legend-item" title="Click a marked node twice to drive one altitude down"><span class="depth-key">⌄</span>Has a defined interior</div>';
   document.getElementById('legend').innerHTML = html;
 })();
 
@@ -570,11 +779,13 @@ function edgeSentence(e) {
       '<div class="node-name">' + n.name + '</div>' +
       '<div class="node-sub">' + n.sub + '</div>' +
       (n.open ? '<span class="open-flag">Open</span>' : '') +
+      (n.depth === 'defined' ? '<span class="depth-mark" title="Defined interior — click again to drill in">⌄</span>' : '') +
       '</div>';
   });
   html += '<div class="band-label" style="left:32px;top:212px">Foundations</div>';
   html += '<div class="band-label" style="left:282px;top:22px">Delivery</div>';
   html += '<div class="band-label" style="left:532px;top:22px">Go to market</div>';
+  html += '<div class="band-label" style="left:282px;top:392px">The engagement</div>';
   html += '<div class="band-label" style="left:282px;top:582px">Store &amp; flow</div>';
   html += '<div class="band-label" style="left:782px;top:362px">Client surface</div>';
   html += '<div class="band-label" style="left:782px;top:752px">Outside SparqOS</div>';
@@ -602,16 +813,23 @@ function edgeSentence(e) {
       html += '<div class="rel-none">No relationships drawn.</div>';
     }
     r.out.forEach(function (t) {
-      html += '<div class="rel"><span class="rel-arrow">→</span><span class="rel-text">informs <strong>' + byId[t].name + '</strong></span></div>';
+      html += '<div class="rel"><span class="rel-arrow">→</span><span class="rel-text">' + t.verb + ' <strong>' + byId[t.id].name + '</strong></span></div>';
     });
     r.both.forEach(function (t) {
-      html += '<div class="rel"><span class="rel-arrow bi">↔</span><span class="rel-text">and <strong>' + byId[t].name + '</strong> inform each other</span></div>';
+      html += '<div class="rel"><span class="rel-arrow bi">↔</span><span class="rel-text">and <strong>' + byId[t.id].name + '</strong> inform each other</span></div>';
     });
     r.inn.forEach(function (t) {
-      html += '<div class="rel"><span class="rel-arrow">←</span><span class="rel-text">informed by <strong>' + byId[t].name + '</strong></span></div>';
+      html += '<div class="rel"><span class="rel-arrow">←</span><span class="rel-text">' +
+        (t.verb === 'informs' ? 'informed by <strong>' + byId[t.id].name + '</strong>'
+                              : '<strong>' + byId[t.id].name + '</strong> ' + t.verb + ' this') +
+        '</span></div>';
     });
+    html += '<div class="rel" style="margin-top:8px"><span class="rel-arrow">' + (n.depth === 'defined' ? '⌄' : '—') + '</span>' +
+      '<span class="rel-text" style="color:var(--text3)">' +
+      (n.depth === 'defined' ? 'Defined interior: ' + n.interior.summary : 'No interior defined yet. ' + n.needs) +
+      '</span></div>';
     if (n.note) {
-      html += '<div class="rel" style="margin-top:8px"><span class="rel-arrow" style="color:var(--amber)">?</span><span class="rel-text" style="color:var(--amber)">' + n.note + '</span></div>';
+      html += '<div class="rel"><span class="rel-arrow" style="color:var(--amber)">?</span><span class="rel-text" style="color:var(--amber)">' + n.note + '</span></div>';
     }
     html += '</div>';
   });
@@ -620,7 +838,8 @@ function edgeSentence(e) {
 
 document.getElementById('edge-count').textContent =
   NODES.length + ' nodes · ' + EDGES.length + ' relationships · ' +
-  EDGES.filter(function (e) { return e[2] === '<>'; }).length + ' loops';
+  EDGES.filter(function (e) { return e[2] === '<>'; }).length + ' loops · ' +
+  NODES.filter(function (n) { return n.depth === 'defined'; }).length + ' with a defined interior';
 
 /* ──────────────────────────────────────────────────────────────
    EDGE DRAWING
@@ -742,6 +961,7 @@ function drawEdges() {
    ────────────────────────────────────────────────────────────── */
 var currentNode = null;
 var currentLens = null;
+var drilled = false;
 
 function setEdge(e, state, mk) {
   e.g.classList.remove('dim', 'active');
@@ -807,23 +1027,31 @@ function paint() {
 /* ──────────────────────────────────────────────────────────────
    INTERACTION
    ────────────────────────────────────────────────────────────── */
-function chip(id) {
-  var n = byId[id];
-  return '<span class="chip chip-' + n.cat + '" onclick="selectNode(\'' + id + '\')">' + n.name + '</span>';
+function chip(rel) {
+  var n = byId[rel.id];
+  var title = rel.verb && rel.verb !== 'informs' ? ' title="' + rel.verb + '"' : '';
+  return '<span class="chip chip-' + n.cat + '"' + title + ' onclick="selectNode(\'' + rel.id + '\')">' + n.name + '</span>';
 }
 
+/* Click once to isolate, again to drill one altitude down, again to clear. */
 function selectNode(id) {
   if (currentNode === id) {
+    if (!drilled) { drillNode(); return; }
     currentNode = null;
+    drilled = false;
     paint();
     if (currentLens) showLens(); else clearDetail();
     return;
   }
   currentNode = id;
+  drilled = false;
   paint();
+  renderSelection();
+}
 
-  var n = byId[id];
-  var r = relations(id);
+function renderSelection() {
+  var n = byId[currentNode];
+  var r = relations(currentNode);
   var html = '<div class="detail-name">' + n.name + '</div>';
   html += '<div class="detail-kind">' + CATS[n.cat].label + ' · ' + n.sub + '</div>';
   html += '<div class="detail-desc">' + n.desc + '</div>';
@@ -843,6 +1071,11 @@ function selectNode(id) {
   if (!r.out.length && !r.both.length && !r.inn.length) {
     html += '<div class="meta-row"><div class="meta-label">Relationships</div><div class="meta-value" style="font-size:12px;color:var(--text3);font-style:italic">None drawn.</div></div>';
   }
+  html += '<div class="meta-row"><div class="meta-label">Interior</div><div class="meta-value">' +
+    (n.depth === 'defined'
+      ? 'Defined — <a href="#" onclick="drillNode();return false" style="color:' + CATS[n.cat].color + '">drill in ⌄</a> (or click the node again)'
+      : 'Not defined yet — <a href="#" onclick="drillNode();return false" style="color:var(--text3)">why ⌄</a>') +
+    '</div></div>';
   html += '</div>';
 
   document.getElementById('node-placeholder').style.display = 'none';
@@ -851,17 +1084,62 @@ function selectNode(id) {
   d.innerHTML = html;
 }
 
+/* One altitude down. Nodes without a defined interior say so; they
+   never get a fabricated one. */
+function drillNode() {
+  if (!currentNode) return;
+  drilled = true;
+  var n = byId[currentNode];
+  var el2 = document.getElementById('n-' + currentNode);
+  document.querySelectorAll('.node.drilled').forEach(function (x) { x.classList.remove('drilled'); });
+  if (el2) el2.classList.add('drilled');
+
+  var html = '<button class="drill-back" onclick="undrill()">← ' + n.name + '</button>';
+  html += '<div class="detail-name">Inside ' + n.name + '</div>';
+
+  if (n.depth === 'defined') {
+    html += '<div class="detail-kind">One altitude down · defined</div>';
+    html += '<div class="detail-desc">' + n.interior.summary + '</div>';
+    n.interior.groups.forEach(function (g) {
+      html += '<div class="drill-group"><div class="drill-group-label">' + g.label + '</div>';
+      g.items.forEach(function (it) { html += '<div class="drill-item">' + it + '</div>'; });
+      if (g.source) {
+        html += '<span class="drill-source">Defined in <a href="' + g.source.href + '">' + g.source.label + '</a></span>';
+      }
+      html += '</div>';
+    });
+  } else {
+    html += '<div class="detail-kind">One altitude down · not defined</div>';
+    html += '<div class="drill-none"><div class="drill-none-label">No detail defined</div>' +
+      '<div class="drill-none-text">' + n.needs + '</div></div>';
+    html += '<span class="drill-source">A node\'s depth is a confidence claim. This one has none to make yet, so nothing is shown rather than something invented.</span>';
+  }
+
+  document.getElementById('node-placeholder').style.display = 'none';
+  var d = document.getElementById('node-detail');
+  d.classList.add('visible');
+  d.innerHTML = html;
+}
+
+function undrill() {
+  drilled = false;
+  document.querySelectorAll('.node.drilled').forEach(function (x) { x.classList.remove('drilled'); });
+  if (currentNode) renderSelection(); else clearDetail();
+}
+
 function toggleLens(id, btn) {
   document.querySelectorAll('.pill.lens').forEach(function (b) { b.classList.remove('active'); });
   if (currentLens && currentLens.id === id) {
     currentLens = null;
     currentNode = null;
+    drilled = false;
     paint();
     clearDetail();
     return;
   }
   currentLens = LENSES.filter(function (l) { return l.id === id; })[0];
   currentNode = null;
+  drilled = false;
   if (btn) btn.classList.add('active');
   paint();
   showLens();
@@ -878,6 +1156,8 @@ function focusOpen(i) {
   var q = OPEN[i];
   currentLens = { id: 'open-' + i, nodes: q.focus };
   currentNode = null;
+  drilled = false;
+  document.querySelectorAll('.node.drilled').forEach(function (x) { x.classList.remove('drilled'); });
   document.querySelectorAll('.pill.lens').forEach(function (b) { b.classList.remove('active'); });
   paint();
   document.getElementById('node-placeholder').style.display = 'none';
@@ -886,10 +1166,12 @@ function focusOpen(i) {
   d.innerHTML = '<div class="detail-name">' + q.label + '</div><div class="detail-kind">Open question</div>' +
     '<div class="detail-desc">' + q.text + '</div>' +
     '<div class="detail-meta"><div class="meta-row"><div class="meta-label">In question</div><div class="chip-list">' +
-    q.focus.map(chip).join('') + '</div></div></div>';
+    q.focus.map(function (fid) { return chip({ id: fid }); }).join('') + '</div></div></div>';
 }
 
 function clearDetail() {
+  drilled = false;
+  document.querySelectorAll('.node.drilled').forEach(function (x) { x.classList.remove('drilled'); });
   document.getElementById('node-placeholder').style.display = 'block';
   var d = document.getElementById('node-detail');
   d.classList.remove('visible');
@@ -907,6 +1189,8 @@ document.querySelector('.diagram').addEventListener('click', function (ev) {
   if (ev.target.closest('.node') || ev.target.closest('.edge')) return;
   if (currentNode) {
     currentNode = null;
+    drilled = false;
+    document.querySelectorAll('.node.drilled').forEach(function (x) { x.classList.remove('drilled'); });
     paint();
     if (currentLens) showLens(); else clearDetail();
   }
