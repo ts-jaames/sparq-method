@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>What SparqOS is</title>
+<title>SparqOS relationships</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -20,20 +20,22 @@
   --text3: rgba(229,229,229,0.35);
   --border: rgba(229,229,229,0.08);
   --border2: rgba(229,229,229,0.14);
-  --green: #1D9E75;
-  --green-dim: rgba(29,158,117,0.15);
-  --green-border: rgba(29,158,117,0.3);
-  --purple: #7F77DD;
-  --purple-dim: rgba(127,119,221,0.15);
+  --green: #35B98F;
+  --green-dim: rgba(53,185,143,0.08);
+  --green-border: rgba(53,185,143,0.3);
+  --purple: #B0AAEE;
+  --purple-dim: rgba(127,119,221,0.08);
   --purple-border: rgba(127,119,221,0.3);
-  --amber: #EF9F27;
-  --amber-dim: rgba(239,159,39,0.12);
-  --amber-border: rgba(239,159,39,0.25);
-  --red: #E24B4A;
-  --red-dim: rgba(226,75,74,0.12);
+  --amber: #F4B84A;
+  --amber-dim: rgba(239,159,39,0.08);
+  --amber-border: rgba(239,159,39,0.28);
+  --red: #E87070;
+  --red-dim: rgba(226,75,74,0.08);
+  --red-border: rgba(226,75,74,0.28);
   --domain: #7BB2D4;
-  --domain-dim: rgba(123,178,212,0.12);
+  --domain-dim: rgba(123,178,212,0.08);
   --domain-border: rgba(123,178,212,0.3);
+  --grey: #9A9A9A;
   --font: 'Host Grotesk', sans-serif;
   --mono: 'IBM Plex Mono', monospace;
 }
@@ -47,231 +49,126 @@ html, body {
 
 /* ── HEADER ── */
 header {
-  padding: 40px 48px 28px;
+  padding: 36px 48px 24px;
   border-bottom: 0.5px solid var(--border);
   display: flex; align-items: flex-start; justify-content: space-between;
-  flex-wrap: wrap; gap: 20px;
+  flex-wrap: wrap; gap: 24px;
 }
 .header-left h1 {
   font-size: 28px; font-weight: 500; letter-spacing: -0.01em;
   margin-bottom: 8px;
 }
 .header-left p {
-  font-size: 14px; color: var(--text2); max-width: 560px; line-height: 1.6;
+  font-size: 14px; color: var(--text2); max-width: 620px; line-height: 1.6;
 }
 .header-right {
-  display: flex; flex-direction: column; align-items: flex-end; gap: 10px;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 12px;
 }
-.legend { display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-end; }
+.legend { display: flex; flex-wrap: wrap; gap: 12px; justify-content: flex-end; }
 .legend-item {
   display: flex; align-items: center; gap: 6px;
   font-family: var(--mono); font-size: 10px; letter-spacing: .06em;
   text-transform: uppercase; color: var(--text3);
 }
 .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-.lens-select {
-  display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
-}
-.lens-label {
+.control-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: flex-end; }
+.control-label {
   font-family: var(--mono); font-size: 9px; letter-spacing: .06em;
   text-transform: uppercase; color: var(--text3);
 }
-.lens-btn {
+.pill {
   font-family: var(--mono); font-size: 10px; letter-spacing: .05em;
   padding: 5px 12px;
-  border-radius: 100px; border: 0.5px solid var(--purple-border);
+  border-radius: 100px; border: 0.5px solid var(--border2);
   background: none; color: var(--text3); cursor: pointer;
   transition: all .2s;
 }
-.lens-btn:hover { color: #b0aaee; border-color: var(--purple-border); }
-.lens-btn.active { background: var(--purple-dim); border-color: var(--purple-border); color: #b0aaee; }
+.pill:hover { color: var(--text); border-color: var(--border2); }
+.pill.lens { border-color: var(--purple-border); }
+.pill.lens:hover { color: var(--purple); }
+.pill.lens.active { background: var(--purple-dim); border-color: var(--purple-border); color: var(--purple); }
+.pill.view.active { background: rgba(229,229,229,0.08); border-color: var(--border2); color: var(--text); }
 
 /* ── MAIN LAYOUT ── */
 main {
   display: grid;
-  grid-template-columns: 1fr 340px;
-  min-height: calc(100vh - 140px);
+  grid-template-columns: 1fr 360px;
+  min-height: calc(100vh - 190px);
 }
 
 /* ── DIAGRAM ── */
-.diagram {
-  padding: 32px 40px;
-  overflow-x: auto;
-}
-.section-headings {
-  display: grid;
-  grid-template-columns: 200px 32px 160px 160px 160px;
-  gap: 0; padding: 0 4px; margin-bottom: 12px;
-}
-.section-heading {
-  font-size: 14px; font-weight: 500; color: var(--text);
-  letter-spacing: 0.04em; text-transform: uppercase; margin: 0; padding: 0 8px;
-}
-.layer-labels {
-  display: grid;
-  grid-template-columns: 200px 32px 160px 160px 160px;
-  gap: 0; margin-bottom: 20px; padding: 0 4px;
-}
-.layer-label {
-  font-family: var(--mono); font-size: 9px; letter-spacing: .08em;
-  text-transform: uppercase; color: var(--text3);
-  padding: 0 8px;
-}
-.diagram-canvas {
+.diagram { padding: 28px 32px 40px; overflow: auto; }
+main.view-list .diagram { display: none; }
+main:not(.view-list) .list-wrap { display: none; }
+
+.canvas {
   position: relative;
-  min-height: 520px;
+  width: 990px; height: 900px;
+  margin: 0 auto;
 }
-.nodes-layer {
-  position: relative; z-index: 1;
-  display: grid;
-  grid-template-columns: 200px 32px 160px 160px 160px;
-  gap: 0;
-  align-items: start;
+#edges {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  z-index: 0; overflow: visible;
 }
-.node-col {
-  display: flex; flex-direction: column; gap: 12px;
-  padding: 0 8px;
+.band-label {
+  position: absolute; z-index: 0;
+  font-family: var(--mono); font-size: 9px; letter-spacing: .1em;
+  text-transform: uppercase; color: rgba(229,229,229,0.18);
+  white-space: nowrap; pointer-events: none;
 }
 
-/* ── INTERNAL BADGE ── */
-.int-badge {
-  display: inline-block; font-family: var(--mono); font-size: 8px;
-  letter-spacing: .05em; text-transform: uppercase;
-  padding: 2px 6px; border-radius: 3px; margin-top: 5px; margin-left: 4px;
-  background: var(--red); color: var(--bg); font-weight: 500;
-  position: relative; cursor: inherit;
-}
-.int-badge::after {
-  content: 'Internally built tool';
-  position: absolute; bottom: calc(100% + 6px); left: 50%;
-  transform: translateX(-50%);
-  font-family: var(--mono); font-size: 9px; letter-spacing: .04em;
-  white-space: nowrap; padding: 3px 8px; border-radius: 4px;
-  background: var(--bg); border: 0.5px solid var(--border2);
-  color: var(--text2); opacity: 0; pointer-events: none;
-  transition: opacity .2s ease;
-}
-.int-badge:hover::after { opacity: 1; }
+/* ── EDGES ── */
+.edge-line { fill: none; stroke: rgba(229,229,229,0.22); stroke-width: 1; transition: stroke .2s, stroke-width .2s; }
+.edge-hit { fill: none; stroke: transparent; stroke-width: 14px; cursor: help; }
+.edge { transition: opacity .25s; }
+.edge.dim { opacity: 0.06; }
+.edge.active .edge-line { stroke-width: 1.6; }
+.edge:hover .edge-line { stroke: var(--text) !important; stroke-width: 1.8; }
 
 /* ── NODES ── */
 .node {
+  position: absolute; z-index: 1;
+  width: 170px;
   border-radius: 8px; padding: 10px 12px;
   border: 0.5px solid var(--border2);
   background: var(--bg2);
   cursor: pointer;
-  transition: opacity .25s, border-color .2s, transform .2s, box-shadow .2s;
-  position: relative;
+  transition: opacity .25s, transform .2s, box-shadow .2s;
 }
-.node:hover { border-color: var(--border2); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
+.node:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,0.35); }
+.node:focus-visible { outline: 1.5px solid var(--text); outline-offset: 2px; }
 .node-name {
   font-size: 12px; font-weight: 500; line-height: 1.3;
   margin-bottom: 3px; color: var(--text);
 }
 .node-sub {
-  font-family: var(--mono); font-size: 9px; letter-spacing: .04em;
+  font-family: var(--mono); font-size: 9px; letter-spacing: .03em;
   color: var(--text3); line-height: 1.4;
 }
-.node-tag {
+.node.dim { opacity: 0.12; }
+.node.dim:hover { opacity: 0.25; transform: none; box-shadow: none; }
+
+.open-flag {
   display: inline-block; font-family: var(--mono); font-size: 8px;
-  letter-spacing: .05em; text-transform: uppercase;
-  padding: 2px 6px; border-radius: 3px; margin-top: 5px;
+  letter-spacing: .06em; text-transform: uppercase;
+  padding: 2px 6px; border-radius: 3px; margin-top: 6px;
+  background: rgba(239,159,39,0.16); color: var(--amber);
+  border: 0.5px solid var(--amber-border);
 }
 
-/* Node color variants */
-.node-principle { background: rgba(239,159,39,0.07); border-color: var(--amber-border); }
-.node-principle .node-name { color: #f4b84a; }
-.node-principle .node-tag { background: var(--amber-dim); color: #f4b84a; }
-
-
-.node-method { background: rgba(127,119,221,0.07); border-color: var(--purple-border); }
-.node-method .node-name { color: #b0aaee; }
-.node-method .node-tag { background: var(--purple-dim); color: #b0aaee; }
-
-.node-tool { background: rgba(226,75,74,0.07); border-color: rgba(226,75,74,0.25); }
-.node-tool .node-name { color: #e87070; }
-.node-tool .node-tag { background: var(--red-dim); color: #e87070; }
-
-.node-undef { background: rgba(229,229,229,0.02); border-color: var(--border); }
-.node-undef .node-name { color: var(--text2); }
-.node-undef .node-tag { background: rgba(229,229,229,0.04); color: var(--text3); }
-
-.node-domain { background: rgba(123,178,212,0.07); border-color: var(--domain-border); }
-.node-domain .node-name { color: var(--domain); }
-.node-domain .node-tag { background: var(--domain-dim); color: var(--domain); }
-
-/* click highlight states */
-.node.click-dim { opacity: 0.1; }
-.node.click-dim:hover { opacity: 0.18; transform: none; box-shadow: none; }
-
-/* filter dim */
-.node.flow-dim { opacity: 0.15; }
-
-/* ── SEPARATOR COLUMN ── */
-.sep-col {
-  display: flex; justify-content: center; padding-top: 4px;
-}
-.sep-col::after {
-  content: '';
-  display: block; width: 0.5px;
-  background: var(--border2);
-  min-height: 500px;
-}
-
-/* ── CHIPS ── */
-.chip-list { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
-.chip {
-  font-family: var(--font); font-size: 10px; font-weight: 500;
-  padding: 2px 8px; line-height: 1.4;
-  border-radius: 10px; border: 0.5px solid var(--border2);
-  background: var(--bg2); color: var(--text);
-  cursor: pointer; transition: opacity .2s;
-  display: inline-block; white-space: nowrap;
-}
-.chip:hover { opacity: 0.8; }
-.chip-principle { background: rgba(239,159,39,0.07); border-color: var(--amber-border); color: #f4b84a; }
-.chip-principle:hover { background: rgba(239,159,39,0.12); }
-.chip-method { background: rgba(127,119,221,0.07); border-color: var(--purple-border); color: #b0aaee; }
-.chip-method:hover { background: rgba(127,119,221,0.12); }
-.chip-tool { background: rgba(226,75,74,0.07); border-color: rgba(226,75,74,0.25); color: #e87070; }
-.chip-tool:hover { background: rgba(226,75,74,0.12); }
-.chip-undefined { background: rgba(229,229,229,0.02); border-color: var(--border); color: var(--text2); }
-.chip-undefined:hover { background: rgba(229,229,229,0.05); }
-.chip-domain { background: rgba(123,178,212,0.07); border-color: var(--domain-border); color: var(--domain); }
-.chip-domain:hover { background: rgba(123,178,212,0.15); }
-
-/* ── OPERATIONAL UNITS ── */
-.op-units { margin-bottom: 20px; padding-bottom: 16px; border-bottom: 0.5px solid var(--border); }
-.op-units-label {
-  font-family: var(--mono); font-size: 9px; letter-spacing: .06em;
-  text-transform: uppercase; color: var(--text3); margin-bottom: 5px;
-}
-.op-units-list { display: flex; flex-wrap: wrap; gap: 4px; }
-.op-unit {
-  font-family: var(--mono); font-size: 8px; letter-spacing: .04em;
-  text-transform: uppercase; color: var(--bg);
-  padding: 2px 6px; border-radius: 3px;
-  background: #f4b84a; border: 0.5px solid var(--amber-border);
-  font-weight: 500;
-}
-
-/* ── TODO CALLOUT ── */
-.todo-item {
-  padding: 10px 12px; border-radius: 6px;
-  background: var(--amber-dim); border: 0.5px solid var(--amber-border);
-  margin-bottom: 8px;
-}
-.todo-label {
-  font-family: var(--mono); font-size: 9px; letter-spacing: .08em;
-  text-transform: uppercase; color: var(--amber); margin-bottom: 5px;
-}
-.todo-text { font-size: 12px; color: var(--text2); line-height: 1.55; }
-
-/* ── UNDEFINED NOTE ── */
-.undef-note {
-  margin-top: 10px; padding: 10px 12px; border-radius: 6px;
-  background: rgba(229,229,229,0.03); border: 0.5px solid var(--border);
-  font-size: 12px; color: var(--text3); font-style: italic; line-height: 1.6;
-}
+.node-found { background: var(--amber-dim); border-color: var(--amber-border); }
+.node-found .node-name { color: var(--amber); }
+.node-delivery { background: var(--purple-dim); border-color: var(--purple-border); }
+.node-delivery .node-name { color: var(--purple); }
+.node-store { background: var(--domain-dim); border-color: var(--domain-border); }
+.node-store .node-name { color: var(--domain); }
+.node-surface { background: var(--green-dim); border-color: var(--green-border); }
+.node-surface .node-name { color: var(--green); }
+.node-gtm { background: var(--red-dim); border-color: var(--red-border); }
+.node-gtm .node-name { color: var(--red); }
+.node-external { background: rgba(229,229,229,0.02); border-color: var(--border); border-style: dashed; }
+.node-external .node-name { color: var(--text2); }
 
 /* ── SIDEBAR ── */
 .sidebar {
@@ -279,58 +176,88 @@ main {
   background: var(--bg2);
   overflow-y: auto;
 }
-.sidebar-section {
-  padding: 20px 24px;
-  border-bottom: 0.5px solid var(--border);
-}
+.sidebar-section { padding: 20px 24px; border-bottom: 0.5px solid var(--border); }
 .sidebar-title {
   font-family: var(--mono); font-size: 9px; letter-spacing: .08em;
   text-transform: uppercase; color: var(--text3); margin-bottom: 12px;
 }
-.detail-empty {
-  font-size: 11px; color: var(--text3); line-height: 1.6;
-  font-style: italic;
-}
-
-/* Node detail panel */
+.detail-empty { font-size: 12px; color: var(--text3); line-height: 1.6; font-style: italic; }
 #node-detail { display: none; }
 #node-detail.visible { display: block; }
-.detail-name { font-size: 15px; font-weight: 500; margin-bottom: 6px; }
+.detail-name { font-size: 15px; font-weight: 500; margin-bottom: 6px; line-height: 1.35; }
+.detail-kind {
+  font-family: var(--mono); font-size: 9px; letter-spacing: .07em;
+  text-transform: uppercase; color: var(--text3); margin-bottom: 10px;
+}
 .detail-desc { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 14px; }
-.detail-meta { display: flex; flex-direction: column; gap: 10px; }
-.meta-row { display: flex; flex-direction: column; gap: 3px; }
+.detail-bullets { list-style: none; padding: 0; margin: 0 0 14px; }
+.detail-bullets li {
+  font-size: 12px; color: var(--text2); line-height: 1.6;
+  padding-left: 12px; position: relative; margin-bottom: 10px;
+  padding-bottom: 10px; border-bottom: 0.5px solid var(--border);
+}
+.detail-bullets li:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.detail-bullets li::before { content: '·'; position: absolute; left: 0; color: var(--text3); }
+.detail-meta { display: flex; flex-direction: column; gap: 12px; }
+.meta-row { display: flex; flex-direction: column; gap: 5px; }
 .meta-label {
   font-family: var(--mono); font-size: 9px; letter-spacing: .07em;
   text-transform: uppercase; color: var(--text3);
 }
-.meta-value { font-size: 12px; color: var(--text2); line-height: 1.5; }
-.detail-bullets { list-style: none; padding: 0; margin: 0 0 14px; }
-.detail-bullets li {
-  font-size: 12px; color: var(--text2); line-height: 1.6;
-  padding-left: 12px; position: relative; margin-bottom: 12px;
-  padding-bottom: 12px; border-bottom: 0.5px solid var(--border);
-}
-.detail-bullets li:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-.detail-bullets li::before {
-  content: '·'; position: absolute; left: 0; color: var(--text3);
-}
-.node-chip {
+.chip-list { display: flex; flex-wrap: wrap; gap: 4px; }
+.chip {
   display: inline-block; font-size: 10px; font-weight: 500;
-  padding: 2px 8px; line-height: 1.4;
+  padding: 2px 8px; line-height: 1.5;
   border-radius: 10px; border: 0.5px solid var(--border2);
-  background: var(--bg); color: var(--text);
+  background: var(--bg); color: var(--text2);
   cursor: pointer; transition: opacity .2s;
-  white-space: nowrap; vertical-align: baseline;
 }
-.node-chip:hover { opacity: 0.8; }
-.node-chip-principle { background: rgba(239,159,39,0.07); border-color: var(--amber-border); color: #f4b84a; }
-.node-chip-method { background: rgba(127,119,221,0.07); border-color: var(--purple-border); color: #b0aaee; }
-.node-chip-tool { background: rgba(226,75,74,0.07); border-color: rgba(226,75,74,0.25); color: #e87070; }
-.node-chip-undefined { background: rgba(229,229,229,0.02); border-color: var(--border); color: var(--text3); }
+.chip:hover { opacity: 0.75; }
+.chip-found { background: var(--amber-dim); border-color: var(--amber-border); color: var(--amber); }
+.chip-delivery { background: var(--purple-dim); border-color: var(--purple-border); color: var(--purple); }
+.chip-store { background: var(--domain-dim); border-color: var(--domain-border); color: var(--domain); }
+.chip-surface { background: var(--green-dim); border-color: var(--green-border); color: var(--green); }
+.chip-gtm { background: var(--red-dim); border-color: var(--red-border); color: var(--red); }
+.chip-external { background: rgba(229,229,229,0.02); border-color: var(--border); color: var(--text3); }
 
-/* footer */
+.def-row { margin-bottom: 12px; }
+.def-row:last-child { margin-bottom: 0; }
+.def-term { font-size: 12px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+.def-body { font-size: 12px; color: var(--text2); line-height: 1.55; }
+
+.open-card {
+  padding: 10px 12px; border-radius: 6px;
+  background: var(--amber-dim); border: 0.5px solid var(--amber-border);
+  margin-bottom: 8px;
+}
+.open-card:last-child { margin-bottom: 0; }
+.open-card-label {
+  font-family: var(--mono); font-size: 9px; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--amber); margin-bottom: 5px;
+}
+.open-card-text { font-size: 12px; color: var(--text2); line-height: 1.55; }
+
+/* ── LIST VIEW ── */
+.list-wrap { padding: 28px 40px 48px; max-width: 900px; }
+.list-intro { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 24px; max-width: 620px; }
+.list-group { margin-bottom: 26px; padding-bottom: 20px; border-bottom: 0.5px solid var(--border); }
+.list-group:last-child { border-bottom: none; }
+.list-group-name { font-size: 15px; font-weight: 500; margin-bottom: 3px; }
+.list-group-sub {
+  font-family: var(--mono); font-size: 9px; letter-spacing: .05em;
+  text-transform: uppercase; color: var(--text3); margin-bottom: 12px;
+}
+.rel { display: flex; gap: 10px; align-items: baseline; padding: 4px 0; }
+.rel-arrow {
+  font-family: var(--mono); font-size: 11px; color: var(--text3);
+  width: 22px; flex-shrink: 0;
+}
+.rel-arrow.bi { color: var(--purple); }
+.rel-text { font-size: 13px; color: var(--text2); line-height: 1.5; }
+.rel-none { font-size: 12px; color: var(--text3); font-style: italic; }
+
 footer {
-  padding: 20px 48px;
+  padding: 18px 48px;
   border-top: 0.5px solid var(--border);
   display: flex; justify-content: space-between; align-items: center;
   flex-wrap: wrap; gap: 12px;
@@ -339,575 +266,654 @@ footer {
   font-family: var(--mono); font-size: 10px; letter-spacing: .05em;
   color: var(--text3); text-transform: uppercase;
 }
+
+@media (max-width: 1100px) {
+  main { grid-template-columns: 1fr; }
+  .sidebar { border-left: none; border-top: 0.5px solid var(--border); }
+}
 </style>
 </head>
 <body>
 
 <header>
   <div class="header-left">
-    <h1>What SparqOS is</h1>
-    <p>Sparq holds a set of principles about how work should be done. SparqOS is everything those principles produced — the domains and tools on the right, each one tracing back to a principle on the left.</p>
+    <h1>SparqOS relationships</h1>
+    <p>Not a hierarchy — a set of things that inform each other. Every line is a claim about direction: who feeds whom, and where the feed runs both ways. ADLC is the engine in the middle; the store is the memory underneath it; GTM is what the two of them make sellable. Click any node to isolate what it touches.</p>
   </div>
   <div class="header-right">
-    <div class="lens-select" id="lens-select"></div>
+    <div class="legend" id="legend"></div>
+    <div class="control-row" id="view-select"></div>
+    <div class="control-row" id="lens-select"></div>
   </div>
 </header>
 
-<main>
+<main id="main">
   <div class="diagram">
-    <div class="section-headings">
-      <h3 class="section-heading">Sparq</h3>
-      <div></div>
-      <h3 class="section-heading" style="grid-column: span 3;">SparqOS</h3>
+    <div class="canvas" id="canvas">
+      <svg id="edges"></svg>
     </div>
-    <div class="layer-labels">
-      <div class="layer-label">Operational units</div>
-      <div class="layer-label"></div>
-      <div class="layer-label">Domain</div>
-      <div class="layer-label">Tool</div>
-      <div class="layer-label">Undefined</div>
-    </div>
-    <div class="diagram-canvas">
-      <div class="nodes-layer">
+  </div>
 
-        <!-- COL 1: PRINCIPLES & OPERATIONAL UNITS -->
-        <div class="node-col">
-          <div class="op-units">
-            <div class="op-units-list">
-              <span class="op-unit">Marketing</span>
-              <span class="op-unit">Sales</span>
-              <span class="op-unit">Delivery</span>
-              <span class="op-unit">People</span>
-              <span class="op-unit">Solution Consulting</span>
-              <span class="op-unit">Finance</span>
-              <span class="op-unit">IT</span>
-              <span class="op-unit">RevOps</span>
-            </div>
-          </div>
-          <div class="op-units-label">Principles</div>
-          <div class="node node-principle" id="n-conf" data-id="conf" onclick="selectNode('conf')">
-            <div class="node-name">Confidence governs commitment</div>
-            <div class="node-sub">Commit as far as evidence reaches</div>
-            <div class="node-tag">GOVERNANCE</div>
-          </div>
-          <div class="node node-principle" id="n-evd" data-id="evd" onclick="selectNode('evd')">
-            <div class="node-name">Evidence over artifacts</div>
-            <div class="node-sub">Traceability is the deliverable</div>
-            <div class="node-tag">STANDARD</div>
-          </div>
-          <div class="node node-principle" id="n-econ" data-id="econ" onclick="selectNode('econ')">
-            <div class="node-name">We work from the economic reality, not the stated request</div>
-            <div class="node-sub">We operate at the level of the problem, not the ask</div>
-            <div class="node-tag">ECONOMIC</div>
-          </div>
-          <div class="node node-principle" id="n-airigor" data-id="airigor" onclick="selectNode('airigor')">
-            <div class="node-name">We bring the same rigor to AI that we bring to the business problem</div>
-            <div class="node-sub">AI with accountability, not AI as decoration</div>
-            <div class="node-tag">RIGOR</div>
-          </div>
-          <div class="node node-principle" id="n-client_p" data-id="client_p" onclick="selectNode('client_p')">
-            <div class="node-name">Client engagement is structural, not ceremonial</div>
-            <div class="node-sub">The client is part of the delivery system</div>
-            <div class="node-tag">ENGAGEMENT</div>
-          </div>
-          <div class="node node-principle" id="n-ctx" data-id="ctx" onclick="selectNode('ctx')">
-            <div class="node-name">We treat context as infrastructure</div>
-            <div class="node-sub">Intelligence compounds, not resets</div>
-            <div class="node-tag">CONTEXT</div>
-          </div>
-          <div class="node node-principle" id="n-leave" data-id="leave" onclick="selectNode('leave')">
-            <div class="node-name">The system we leave behind works without us</div>
-            <div class="node-sub">Outcomes the client owns; identity discipline</div>
-            <div class="node-tag">OWNERSHIP</div>
-          </div>
-        </div>
+  <div class="list-wrap">
+    <div class="list-intro">Every relationship on the map, written out. <span style="color:var(--purple)">↔</span> marks a loop — both sides inform each other. This list and the map are generated from the same source, so they cannot drift apart.</div>
+    <div id="list-body"></div>
+  </div>
 
-        <!-- COL 2: SEPARATOR -->
-        <div class="sep-col"></div>
-
-        <!-- COL 3: DOMAINS -->
-        <div class="node-col">
-          <div class="node node-domain" id="n-adlc" data-id="adlc" onclick="selectNode('adlc')">
-            <div class="node-name">ADLC</div>
-            <div class="node-sub">How the work moves</div>
-            <div class="node-tag">DELIVERY</div>
-          </div>
-          <div class="node node-domain" id="n-client" data-id="client" onclick="selectNode('client')">
-            <div class="node-name">Client Engagement</div>
-            <div class="node-sub">How the client participates</div>
-            <div class="node-tag">ENGAGEMENT</div>
-          </div>
-          <div class="node node-domain" id="n-people" data-id="people" onclick="selectNode('people')">
-            <div class="node-name">People / Resourcing</div>
-            <div class="node-sub">How we source and place talent</div>
-            <div class="node-tag">RESOURCING</div>
-          </div>
-          <div class="node node-domain" id="n-sales" data-id="sales" onclick="selectNode('sales')">
-            <div class="node-name">Sales / Commercial</div>
-            <div class="node-sub">How we sell and package</div>
-            <div class="node-tag">COMMERCIAL</div>
-          </div>
-        </div>
-
-        <!-- COL 4: TOOLS -->
-        <div class="node-col">
-          <div class="node node-tool" id="n-aiprevail" data-id="aiprevail" onclick="selectNode('aiprevail')">
-            <div class="node-name">AI Prevail</div>
-            <div class="node-sub">Predictive validation engine</div>
-            <div class="node-tag">PREDICTION</div>
-          </div>
-          <div class="node node-tool" id="n-billboard" data-id="billboard" onclick="selectNode('billboard')">
-            <div class="node-name">Billboard</div>
-            <div class="node-sub">Artifact creator</div>
-            <div class="node-tag">ARTIFACTS</div><span class="int-badge">INT</span>
-          </div>
-          <div class="node node-tool" id="n-chakra" data-id="chakra" onclick="selectNode('chakra')">
-            <div class="node-name">Chakra AI</div>
-            <div class="node-sub">AI-powered technical interviewer developed by HackerRank</div>
-            <div class="node-tag">INTELLIGENCE</div>
-          </div>
-          <div class="node node-tool" id="n-spot" data-id="spot" onclick="selectNode('spot')">
-            <div class="node-name">SPOT</div>
-            <div class="node-sub">Single Point of Truth</div>
-            <div class="node-tag">CONTEXT</div><span class="int-badge">INT</span>
-          </div>
-          <div class="node node-tool" id="n-stacks" data-id="stacks" onclick="selectNode('stacks')">
-            <div class="node-name">Stacks</div>
-            <div class="node-sub">Knowledge architecture</div>
-            <div class="node-tag">LINEAGE</div><span class="int-badge">INT</span>
-          </div>
-          <div class="node node-tool" id="n-vera" data-id="vera" onclick="selectNode('vera')">
-            <div class="node-name">VERA</div>
-            <div class="node-sub">Validated Evidence, Ready Artifacts</div>
-            <div class="node-tag">VALIDATION</div><span class="int-badge">INT</span>
-          </div>
-        </div>
-
-        <!-- COL 6: UNDEFINED -->
-        <div class="node-col">
-          <div class="node node-undef" id="n-askiq" data-id="askiq" onclick="selectNode('askiq')">
-            <div class="node-name">AskIQ</div>
-            <div class="node-sub">Position TBD</div>
-            <div class="node-tag">UNDEFINED</div><span class="int-badge">INT</span>
-          </div>
-          <div class="node node-undef" id="n-shopos" data-id="shopos" onclick="selectNode('shopos')">
-            <div class="node-name">ShopOS</div>
-            <div class="node-sub">Position TBD</div>
-            <div class="node-tag">UNDEFINED</div><span class="int-badge">INT</span>
-          </div>
-          <div class="node node-undef" id="n-speciq" data-id="speciq" onclick="selectNode('speciq')">
-            <div class="node-name">SpecIQ</div>
-            <div class="node-sub">Position TBD</div>
-            <div class="node-tag">UNDEFINED</div><span class="int-badge">INT</span>
-          </div>
-        </div>
-
-      </div><!-- /nodes-layer -->
-    </div><!-- /diagram-canvas -->
-  </div><!-- /diagram -->
-
-  <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="sidebar-section">
-      <div class="sidebar-title">Node detail</div>
-      <div id="node-placeholder" class="detail-empty">Click any node to see its role, what it connects to, and which principles it answers to.</div>
+      <div class="sidebar-title">Selection</div>
+      <div id="node-placeholder" class="detail-empty">Click any node — or any lens — to see what it informs, what informs it, and where the relationship runs both ways.</div>
       <div id="node-detail"></div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">The two stores</div>
+      <div class="def-row">
+        <div class="def-term">SPOT — the data lake</div>
+        <div class="def-body">The store of what happened in Sparq history. The record, not the reading of it.</div>
+      </div>
+      <div class="def-row">
+        <div class="def-term">Institutional intelligence</div>
+        <div class="def-body">The store of what the data lake teaches. The reading, not the record.</div>
+      </div>
+      <div class="def-row">
+        <div class="def-term">Context flow / retrieval</div>
+        <div class="def-body">Neither store — the layer that gets what is stored in front of the work.</div>
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Open questions</div>
+      <div id="open-body"></div>
     </div>
   </div>
 </main>
 
 <footer>
-  <div class="footer-text">The Sparq Method · Operating system architecture · v0.1</div>
+  <div class="footer-text">The Sparq Method · SparqOS relationship map · v0.2</div>
+  <div class="footer-text" id="edge-count"></div>
 </footer>
 
 <script is:inline>
-const nodeData = {
-  'conf': {
-    name: 'Confidence governs commitment',
-    type: 'principle',
-    typeColor: '#f4b84a',
-    desc: 'Work advances when uncertainty drops, not when time passes. The governing variable across every decision.',
-    details: [{ label: 'Tag', value: 'GOVERNANCE' }],
-    nonNegotiables: [
-      'Commit only as far as evidence reaches.',
-      'Scope changes require a re-evaluation of the economic hypothesis, not just a change order.'
-    ],
-    links: ['adlc']
-  },
-  'evd': {
-    name: 'Evidence over artifacts',
-    type: 'principle',
-    typeColor: '#f4b84a',
-    desc: 'Documentation is not evidence. Polish is not confidence. Only measurable signal moves belief.',
-    details: [{ label: 'Tag', value: 'STANDARD' }],
-    nonNegotiables: [
-      'AI-generated output is never delivered to a client without a human who understands it and can defend it.',
-      'QA rigor matches delivery speed.'
-    ],
-    links: ['vera']
-  },
-  'econ': {
-    name: 'We work from the economic reality, not the stated request',
-    type: 'principle',
-    typeColor: '#f4b84a',
-    desc: 'We enter every engagement with a point of view, not a blank slate. We do not start building until we can name what winning looks like, and we measure everything in the language of the P&L.',
-    details: [{ label: 'Tag', value: 'ECONOMIC' }],
-    nonNegotiables: [
-      'Every engagement begins with an economic hypothesis, not a scope document.',
-      'We do not start building until we can name what winning looks like.',
-      'We operate at the level of the problem, not the level of the ask.'
-    ],
-    links: ['sales']
-  },
-  'airigor': {
-    name: 'We bring the same rigor to AI that we bring to the business problem',
-    type: 'principle',
-    typeColor: '#f4b84a',
-    desc: 'AI gets the same engineering discipline as anything else we build. This principle governs every domain — it is not a domain itself. Speed is evidence of a well-engineered process, not a sales pitch.',
-    details: [{ label: 'Tag', value: 'RIGOR' }],
-    nonNegotiables: [
-      'Every agentic or autonomous component has a defined failure mode and a human override.',
-      'Security and governance are designed in from sprint one, not reviewed at delivery. (NOTE: needs more definition on the level of security and governance.)',
-      'Speed is evidence of a well-engineered process, not a sales pitch. QA rigor matches delivery speed.'
-    ],
-    links: ['adlc', 'client', 'sales', 'people']
-  },
-  'client_p': {
-    name: 'Client engagement is structural, not ceremonial',
-    type: 'principle',
-    typeColor: '#f4b84a',
-    desc: 'The client relationship is built into how delivery works, not bolted on as reviews and sign-offs. Sparq never presents something it has not already tested with them.',
-    details: [{ label: 'Tag', value: 'ENGAGEMENT' }],
-    nonNegotiables: [
-      'The client names a decision-maker who is reachable within 24 hours at all stages of delivery.',
-      'A defined and committed level of client time each week for reviews and decision-making.',
-      'Sparq never presents to a client something it has not already tested with them.',
-      'Every sprint delivers something a non-technical stakeholder can evaluate.'
-    ],
-    links: ['client']
-  },
-  'ctx': {
-    name: 'We treat context as infrastructure',
-    type: 'principle',
-    typeColor: '#f4b84a',
-    desc: 'Context is infrastructure and infrastructure is context. Evidence, decisions, and confidence move with the work rather than resetting each engagement. Because Sparq works this way, SPOT and Stacks exist.',
-    details: [{ label: 'Tag', value: 'CONTEXT' }],
-    nonNegotiables: [
-      'Every engagement has a designated context owner responsible for continuity — not a rotating cast.',
-      'What Sparq learns on one engagement is available in structured form to the next.'
-    ],
-    links: ['spot', 'stacks']
-  },
-  'leave': {
-    name: 'The system we leave behind works without us',
-    type: 'principle',
-    typeColor: '#f4b84a',
-    desc: 'We are accountable to what we leave behind. Every engagement should be one we would put on our website — or we should not take it.',
-    details: [{ label: 'Tag', value: 'OWNERSHIP' }],
-    nonNegotiables: [
-      'The engagement ends with the client able to operate what Sparq built — not dependent on Sparq to run it.',
-      'Every engagement is a reference engagement, or Sparq should not take it.'
-    ],
-    links: ['adlc']
-  },
-  'adlc': {
-    name: 'ADLC',
-    type: 'domain',
-    typeColor: '#7BB2D4',
-    desc: 'The delivery lifecycle — how software work moves from uncertainty to committed capability. Confidence-sequenced, not phase-sequenced. Contains the question-driven modes. Christa doc drills specifically into this domain and calls it SparqOS; this map shows it as one of four. Boundary with Client Engagement: modes belong to ADLC; the client role within them belongs to Client Engagement. Full mode structure is a separate drill-down artifact. OPEN QUESTION: SparqOS scope — broad (all operating domains) vs narrow (delivery only). Building broad, internally; Christa doc leans narrow. Not resolved.',
-    details: [{ label: 'Tag', value: 'DELIVERY' }],
-    links: ['conf', 'leave', 'airigor', 'vera', 'speciq']
-  },
-  'client': {
-    name: 'Client Engagement',
-    type: 'domain',
-    typeColor: '#7BB2D4',
-    desc: 'How the client participates across the entire relationship, from first conversation through delivery. Not one phase — the through-line of client involvement. (Solution consulting sits at the front of it; structured client participation during delivery sits at the other end.) Boundary with ADLC: ADLC is how the work moves; Client Engagement is how the client participates in that movement. Same events, different lens.',
-    details: [{ label: 'Tag', value: 'ENGAGEMENT' }],
-    links: ['client_p', 'airigor']
-  },
-  'sales': {
-    name: 'Sales / Commercial',
-    type: 'domain',
-    typeColor: '#7BB2D4',
-    desc: 'How Sparq sells and packages engagements — selling outcomes and validated confidence, not a list of artifacts. Distinct from Client Engagement (selling vs. delivering).',
-    details: [{ label: 'Tag', value: 'COMMERCIAL' }],
-    links: ['econ', 'airigor']
-  },
-  'people': {
-    name: 'People / Resourcing',
-    type: 'domain',
-    typeColor: '#7BB2D4',
-    desc: 'How Sparq sources and places talent — staffing for judgment, not artifact production. Robin people-tools serve this domain.',
-    details: [{ label: 'Tag', value: 'RESOURCING' }],
-    links: ['airigor', 'chakra', 'aiprevail']
-  },
-  'spot': {
-    name: 'SPOT',
-    type: 'tool',
-    typeColor: '#e87070',
-    desc: 'Retrieval and recall surface. Architecture still open: coupled to Stacks, or agnostic over any corpus. Built from context-as-infrastructure. NOTE: confirm whether SPOT is truly a single point of truth or a recall surface — different architectures.',
-    details: [{ label: 'Tag', value: 'CONTEXT' }],
-    links: ['ctx', 'stacks']
-  },
-  'stacks': {
-    name: 'Stacks',
-    type: 'tool',
-    typeColor: '#e87070',
-    desc: 'The per-engagement active evidence layer. Signal, assumptions, and decisions — stored and traceable. Built from context-as-infrastructure.',
-    details: [{ label: 'Tag', value: 'LINEAGE' }],
-    links: ['ctx', 'spot', 'vera']
-  },
-  'vera': {
-    name: 'VERA',
-    type: 'tool',
-    typeColor: '#e87070',
-    desc: 'Reads structured evidence from Stacks and generates deliverables at the confidence the evidence supports. Never invents certainty. Serves ADLC. Built from evidence-over-artifacts.',
-    details: [{ label: 'Tag', value: 'VALIDATION' }],
-    links: ['evd', 'adlc', 'stacks']
-  },
-  'chakra': {
-    name: 'Chakra AI',
-    type: 'tool',
-    typeColor: '#e87070',
-    desc: 'People-org tool (owned by Robin). Delivery-intelligence for the People / Resourcing domain. Connection near-certain given ownership and stated function; confirm with owner.',
-    details: [{ label: 'Tag', value: 'INTELLIGENCE' }],
-    links: ['people']
-  },
-  'aiprevail': {
-    name: 'AI Prevail',
-    type: 'tool',
-    typeColor: '#e87070',
-    desc: 'People-org tool (owned by Robin). Provisionally serves People / Resourcing. Connection inferred from ownership — confirm.',
-    details: [{ label: 'Tag', value: 'PREDICTION' }],
-    links: ['people']
-  },
-  'billboard': {
-    name: 'Billboard',
-    type: 'tool',
-    typeColor: '#e87070',
-    desc: 'Artifact creator. Generates client-facing deliverables from structured evidence. Outputs are always traceable to their evidence source.',
-    details: [{ label: 'Tag', value: 'ARTIFACTS' }],
-    nonNegotiables: [
-      'Artifacts are generated from evidence — never from assumptions.',
-      'Every output carries its confidence lineage.'
-    ],
-    links: ['vera']
-  },
-  'speciq': {
-    name: 'SpecIQ',
-    type: 'undefined',
-    typeColor: '#555',
-    desc: 'Generates PRDs, backlogs, spec artifacts (high-level only). Likely serves ADLC or Client Engagement, but connection unconfirmed — left undefined rather than guessed. Resolve to a domain, or adjudicate: principle wrong, tool wrong, or boundary wrong.',
-    details: [{ label: 'Status', value: 'Undefined — no principle connection established' }],
-    links: []
-  },
-  'askiq': {
-    name: 'AskIQ',
-    type: 'undefined',
-    typeColor: '#555',
-    desc: 'Data/engineering surface. Details thin. Direction not called — could serve a domain or be a company-level capability. Adjudicate.',
-    details: [{ label: 'Status', value: 'Undefined — no principle connection established' }],
-    links: []
-  },
-  'shopos': {
-    name: 'ShopOS',
-    type: 'undefined',
-    typeColor: '#555',
-    desc: 'ELT reporting, tied to Innovation and People pillars. May resolve left — a company-level capability rather than a SparqOS domain thing. Clearest candidate for living outside SparqOS entirely. Adjudicate before absorbing.',
-    details: [{ label: 'Status', value: 'Undefined — no principle connection established' }],
-    links: []
-  }
-}
+/* ──────────────────────────────────────────────────────────────
+   CATEGORIES
+   ────────────────────────────────────────────────────────────── */
+var CATS = {
+  found:    { label: 'Capability & talent', color: '#F4B84A' },
+  delivery: { label: 'Delivery',            color: '#B0AAEE' },
+  store:    { label: 'Store & flow',        color: '#7BB2D4' },
+  surface:  { label: 'Client surface',      color: '#35B98F' },
+  gtm:      { label: 'GTM & commercial',    color: '#E87070' },
+  external: { label: 'Outside SparqOS',     color: '#9A9A9A' }
+};
 
-// Build reverse-link index for bidirectional highlight
-const backlinks = {};
-Object.keys(nodeData).forEach(function(id) {
-  nodeData[id].links.forEach(function(lid) {
-    if (!backlinks[lid]) backlinks[lid] = [];
-    backlinks[lid].push(id);
-  });
-});
-
-// ── LENSES ──
-var lenses = [
+/* ──────────────────────────────────────────────────────────────
+   NODES  (x/y = position on the 1190x900 canvas)
+   ────────────────────────────────────────────────────────────── */
+var NODES = [
   {
-    id: 'christa-baseline',
-    label: 'External narrative',
-    highlightNodeIds: ['conf', 'ctx', 'evd', 'airigor', 'adlc', 'client', 'spot', 'stacks', 'vera'],
-    explanation: '<div class="detail-name">External narrative \u2014 market-facing positioning</div><div class="detail-desc">This lens maps the current external/commercial narrative onto the system: what the story leads with when SparqOS is explained to buyers.</div><ul class="detail-bullets"><li><strong>Lit:</strong> the concepts the external narrative centers \u2014 operational confidence, context that persists (Institutional + Project Intelligence), evidence-grounded decisions, AI within guardrails, and the delivery and client-experience domains. SPOT, Stacks, and VERA light up because they\u2019re the tools behind the \u201Cno engagement starts from zero\u201D promise, even though the narrative doesn\u2019t name them directly.</li><li><strong>Dim:</strong> what the external narrative doesn\u2019t center \u2014 the economic-hypothesis discipline, \u201Cthe system we leave behind works without us,\u201D and the Sales and Resourcing domains. These are load-bearing internally but sit outside the buyer-facing story.</li><li><strong>What this surfaces:</strong> The external framing has converged toward the operating-system definition \u2014 SparqOS as an orchestration/intelligence layer, not a methodology or a product. The open question is the center of gravity. The external narrative leads with Institutional Intelligence (context compounding, no engagement starting from zero); the internal architecture has led with confidence-governed commitment (surfacing risk, earning the right to build). Not opposed \u2014 two true faces of the same system \u2014 but which one anchors the promise is a choice worth making deliberately rather than by default.</li></ul>'
+    id: 'cap', name: 'Capability model', sub: 'what we can do, evidenced',
+    cat: 'found', x: 30, y: 250,
+    desc: 'What Sparq can do, at what level, and how that is evidenced. It sits upstream of nearly everything: it informs who we hire and place, how the work is run, what we sell, and what we charge. Two of those relationships run back the other way — ADLC and Solutions are where the model gets corrected by contact with reality.'
+  },
+  {
+    id: 'talent', name: 'Talent & resourcing', sub: 'who does the work',
+    cat: 'found', x: 30, y: 430,
+    desc: 'Who we put on the work, and how we source and place them. Downstream of the capability model, in a loop with both ADLC (delivery shows what the staffing actually needs to be) and commercials (what we can staff sets what we can price, and what we price sets what we can staff).'
+  },
+  {
+    id: 'shop', name: 'The Shop', sub: 'definition open',
+    cat: 'delivery', x: 280, y: 60, open: true,
+    desc: 'Currently reads as a build space that feeds GTM IQs & accelerators. Drawn in a loop with ADLC on the assumption that it is a playground where new ways of working get found — if it turns out to be an output channel only, that back-edge comes off the map.',
+    note: 'Still unresolved: what The Shop is, and what it turns into.'
+  },
+  {
+    id: 'adlc', name: 'ADLC', sub: 'how the work moves',
+    cat: 'delivery', x: 280, y: 260,
+    desc: 'The engine. ADLC generates the evidence that lands in the data lake, drives the client experience surface, and produces the raw material for GTM IQs & accelerators. Almost every relationship it has runs both ways — the capability model, Solutions, commercials, talent, The Shop and institutional intelligence all shape delivery and get reshaped by it.'
+  },
+  {
+    id: 'spot', name: 'SPOT', sub: 'the data lake',
+    cat: 'store', x: 280, y: 620,
+    desc: 'The store of what happened in Sparq history. ADLC writes the evidence into it, the client experience surface writes interactions into it, and the retrieval layer reads out of it. In a loop with institutional intelligence: the lake teaches, and what is learned is written back.',
+    note: 'Open: is a per-engagement store needed as its own object, or does SPOT cover that too?'
+  },
+  {
+    id: 'gtm', name: 'GTM IQs & accelerators', sub: 'packaged proof',
+    cat: 'gtm', x: 530, y: 60,
+    desc: 'The reusable, packaged form of what Sparq already knows how to do. Fed by ADLC (what delivery proves), by The Shop (what gets built there), and by institutional intelligence (what the record teaches). Feeds commercials.'
+  },
+  {
+    id: 'ii', name: 'Institutional intelligence', sub: 'what the lake teaches',
+    cat: 'store', x: 530, y: 430,
+    desc: 'The store of what the data lake teaches — the patterns, benchmarks and judgment extracted from the record. It is not the record. It informs Solutions and GTM IQs & accelerators, is in a loop with ADLC, and is in a loop with the store it reads from.'
+  },
+  {
+    id: 'flow', name: 'Context flow', sub: 'retrieval layer',
+    cat: 'store', x: 530, y: 620,
+    desc: 'The layer between the store and the work. It reads from SPOT and puts context in front of the client experience surface. It stores nothing itself — which is exactly why it is drawn separately from the lake.'
+  },
+  {
+    id: 'solutions', name: 'Solutions', sub: 'the promise',
+    cat: 'gtm', x: 780, y: 230,
+    desc: 'What Sparq takes to market. Shaped from three directions — the capability model (what we can credibly claim), ADLC (what delivery can actually carry), and institutional intelligence (what the record says works) — and proven by the client experience surface. It informs commercials and, in return, commercials shapes it.'
+  },
+  {
+    id: 'cx', name: 'Client experience surface', sub: 'where the client meets the work',
+    cat: 'surface', x: 780, y: 400,
+    desc: 'Where the client meets the work. Fed by ADLC and by the retrieval layer. Two things flow out of it: client interactions become signal back into the store, and the experience itself becomes the proof of the promise Solutions makes.'
+  },
+  {
+    id: 'comm', name: 'Commercials', sub: 'how it is priced and packaged',
+    cat: 'gtm', x: 780, y: 60,
+    desc: 'How the work is priced and packaged. The convergence point: the capability model, talent, ADLC, Solutions and GTM IQs & accelerators all feed it. Three of those are loops — commercials pushes back on talent, ADLC and Solutions.'
+  },
+  {
+    id: 'studio', name: 'Intelligence Studio', sub: 'embedded in client systems',
+    cat: 'gtm', x: 780, y: 620, open: true,
+    desc: 'Embedded externally, in the client’s own systems — deliberately distinct from the client experience surface, which is Sparq’s surface. Drawn with one relationship out and none in.',
+    note: 'Open: what feeds Intelligence Studio — GTM IQs, institutional intelligence, ADLC? Undrawn for now.'
+  },
+  {
+    id: 'clientsys', name: 'Client’s own systems', sub: 'outside Sparq’s surface',
+    cat: 'external', x: 780, y: 790,
+    desc: 'Not part of SparqOS. On the map because Intelligence Studio reaches into it — that is the distinction being drawn between something embedded in the client’s estate and something the client visits on ours.'
   }
 ];
 
-var currentLens = null;
-let currentNode = null;
+/* ──────────────────────────────────────────────────────────────
+   EDGES  [from, to, '>' one-way | '<>' both ways]
+   ────────────────────────────────────────────────────────────── */
+var EDGES = [
+  /* capability model */
+  ['cap', 'talent', '>'],
+  ['cap', 'adlc', '<>'],
+  ['cap', 'comm', '>'],
+  ['cap', 'solutions', '<>'],
+  /* talent & resourcing */
+  ['talent', 'comm', '<>'],
+  ['talent', 'adlc', '<>'],
+  /* ADLC */
+  ['adlc', 'cx', '>'],
+  ['adlc', 'gtm', '>'],
+  ['adlc', 'solutions', '<>'],
+  ['adlc', 'comm', '<>'],
+  ['adlc', 'spot', '>'],
+  ['adlc', 'shop', '<>'],
+  ['adlc', 'ii', '<>'],
+  /* store and flow */
+  ['spot', 'flow', '>'],
+  ['flow', 'cx', '>'],
+  ['spot', 'ii', '<>'],
+  /* client experience surface */
+  ['cx', 'spot', '>'],
+  ['cx', 'solutions', '>'],
+  /* GTM */
+  ['solutions', 'comm', '<>'],
+  ['ii', 'gtm', '>'],
+  ['gtm', 'comm', '>'],
+  ['ii', 'solutions', '>'],
+  ['studio', 'clientsys', '>'],
+  /* the shop */
+  ['shop', 'gtm', '>']
+];
 
-function allNodes() { return document.querySelectorAll('.node'); }
+/* ──────────────────────────────────────────────────────────────
+   OPEN QUESTIONS
+   ────────────────────────────────────────────────────────────── */
+var OPEN = [
+  {
+    label: 'Per-engagement store',
+    text: 'SPOT is defined here as the history-wide lake. Is a per-engagement store needed as its own object — the live state of one engagement — or is SPOT doing that job as well? If it is separate, it belongs on this map between ADLC and SPOT. An earlier version of this page carried a per-engagement evidence layer as a distinct thing; this version does not.',
+    focus: ['spot', 'adlc']
+  },
+  {
+    label: 'The Shop',
+    text: 'Still unsure what The Shop is or what it becomes. It is drawn feeding GTM IQs & accelerators, and in a loop with ADLC on the reading that it is a playground where new ways of working get identified. If it is only an output channel, the ADLC back-edge is wrong.',
+    focus: ['shop', 'adlc', 'gtm']
+  },
+  {
+    label: 'Intelligence Studio',
+    text: 'One relationship out — into the client’s own systems — and nothing in. Whatever feeds it (GTM IQs, institutional intelligence, ADLC) is not yet called, so it sits deliberately unconnected rather than guessed at.',
+    focus: ['studio', 'clientsys']
+  }
+];
 
-// Render lens buttons
-(function renderLensButtons() {
-  var container = document.getElementById('lens-select');
-  var html = '<span class="lens-label">Lenses</span>';
-  lenses.forEach(function(lens) {
-    html += '<button class="lens-btn" data-lens="' + lens.id + '" onclick="toggleLens(\'' + lens.id + '\', this)">' + lens.label + '</button>';
+/* ──────────────────────────────────────────────────────────────
+   LENSES
+   ────────────────────────────────────────────────────────────── */
+var LENSES = [
+  {
+    id: 'evidence',
+    label: 'Evidence loop',
+    nodes: ['adlc', 'spot', 'flow', 'cx', 'ii'],
+    explanation: '<div class="detail-name">Evidence loop</div><div class="detail-kind">Lens</div><div class="detail-desc">The closed circuit: delivery produces evidence, the lake keeps it, the retrieval layer serves it, the client surface uses it — and what happens there goes back into the lake.</div><ul class="detail-bullets"><li><strong>The path:</strong> ADLC writes evidence into SPOT. SPOT feeds the retrieval layer. Retrieval feeds the client experience surface. The surface writes interactions back into the store. Institutional intelligence sits across the loop, reading the lake and being read by ADLC.</li><li><strong>Why it matters:</strong> this is the only loop on the map that closes without passing through a commercial or capability decision. It is the part of SparqOS that compounds on its own.</li><li><strong>Where it is thin:</strong> the loop assumes one store. If per-engagement state is really a separate object, it sits inside this loop, between ADLC and SPOT, and the circuit has a node missing.</li></ul>'
+  },
+  {
+    id: 'spine',
+    label: 'Capability spine',
+    nodes: ['cap', 'talent', 'adlc', 'comm', 'solutions'],
+    explanation: '<div class="detail-name">Capability spine</div><div class="detail-kind">Lens</div><div class="detail-desc">What Sparq can do, who does it, how it runs, what it is sold as, and what it costs — the load-bearing chain.</div><ul class="detail-bullets"><li><strong>The shape:</strong> the capability model is the only node here that is purely upstream of the others, and even it is corrected by ADLC and Solutions. Everything else in the spine is in at least one loop.</li><li><strong>Commercials is the convergence point:</strong> capability, talent, ADLC and Solutions all price through it, and it pushes back on three of the four.</li><li><strong>What to watch:</strong> a capability model that is not corrected by delivery becomes a brochure. The two bidirectional edges — ADLC and Solutions — are the ones that keep it honest.</li></ul>'
+  },
+  {
+    id: 'gtm',
+    label: 'GTM',
+    nodes: ['solutions', 'gtm', 'studio', 'comm', 'ii', 'cx', 'clientsys'],
+    explanation: '<div class="detail-name">GTM</div><div class="detail-kind">Lens</div><div class="detail-desc">The market-facing edge: Solutions as the promise, IQs and accelerators as packaged proof, commercials as the price, Intelligence Studio as the piece that lives in the client’s estate.</div><ul class="detail-bullets"><li><strong>Where the proof comes from:</strong> institutional intelligence feeds both Solutions and the IQs. The client experience surface is what actually proves the promise — GTM claims nothing the surface has not carried.</li><li><strong>Two different externals:</strong> the client experience surface is Sparq’s surface that the client meets. Intelligence Studio is embedded in the client’s own systems. Same market, different side of the boundary.</li><li><strong>The hole:</strong> Intelligence Studio has no inbound relationships drawn. Until they are called, it is a claim without a supply chain.</li></ul>'
+  },
+  {
+    id: 'open',
+    label: 'Open questions',
+    nodes: ['shop', 'spot', 'studio', 'adlc', 'clientsys'],
+    explanation: '<div class="detail-name">Open questions</div><div class="detail-kind">Lens</div><div class="detail-desc">The three places this map is asserting something it cannot yet defend.</div><ul class="detail-bullets"><li><strong>One store or two:</strong> SPOT is the history-wide lake. Whether a per-engagement store is a separate object is unresolved — and it changes the shape of the evidence loop.</li><li><strong>The Shop:</strong> feeding GTM IQs is clear enough. The loop back into ADLC rests on it being a playground that surfaces new ways of working. Not confirmed.</li><li><strong>Intelligence Studio:</strong> drawn with one edge out and none in.</li><li><strong>Read the rest as settled:</strong> everything not lit here is a relationship the map is willing to defend.</li></ul>'
+  }
+];
+
+/* ──────────────────────────────────────────────────────────────
+   INDEXES
+   ────────────────────────────────────────────────────────────── */
+var byId = {};
+NODES.forEach(function (n) { byId[n.id] = n; });
+
+function relations(id) {
+  var out = [], inn = [], both = [];
+  EDGES.forEach(function (e) {
+    var a = e[0], b = e[1], bi = e[2] === '<>';
+    if (bi) {
+      if (a === id) both.push(b);
+      else if (b === id) both.push(a);
+    } else {
+      if (a === id) out.push(b);
+      else if (b === id) inn.push(a);
+    }
   });
-  container.innerHTML = html;
+  return { out: out, inn: inn, both: both };
+}
+
+function edgeSentence(e) {
+  var a = byId[e[0]].name, b = byId[e[1]].name;
+  return e[2] === '<>' ? a + ' ↔ ' + b + ' — each informs the other' : a + ' informs ' + b;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   RENDER: legend, controls, nodes, list, open questions
+   ────────────────────────────────────────────────────────────── */
+(function renderLegend() {
+  var html = '';
+  Object.keys(CATS).forEach(function (k) {
+    html += '<div class="legend-item"><span class="legend-dot" style="background:' + CATS[k].color + '"></span>' + CATS[k].label + '</div>';
+  });
+  document.getElementById('legend').innerHTML = html;
 })();
 
-function toggleLens(lensId, btn) {
-  if (currentLens && currentLens.id === lensId) {
-    currentLens = null;
-    btn.classList.remove('active');
-    resetAllNodes();
-    clearNodeDetail();
+(function renderViewToggle() {
+  document.getElementById('view-select').innerHTML =
+    '<span class="control-label">View</span>' +
+    '<button class="pill view active" data-view="map" onclick="setView(\'map\', this)">Map</button>' +
+    '<button class="pill view" data-view="list" onclick="setView(\'list\', this)">List</button>';
+})();
+
+(function renderLensButtons() {
+  var html = '<span class="control-label">Lenses</span>';
+  LENSES.forEach(function (l) {
+    html += '<button class="pill lens" data-lens="' + l.id + '" onclick="toggleLens(\'' + l.id + '\', this)">' + l.label + '</button>';
+  });
+  document.getElementById('lens-select').innerHTML = html;
+})();
+
+(function renderNodes() {
+  var canvas = document.getElementById('canvas');
+  var html = '';
+  NODES.forEach(function (n) {
+    html += '<div class="node node-' + n.cat + '" id="n-' + n.id + '" data-id="' + n.id + '"' +
+      ' style="left:' + n.x + 'px;top:' + n.y + 'px" tabindex="0" role="button"' +
+      ' onclick="selectNode(\'' + n.id + '\')"' +
+      ' onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();selectNode(\'' + n.id + '\')}">' +
+      '<div class="node-name">' + n.name + '</div>' +
+      '<div class="node-sub">' + n.sub + '</div>' +
+      (n.open ? '<span class="open-flag">Open</span>' : '') +
+      '</div>';
+  });
+  html += '<div class="band-label" style="left:32px;top:212px">Foundations</div>';
+  html += '<div class="band-label" style="left:282px;top:22px">Delivery</div>';
+  html += '<div class="band-label" style="left:532px;top:22px">Go to market</div>';
+  html += '<div class="band-label" style="left:282px;top:582px">Store &amp; flow</div>';
+  html += '<div class="band-label" style="left:782px;top:362px">Client surface</div>';
+  html += '<div class="band-label" style="left:782px;top:752px">Outside SparqOS</div>';
+  canvas.insertAdjacentHTML('beforeend', html);
+})();
+
+(function renderOpen() {
+  var html = '';
+  OPEN.forEach(function (q, i) {
+    html += '<div class="open-card" onclick="focusOpen(' + i + ')" style="cursor:pointer">' +
+      '<div class="open-card-label">' + q.label + '</div>' +
+      '<div class="open-card-text">' + q.text + '</div></div>';
+  });
+  document.getElementById('open-body').innerHTML = html;
+})();
+
+(function renderList() {
+  var html = '';
+  NODES.forEach(function (n) {
+    var r = relations(n.id);
+    html += '<div class="list-group">';
+    html += '<div class="list-group-name">' + n.name + '</div>';
+    html += '<div class="list-group-sub">' + CATS[n.cat].label + ' · ' + n.sub + '</div>';
+    if (r.out.length === 0 && r.inn.length === 0 && r.both.length === 0) {
+      html += '<div class="rel-none">No relationships drawn.</div>';
+    }
+    r.out.forEach(function (t) {
+      html += '<div class="rel"><span class="rel-arrow">→</span><span class="rel-text">informs <strong>' + byId[t].name + '</strong></span></div>';
+    });
+    r.both.forEach(function (t) {
+      html += '<div class="rel"><span class="rel-arrow bi">↔</span><span class="rel-text">and <strong>' + byId[t].name + '</strong> inform each other</span></div>';
+    });
+    r.inn.forEach(function (t) {
+      html += '<div class="rel"><span class="rel-arrow">←</span><span class="rel-text">informed by <strong>' + byId[t].name + '</strong></span></div>';
+    });
+    if (n.note) {
+      html += '<div class="rel" style="margin-top:8px"><span class="rel-arrow" style="color:var(--amber)">?</span><span class="rel-text" style="color:var(--amber)">' + n.note + '</span></div>';
+    }
+    html += '</div>';
+  });
+  document.getElementById('list-body').innerHTML = html;
+})();
+
+document.getElementById('edge-count').textContent =
+  NODES.length + ' nodes · ' + EDGES.length + ' relationships · ' +
+  EDGES.filter(function (e) { return e[2] === '<>'; }).length + ' loops';
+
+/* ──────────────────────────────────────────────────────────────
+   EDGE DRAWING
+   Quadratic curves, auto-routed: each edge tries increasing
+   curvature until its path clears every node box it does not
+   belong to.
+   ────────────────────────────────────────────────────────────── */
+var SVGNS = 'http://www.w3.org/2000/svg';
+var MARKER_FILL = {
+  idle: 'rgba(229,229,229,0.42)',
+  found: CATS.found.color,
+  delivery: CATS.delivery.color,
+  store: CATS.store.color,
+  surface: CATS.surface.color,
+  gtm: CATS.gtm.color,
+  external: CATS.external.color,
+  lens: '#E5E5E5'
+};
+var BOWS = [0, 55, -55, 100, -100, 150, -150, 210, -210, 280, -280, 360, -360];
+var SAMPLES = 72;
+var edgeEls = [];
+
+function el(tag, attrs) {
+  var n = document.createElementNS(SVGNS, tag);
+  Object.keys(attrs || {}).forEach(function (k) { n.setAttribute(k, attrs[k]); });
+  return n;
+}
+
+function boxOf(id) {
+  var e = document.getElementById('n-' + id);
+  return { x: e.offsetLeft, y: e.offsetTop, w: e.offsetWidth, h: e.offsetHeight };
+}
+
+function inBox(b, p, pad) {
+  return p.x > b.x - pad && p.x < b.x + b.w + pad && p.y > b.y - pad && p.y < b.y + b.h + pad;
+}
+
+function curvePoints(p1, p2, bow) {
+  var dx = p2.x - p1.x, dy = p2.y - p1.y;
+  var len = Math.sqrt(dx * dx + dy * dy) || 1;
+  var c = { x: (p1.x + p2.x) / 2 + (-dy / len) * bow, y: (p1.y + p2.y) / 2 + (dx / len) * bow };
+  var pts = [];
+  for (var i = 0; i <= SAMPLES; i++) {
+    var t = i / SAMPLES, u = 1 - t;
+    pts.push({
+      x: u * u * p1.x + 2 * u * t * c.x + t * t * p2.x,
+      y: u * u * p1.y + 2 * u * t * c.y + t * t * p2.y
+    });
+  }
+  return pts;
+}
+
+function trim(pts, ba, bb) {
+  var s = 0, e = pts.length - 1;
+  while (s < pts.length && inBox(ba, pts[s], 5)) s++;
+  while (e > 0 && inBox(bb, pts[e], 5)) e--;
+  if (s >= e) { s = 0; e = pts.length - 1; }
+  return pts.slice(s, e + 1);
+}
+
+function drawEdges() {
+  var svg = document.getElementById('edges');
+  svg.innerHTML = '';
+  edgeEls = [];
+
+  var defs = el('defs', {});
+  Object.keys(MARKER_FILL).forEach(function (k) {
+    var m = el('marker', {
+      id: 'arw-' + k, viewBox: '0 0 10 10', refX: '8.5', refY: '5',
+      markerWidth: '7.5', markerHeight: '7.5', orient: 'auto-start-reverse'
+    });
+    m.appendChild(el('path', { d: 'M0,1.2 L8.5,5 L0,8.8 z', fill: MARKER_FILL[k] }));
+    defs.appendChild(m);
+  });
+  svg.appendChild(defs);
+
+  var boxes = {};
+  NODES.forEach(function (n) { boxes[n.id] = boxOf(n.id); });
+
+  EDGES.forEach(function (edge) {
+    var a = edge[0], b = edge[1], bi = edge[2] === '<>';
+    var ba = boxes[a], bb = boxes[b];
+    var p1 = { x: ba.x + ba.w / 2, y: ba.y + ba.h / 2 };
+    var p2 = { x: bb.x + bb.w / 2, y: bb.y + bb.h / 2 };
+
+    var best = null, bestHits = Infinity;
+    for (var i = 0; i < BOWS.length; i++) {
+      var pts = trim(curvePoints(p1, p2, BOWS[i]), ba, bb);
+      var hits = 0;
+      for (var j = 0; j < pts.length; j++) {
+        for (var k = 0; k < NODES.length; k++) {
+          var nid = NODES[k].id;
+          if (nid === a || nid === b) continue;
+          if (inBox(boxes[nid], pts[j], 9)) { hits++; break; }
+        }
+      }
+      if (hits < bestHits) { bestHits = hits; best = pts; }
+      if (hits === 0) break;
+    }
+
+    var d = 'M' + best.map(function (p) { return p.x.toFixed(1) + ' ' + p.y.toFixed(1); }).join(' L');
+
+    var g = el('g', { class: 'edge' });
+    g.appendChild(el('title', {})).textContent = edgeSentence(edge);
+    var hit = el('path', { class: 'edge-hit', d: d });
+    var line = el('path', { class: 'edge-line', d: d, 'marker-end': 'url(#arw-idle)' });
+    if (bi) line.setAttribute('marker-start', 'url(#arw-idle)');
+    g.appendChild(hit);
+    g.appendChild(line);
+    svg.appendChild(g);
+    edgeEls.push({ g: g, line: line, a: a, b: b, bi: bi });
+  });
+
+  paint();
+}
+
+/* ──────────────────────────────────────────────────────────────
+   STATE + PAINT
+   ────────────────────────────────────────────────────────────── */
+var currentNode = null;
+var currentLens = null;
+
+function setEdge(e, state, mk) {
+  e.g.classList.remove('dim', 'active');
+  if (state === 'dim') e.g.classList.add('dim');
+  if (state === 'active') {
+    e.g.classList.add('active');
+    e.line.style.stroke = MARKER_FILL[mk];
+    e.line.setAttribute('marker-end', 'url(#arw-' + mk + ')');
+    if (e.bi) e.line.setAttribute('marker-start', 'url(#arw-' + mk + ')');
+  } else {
+    e.line.style.stroke = '';
+    e.line.setAttribute('marker-end', 'url(#arw-idle)');
+    if (e.bi) e.line.setAttribute('marker-start', 'url(#arw-idle)');
+  }
+}
+
+function paint() {
+  var nodes = document.querySelectorAll('.node');
+
+  if (currentNode) {
+    var n = byId[currentNode];
+    var touched = {};
+    touched[currentNode] = true;
+    edgeEls.forEach(function (e) {
+      if (e.a === currentNode || e.b === currentNode) {
+        touched[e.a] = true; touched[e.b] = true;
+        setEdge(e, 'active', n.cat);
+      } else {
+        setEdge(e, 'dim');
+      }
+    });
+    nodes.forEach(function (el2) {
+      el2.classList.toggle('dim', !touched[el2.dataset.id]);
+      el2.style.outline = el2.dataset.id === currentNode ? '1.5px solid ' + CATS[n.cat].color : '';
+      el2.style.outlineOffset = el2.dataset.id === currentNode ? '2px' : '';
+    });
     return;
   }
 
-  currentLens = lenses.find(function(l) { return l.id === lensId; });
-  currentNode = null;
+  if (currentLens) {
+    var set = {};
+    currentLens.nodes.forEach(function (id) { set[id] = true; });
+    edgeEls.forEach(function (e) {
+      setEdge(e, set[e.a] && set[e.b] ? 'active' : 'dim', 'lens');
+    });
+    nodes.forEach(function (el2) {
+      var on = !!set[el2.dataset.id];
+      el2.classList.toggle('dim', !on);
+      el2.style.outline = on ? '1px solid ' + CATS[byId[el2.dataset.id].cat].color : '';
+      el2.style.outlineOffset = on ? '2px' : '';
+    });
+    return;
+  }
 
-  document.querySelectorAll('.lens-btn').forEach(function(b) { b.classList.remove('active'); });
-  btn.classList.add('active');
-
-  applyLens();
-  showLensExplanation();
-}
-
-function applyLens() {
-  if (!currentLens) return;
-  allNodes().forEach(function(n) {
-    var nid = n.dataset.id;
-    n.classList.remove('click-dim', 'flow-dim');
-    n.style.outline = 'none';
-    n.style.outlineOffset = 'unset';
-
-    if (currentLens.highlightNodeIds.includes(nid)) {
-      var nd = nodeData[nid];
-      if (nd) {
-        n.style.outline = '1px solid ' + nd.typeColor;
-        n.style.outlineOffset = '1px';
-      }
-    } else {
-      n.classList.add('flow-dim');
-    }
+  edgeEls.forEach(function (e) { setEdge(e, 'idle'); });
+  nodes.forEach(function (el2) {
+    el2.classList.remove('dim');
+    el2.style.outline = '';
+    el2.style.outlineOffset = '';
   });
-  var opUnits = document.querySelector('.op-units');
-  if (opUnits) opUnits.style.opacity = '0.18';
 }
 
-function showLensExplanation() {
-  if (!currentLens) return;
-  document.getElementById('node-placeholder').style.display = 'none';
-  var detail = document.getElementById('node-detail');
-  detail.classList.add('visible');
-  detail.innerHTML = currentLens.explanation;
+/* ──────────────────────────────────────────────────────────────
+   INTERACTION
+   ────────────────────────────────────────────────────────────── */
+function chip(id) {
+  var n = byId[id];
+  return '<span class="chip chip-' + n.cat + '" onclick="selectNode(\'' + id + '\')">' + n.name + '</span>';
 }
-
-function resetAllNodes() {
-  allNodes().forEach(function(n) {
-    n.classList.remove('click-dim', 'flow-dim');
-    n.style.outline = 'none';
-    n.style.outlineOffset = 'unset';
-  });
-  var opUnits = document.querySelector('.op-units');
-  if (opUnits) opUnits.style.opacity = '';
-}
-
 
 function selectNode(id) {
   if (currentNode === id) {
     currentNode = null;
-    if (currentLens) {
-      applyLens();
-      showLensExplanation();
-    } else {
-      resetAllNodes();
-      clearNodeDetail();
-    }
+    paint();
+    if (currentLens) showLens(); else clearDetail();
     return;
   }
   currentNode = id;
-  var d = nodeData[id];
-  if (!d) return;
+  paint();
 
-  var connected = {};
-  d.links.forEach(function(lid) { connected[lid] = true; });
-  (backlinks[id] || []).forEach(function(bid) { connected[bid] = true; });
-
-  allNodes().forEach(function(n) {
-    var nid = n.dataset.id;
-    n.classList.remove('click-dim', 'flow-dim');
-    n.style.outline = 'none';
-    n.style.outlineOffset = 'unset';
-
-    if (nid === id) {
-      n.style.outline = '1.5px solid ' + d.typeColor;
-      n.style.outlineOffset = '1px';
-    } else if (currentLens && !currentLens.highlightNodeIds.includes(nid) && !connected[nid]) {
-      n.classList.add('flow-dim');
-    } else if (!connected[nid]) {
-      n.classList.add('click-dim');
-    }
-  });
-
-  renderNodeDetail(id);
-}
-
-function renderNodeDetail(id) {
-  var d = nodeData[id];
-  document.getElementById('node-placeholder').style.display = 'none';
-  var detail = document.getElementById('node-detail');
-  detail.classList.add('visible');
-
-  var connected = [];
-  d.links.forEach(function(lid) { if (!connected.includes(lid)) connected.push(lid); });
-  (backlinks[id] || []).forEach(function(bid) { if (!connected.includes(bid)) connected.push(bid); });
-
-  function makeChip(nid) {
-    var nd = nodeData[nid];
-    if (!nd) return '';
-    return '<span class="node-chip node-chip-' + nd.type + '" onclick="selectNode(\'' + nid + '\')">' + nd.name + '</span>';
+  var n = byId[id];
+  var r = relations(id);
+  var html = '<div class="detail-name">' + n.name + '</div>';
+  html += '<div class="detail-kind">' + CATS[n.cat].label + ' · ' + n.sub + '</div>';
+  html += '<div class="detail-desc">' + n.desc + '</div>';
+  if (n.note) {
+    html += '<ul class="detail-bullets"><li style="color:var(--amber)">' + n.note + '</li></ul>';
   }
-
-  var html = '<div class="detail-name">' + d.name + '</div>';
-  html += '<div class="detail-desc">' + d.desc + '</div>';
-
-  if (d.nonNegotiables && d.nonNegotiables.length > 0) {
-    html += '<ul class="detail-bullets">';
-    d.nonNegotiables.forEach(function(nn) {
-      html += '<li>' + nn + '</li>';
-    });
-    html += '</ul>';
-  }
-
   html += '<div class="detail-meta">';
-
-  if (connected.length > 0) {
-    html += '<div class="meta-row"><div class="meta-label">Connected</div><div class="chip-list">';
-    connected.forEach(function(cid) {
-      html += makeChip(cid);
-    });
-    html += '</div></div>';
+  if (r.out.length) {
+    html += '<div class="meta-row"><div class="meta-label">Informs →</div><div class="chip-list">' + r.out.map(chip).join('') + '</div></div>';
   }
-
-  d.details.forEach(function(item) {
-    html += '<div class="meta-row"><div class="meta-label">' + item.label + '</div><div class="meta-value">' + item.value + '</div></div>';
-  });
-
-  if (d.type === 'undefined') {
-    html += '<div class="undef-note">Not part of the system until it connects to a principle.</div>';
+  if (r.both.length) {
+    html += '<div class="meta-row"><div class="meta-label">↔ Both ways</div><div class="chip-list">' + r.both.map(chip).join('') + '</div></div>';
   }
-
+  if (r.inn.length) {
+    html += '<div class="meta-row"><div class="meta-label">← Informed by</div><div class="chip-list">' + r.inn.map(chip).join('') + '</div></div>';
+  }
+  if (!r.out.length && !r.both.length && !r.inn.length) {
+    html += '<div class="meta-row"><div class="meta-label">Relationships</div><div class="meta-value" style="font-size:12px;color:var(--text3);font-style:italic">None drawn.</div></div>';
+  }
   html += '</div>';
-  detail.innerHTML = html;
+
+  document.getElementById('node-placeholder').style.display = 'none';
+  var d = document.getElementById('node-detail');
+  d.classList.add('visible');
+  d.innerHTML = html;
 }
 
-function clearNodeDetail() {
-  document.getElementById('node-placeholder').style.display = 'block';
-  var detail = document.getElementById('node-detail');
-  detail.classList.remove('visible');
-  detail.innerHTML = '';
+function toggleLens(id, btn) {
+  document.querySelectorAll('.pill.lens').forEach(function (b) { b.classList.remove('active'); });
+  if (currentLens && currentLens.id === id) {
+    currentLens = null;
+    currentNode = null;
+    paint();
+    clearDetail();
+    return;
+  }
+  currentLens = LENSES.filter(function (l) { return l.id === id; })[0];
+  currentNode = null;
+  if (btn) btn.classList.add('active');
+  paint();
+  showLens();
 }
+
+function showLens() {
+  document.getElementById('node-placeholder').style.display = 'none';
+  var d = document.getElementById('node-detail');
+  d.classList.add('visible');
+  d.innerHTML = currentLens.explanation;
+}
+
+function focusOpen(i) {
+  var q = OPEN[i];
+  currentLens = { id: 'open-' + i, nodes: q.focus };
+  currentNode = null;
+  document.querySelectorAll('.pill.lens').forEach(function (b) { b.classList.remove('active'); });
+  paint();
+  document.getElementById('node-placeholder').style.display = 'none';
+  var d = document.getElementById('node-detail');
+  d.classList.add('visible');
+  d.innerHTML = '<div class="detail-name">' + q.label + '</div><div class="detail-kind">Open question</div>' +
+    '<div class="detail-desc">' + q.text + '</div>' +
+    '<div class="detail-meta"><div class="meta-row"><div class="meta-label">In question</div><div class="chip-list">' +
+    q.focus.map(chip).join('') + '</div></div></div>';
+}
+
+function clearDetail() {
+  document.getElementById('node-placeholder').style.display = 'block';
+  var d = document.getElementById('node-detail');
+  d.classList.remove('visible');
+  d.innerHTML = '';
+}
+
+function setView(v, btn) {
+  document.getElementById('main').classList.toggle('view-list', v === 'list');
+  document.querySelectorAll('.pill.view').forEach(function (b) { b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+  if (v === 'map') drawEdges();
+}
+
+document.querySelector('.diagram').addEventListener('click', function (ev) {
+  if (ev.target.closest('.node') || ev.target.closest('.edge')) return;
+  if (currentNode) {
+    currentNode = null;
+    paint();
+    if (currentLens) showLens(); else clearDetail();
+  }
+});
+
+drawEdges();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawEdges);
 </script>
 </body>
 </html>
