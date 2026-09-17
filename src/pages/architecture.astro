@@ -103,7 +103,7 @@ main:not(.view-list) .list-wrap { display: none; }
 
 .canvas {
   position: relative;
-  width: 990px; height: 900px;
+  width: 990px; height: 1000px;
   margin: 0 auto;
 }
 #edges {
@@ -228,6 +228,46 @@ main:not(.view-list) .list-wrap { display: none; }
   padding: 2px 6px; border-radius: 3px; margin-top: 6px;
   background: rgba(239,159,39,0.16); color: var(--amber);
   border: 0.5px solid var(--amber-border);
+}
+.node-provisional { border-style: dashed; }
+
+.node-layer {
+  box-shadow:
+    4px 4px 0 -1px var(--bg),
+    4px 4px 0 0 var(--domain-border),
+    8px 8px 0 -1px var(--bg),
+    8px 8px 0 0 rgba(123,178,212,0.28);
+}
+.node-layer:hover {
+  box-shadow:
+    0 4px 16px rgba(0,0,0,0.35),
+    4px 4px 0 -1px var(--bg),
+    4px 4px 0 0 var(--domain-border),
+    8px 8px 0 0 rgba(123,178,212,0.28);
+}
+.layer-instances {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: 8px;
+  pointer-events: none;
+}
+.layer-slice {
+  display: block;
+  height: 5px;
+  border-radius: 2px;
+  background: rgba(123,178,212,0.28);
+  border: 0.5px solid rgba(123,178,212,0.42);
+}
+.layer-slice:nth-child(2) { width: 84%; opacity: 0.8; }
+.layer-slice:nth-child(3) { width: 68%; opacity: 0.55; }
+.layer-caption {
+  font-family: var(--mono);
+  font-size: 7px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-top: 5px;
 }
 
 .node-found { background: var(--amber-dim); border-color: var(--amber-border); }
@@ -464,7 +504,7 @@ footer {
 <header>
   <div class="header-left">
     <h1>SparqOS relationships</h1>
-    <p>Not a hierarchy — a set of things that inform each other. Every line is a claim about direction: who feeds whom, and where the feed runs both ways. The engagement is what drives it; ADLC is the engine it moves through; the store is the memory underneath; GTM is what the two of them make sellable. Click a node to isolate what it touches. Nodes with a shovel can be dug one altitude deeper — where an interior has actually been defined.</p>
+    <p>Not a hierarchy — a set of things that inform each other. Every line is a claim about direction: who feeds whom, and where the feed runs both ways. The engagement is what drives it; ADLC is the engine it moves through; Ingest routes raw inputs in; Livestate holds what is true now; SPOT is the history underneath; GTM is what delivery makes sellable. Click a node to isolate what it touches. Nodes with a shovel can be dug one altitude deeper — where an interior has actually been defined.</p>
   </div>
   <div class="header-right">
     <div class="legend" id="legend"></div>
@@ -492,10 +532,14 @@ footer {
       <div id="node-detail"></div>
     </div>
     <div class="sidebar-section sidebar-context">
-      <div class="sidebar-title">The two stores</div>
+      <div class="sidebar-title">The stores</div>
+      <div class="def-row">
+        <div class="def-term">Livestate — current state</div>
+        <div class="def-body">One queryable layer; one live-state instance per active engagement. Cross-engagement “what’s true right now” reads across instances, not from SPOT. Working name — not canonical.</div>
+      </div>
       <div class="def-row">
         <div class="def-term">SPOT — the data lake</div>
-        <div class="def-body">The store of what happened in Sparq history. The record, not the reading of it.</div>
+        <div class="def-body">The store of what happened in Sparq history. Accumulated, settled evidence. The record, not the reading of it.</div>
       </div>
       <div class="def-row">
         <div class="def-term">Institutional intelligence</div>
@@ -503,11 +547,7 @@ footer {
       </div>
       <div class="def-row">
         <div class="def-term">Context flow / retrieval</div>
-        <div class="def-body">Neither store — the layer that gets what is stored in front of the work.</div>
-      </div>
-      <div class="def-row">
-        <div class="def-term">A third, if it exists</div>
-        <div class="def-body">The live state of one engagement, between the Engagement and the lake. Still an open question, so it is not drawn.</div>
+        <div class="def-body">Neither store — the layer that gets what is stored in front of the work. Live queries from Livestate; history from SPOT.</div>
       </div>
     </div>
     <div class="sidebar-section sidebar-context">
@@ -642,19 +682,42 @@ var NODES = [
   },
   {
     id: 'engage', name: 'Engagement', sub: 'one client engagement, as an object',
-    cat: 'engagement', x: 280, y: 430,
-    desc: 'A single client engagement, treated as an object rather than a timeline. It is what drives the machine: it moves through ADLC, it deposits the evidence the lake stores, it instantiates the client experience surface the client actually meets, and commercials prices it. Not a phase and not a lifecycle — the thing that has a state, and that all four of those relationships act on.',
+    cat: 'engagement', x: 280, y: 400,
+    desc: 'A single client engagement, treated as an object rather than a timeline. It is what drives the machine: it moves through ADLC, spinning up gives Ingest a destination to route to, it instantiates the client experience surface the client actually meets, and commercials prices it. Not a phase and not a lifecycle — the thing that has a state. That state is not stored here; it lives as one instance inside Livestate, so it can be queried across every active engagement at once.',
     depth: 'none',
-    needs: 'Its live state — assumptions open, decisions taken, confidence now, who is on it, what it is priced at — is exactly what the per-engagement store question is about. Answering that question is what would give this node an interior.'
+    needs: 'The object is on the map; its interior — the structure of one engagement as a thing, not the live store of every engagement — is still not written down. Live state belongs to Livestate, not inside this node: an interior cannot be queried across instances.'
+  },
+  {
+    id: 'ingest', name: 'Ingest', sub: 'routes raw inputs to the right engagement’s live state',
+    cat: 'store', x: 280, y: 505, provisional: true, tag: 'Partial',
+    desc: 'How raw inputs — transcripts, Slack messages, emails, docs, GitHub pushes — get routed to the right engagement’s live state when an engagement spins up. The engagement is the destination; Ingest is the routing; the payload lands as an instance inside Livestate.',
+    resolved: [
+      'Routing inputs to an engagement is near-real: when an engagement exists, inbound material has a place to land.'
+    ],
+    note: 'The forward half — a routed input declaring what it tests — depends on the same Slice→Signal capability Livestate doesn’t have yet.',
+    depth: 'none',
+    needs: 'The missing piece is not more sources. It is the ability for a routed input to declare which assumption it tests. That is the same unnamed forward loop as Livestate, and it is not drawn as if it exists.'
+  },
+  {
+    id: 'live', name: 'Livestate', sub: 'one queryable layer · one instance per active engagement',
+    cat: 'store', x: 280, y: 660, provisional: true, layer: true,
+    desc: 'One queryable layer containing one live-state instance per active engagement — the way SPOT is one lake containing every project’s history. Open assumptions, decisions taken, confidence now. Ingest routes raw inputs into the right instance; the layer answers cross-engagement “what’s true right now” through the retrieval layer; settled and closed evidence deposits into SPOT as history.',
+    resolved: [
+      'It exists as a distinct node. Cross-engagement live query (“show every active engagement’s top open risk right now,” before anything settles into SPOT) is a capability of the layer, reading across all instances. Each individual engagement’s live state is one instance inside it — not a second node, not a second name.',
+      'It holds current state. SPOT holds history. Settled and closed evidence deposits into the lake as it settles.',
+      'The object substantially exists already as running infrastructure under a different working system: the Source→Synthesis→Artifact traceability/governance engine, at Validation stage.'
+    ],
+    note: 'The running system is retrospective. Evidence flows in; artifacts derive from it. It cannot yet represent the forward Evidence Loop. A Slice — state a claim, design a test, generate evidence — cannot be linked to the Signal it produces, because nothing lets evidence declare “test X produced me.” Assumption has no under-test / validated / invalidated axis yet, only draft → canonical. Livestate can audit what was concluded. It cannot yet run what is being tested. That gap is named, not drawn.',
+    depth: 'none',
+    needs: 'The missing interior is the forward Evidence Loop: Slice linked to the Signal it produces, and Assumption with an under-test / validated / invalidated axis. Until those exist, drilling in would describe the retrospective engine as if it were this node. It is not.'
   },
   {
     id: 'spot', name: 'SPOT', sub: 'the data lake',
-    cat: 'store', x: 280, y: 620,
-    desc: 'The store of what happened in Sparq history. The engagement deposits its evidence into it, ADLC generates that evidence, the client experience surface writes interactions into it, and the retrieval layer reads out of it. In a loop with institutional intelligence: the lake teaches, and what is learned is written back.',
-    note: 'Open: is the live state of an engagement its own store, sitting between the Engagement and SPOT, or does the lake cover that too?',
+    cat: 'store', x: 280, y: 840,
+    desc: 'The store of what happened in Sparq history. Livestate deposits settled and closed evidence into it; ADLC generates evidence that lands here; the client experience surface writes interactions into it. The retrieval layer reads history out of it. In a loop with institutional intelligence: the lake teaches, and what is learned is written back. It is not live state — that is Livestate.',
     depth: 'defined',
     interior: {
-      summary: 'What the lake holds is the evidence ledger: the record of uncertainty reduction, engagement by engagement. The structure of a record is defined even where the storage split is not.',
+      summary: 'What the lake holds is the evidence ledger: the record of uncertainty reduction, engagement by engagement. Current state of active engagements is not this lake.',
       groups: [
         {
           label: 'Record types',
@@ -669,17 +732,12 @@ var NODES = [
         {
           label: 'What writes the records',
           items: [
+            'Livestate: settled and closed evidence, deposited as it settles.',
             'Spikes: time-boxed experiments, instrumented to generate usable signal.',
             'Confidence gates: every promote / iterate / pivot call is itself a record.',
             'The client experience surface: client interactions arrive as signal.'
           ],
           source: { label: '/reference/', href: '/reference/' }
-        },
-        {
-          label: 'Undefined inside',
-          items: [
-            'Whether the live state of one engagement is a separate store or a view over this one. Open — see the question in the panel.'
-          ]
         }
       ]
     }
@@ -701,7 +759,7 @@ var NODES = [
   {
     id: 'flow', name: 'Context flow', sub: 'retrieval layer',
     cat: 'store', x: 530, y: 620,
-    desc: 'The layer between the store and the work. It reads from SPOT and puts context in front of the client experience surface. It stores nothing itself — which is exactly why it is drawn separately from the lake.',
+    desc: 'The layer between what is stored and the work. Live “what’s true right now” reads come from Livestate; history reads come from SPOT. It puts that context in front of the client experience surface. It stores nothing itself — which is exactly why it is drawn separately from either store.',
     depth: 'none',
     needs: 'Its mechanism — what gets retrieved, on what trigger, and how relevance is decided — is not defined yet.'
   },
@@ -758,7 +816,7 @@ var EDGES = [
   ['talent', 'adlc', '<>'],
   /* the engagement */
   ['engage', 'adlc', '>', 'flows through'],
-  ['engage', 'spot', '>', 'deposits evidence into'],
+  ['engage', 'ingest', '>', 'gives a destination to'],
   ['engage', 'cx', '>', 'instantiates'],
   ['comm', 'engage', '>', 'prices'],
   /* ADLC */
@@ -770,6 +828,9 @@ var EDGES = [
   ['adlc', 'shop', '<>'],
   ['adlc', 'ii', '<>'],
   /* store and flow */
+  ['ingest', 'live', '>', 'routes inputs into'],
+  ['live', 'spot', '>', 'deposits settled evidence into'],
+  ['live', 'flow', '>', 'feeds live queries to'],
   ['spot', 'flow', '>'],
   ['flow', 'cx', '>'],
   ['spot', 'ii', '<>'],
@@ -826,9 +887,9 @@ AGENTS.forEach(function (ag) { byAgent[ag.id] = ag; });
    ────────────────────────────────────────────────────────────── */
 var OPEN = [
   {
-    label: 'Per-engagement store',
-    text: 'Now that the Engagement is on the map, the question sharpens: the per-engagement store, if it exists, is the live state of the Engagement node — assumptions open, decisions taken, confidence now — sitting between the engagement and SPOT. Live state versus history-wide lake. Still open, so it is not drawn: the Engagement deposits evidence straight into the lake here. Resolving it either gives the Engagement node an interior or adds one node between it and SPOT.',
-    focus: ['engage', 'spot']
+    label: 'Forward evidence loop',
+    text: 'Livestate exists as a distinct node, and the running Source→Synthesis→Artifact engine already holds retrospective state. Ingest can already route inputs to an engagement. What neither can yet do is run the forward Evidence Loop: a Slice (state a claim → design a test → generate evidence) cannot be linked to the Signal it produces, because nothing lets evidence declare “test X produced me.” Assumption has no under-test / validated / invalidated axis yet, only draft → canonical. So Livestate can audit what was concluded and cannot yet run what is being tested; a routed input cannot yet declare what it tests. Named as a gap, not drawn as a feature.',
+    focus: ['live', 'ingest']
   },
   {
     label: 'The Shop',
@@ -849,8 +910,8 @@ var LENSES = [
   {
     id: 'evidence',
     label: 'Evidence loop',
-    nodes: ['engage', 'adlc', 'spot', 'flow', 'cx', 'ii'],
-    explanation: '<div class="detail-name">Evidence loop</div><div class="detail-kind">Lens</div><div class="detail-desc">The closed circuit: an engagement moves through delivery and deposits evidence, the lake keeps it, the retrieval layer serves it, the client surface uses it — and what happens there goes back into the lake.</div><ul class="detail-bullets"><li><strong>The path:</strong> the engagement flows through ADLC and deposits its evidence into SPOT. SPOT feeds the retrieval layer. Retrieval feeds the client experience surface — which the same engagement instantiated. The surface writes interactions back into the store. Institutional intelligence sits across the loop, reading the lake and being read by ADLC.</li><li><strong>Why it matters:</strong> this is the only loop on the map that closes without passing through a commercial or capability decision. It is the part of SparqOS that compounds on its own.</li><li><strong>Where it is thin:</strong> the loop assumes one store. If the live state of an engagement is really its own object, it sits inside this loop between the Engagement and SPOT, and the circuit has a node missing.</li></ul>'
+    nodes: ['engage', 'adlc', 'ingest', 'live', 'spot', 'flow', 'cx', 'ii'],
+    explanation: '<div class="detail-name">Evidence loop</div><div class="detail-kind">Lens</div><div class="detail-desc">The closed circuit: an engagement spins up, Ingest routes raw inputs into the right live-state instance, Livestate holds what is true now across every active engagement, settled evidence becomes history in the lake, the retrieval layer serves both, the client surface uses it — and what happens there goes back into the lake.</div><ul class="detail-bullets"><li><strong>The path:</strong> the engagement flows through ADLC and gives Ingest a destination. Ingest routes inputs into Livestate. Livestate answers live queries through the retrieval layer, and deposits settled evidence into SPOT. SPOT feeds historical retrieval. Retrieval feeds the client experience surface — which the same engagement instantiated. The surface writes interactions back into the lake. Institutional intelligence sits across the loop, reading the lake and being read by ADLC.</li><li><strong>Why it matters:</strong> this is the only loop on the map that closes without passing through a commercial or capability decision. It is the part of SparqOS that compounds on its own.</li><li><strong>Where it is thin:</strong> Livestate can hold current state and audit what was concluded. Ingest can route inputs to an engagement. Neither can yet run the forward Evidence Loop — a routed input declaring what it tests, Slice linked to Signal. That is a named gap inside the loop, not a missing node.</li></ul>'
   },
   {
     id: 'spine',
@@ -867,14 +928,14 @@ var LENSES = [
   {
     id: 'compound',
     label: 'Compounding loop',
-    nodes: ['engage', 'adlc', 'spot', 'ii', 'gtm', 'comm'],
-    explanation: '<div class="detail-name">Compounding loop</div><div class="detail-kind">Lens</div><div class="detail-desc">Why the more Sparq executes, the less the next execution costs — drawn, not implied.</div><ul class="detail-bullets"><li><strong>The circuit:</strong> commercials prices an engagement → the engagement flows through ADLC → it deposits evidence into the lake → the lake teaches institutional intelligence → that feeds commercials directly (pricing from historical actuals) and is packaged as IQs and accelerators → which also feed commercials → which prices the next engagement.</li><li><strong>The return edge:</strong> commercials also feeds institutional intelligence with what actually paid off. Without both directions, commercials is terminal — money in, nothing back — and the system has no way to learn which promises were worth making.</li><li><strong>What makes it compound:</strong> each pass through leaves something reusable behind. Nothing here is a new capability; it is the same work, cheaper, because the record of the last one is still available.</li></ul>'
+    nodes: ['engage', 'adlc', 'ingest', 'live', 'spot', 'ii', 'gtm', 'comm'],
+    explanation: '<div class="detail-name">Compounding loop</div><div class="detail-kind">Lens</div><div class="detail-desc">Why the more Sparq executes, the less the next execution costs — drawn, not implied.</div><ul class="detail-bullets"><li><strong>The circuit:</strong> commercials prices an engagement → the engagement flows through ADLC → Ingest routes inputs into Livestate → settled evidence deposits into the lake → the lake teaches institutional intelligence → that feeds commercials directly (pricing from historical actuals) and is packaged as IQs and accelerators → which also feed commercials → which prices the next engagement.</li><li><strong>The return edge:</strong> commercials also feeds institutional intelligence with what actually paid off. Without both directions, commercials is terminal — money in, nothing back — and the system has no way to learn which promises were worth making.</li><li><strong>What makes it compound:</strong> each pass through leaves something reusable behind. Nothing here is a new capability; it is the same work, cheaper, because the record of the last one is still available.</li></ul>'
   },
   {
     id: 'open',
     label: 'Open questions',
-    nodes: ['shop', 'spot', 'engage', 'studio', 'clientsys', 'gtm'],
-    explanation: '<div class="detail-name">Open questions</div><div class="detail-kind">Lens</div><div class="detail-desc">The three places this map is asserting something it cannot yet defend.</div><ul class="detail-bullets"><li><strong>One store or two:</strong> SPOT is the history-wide lake. Whether the live state of an engagement is its own store, between the Engagement and SPOT, is unresolved — and it changes the shape of the evidence loop.</li><li><strong>The Shop:</strong> feeding GTM IQs is clear enough. The loop back into ADLC rests on it being a playground that surfaces new ways of working. Not confirmed.</li><li><strong>Intelligence Studio:</strong> GTM IQs now feed it. Institutional intelligence and ADLC still have no inbound drawn.</li><li><strong>Read the rest as settled:</strong> everything not lit here is a relationship the map is willing to defend. Depth is a separate claim — a node without a shovel has no defined interior, which is a gap, not a question.</li></ul>'
+    nodes: ['shop', 'ingest', 'live', 'studio', 'clientsys', 'gtm'],
+    explanation: '<div class="detail-name">Open questions</div><div class="detail-kind">Lens</div><div class="detail-desc">The three places this map is asserting something it cannot yet defend.</div><ul class="detail-bullets"><li><strong>Forward evidence loop:</strong> Livestate is on the map; Ingest can route inputs to an engagement. The running engine behind them is retrospective. A routed input cannot yet declare what it tests; Slice cannot yet name the Signal it produced; Assumption has no under-test axis. Named, not drawn.</li><li><strong>The Shop:</strong> feeding GTM IQs is clear enough. The loop back into ADLC rests on it being a playground that surfaces new ways of working. Not confirmed.</li><li><strong>Intelligence Studio:</strong> GTM IQs now feed it. Institutional intelligence and ADLC still have no inbound drawn.</li><li><strong>Read the rest as settled:</strong> everything not lit here is a relationship the map is willing to defend. Depth is a separate claim — a node without a shovel has no defined interior, which is a gap, not a question. Livestate’s name is provisional; its existence is not.</li></ul>'
   }
 ];
 
@@ -939,13 +1000,18 @@ var SPARK_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stro
   var canvas = document.getElementById('canvas');
   var html = '';
   NODES.forEach(function (n) {
-    html += '<div class="node node-' + n.cat + '" id="n-' + n.id + '" data-id="' + n.id + '"' +
+    var flag = n.tag || (n.open ? 'Open' : n.provisional ? 'Working name' : '');
+    html += '<div class="node node-' + n.cat + (n.provisional ? ' node-provisional' : '') + (n.layer ? ' node-layer' : '') + '" id="n-' + n.id + '" data-id="' + n.id + '"' +
       ' style="left:' + n.x + 'px;top:' + n.y + 'px" tabindex="0" role="button"' +
       ' onclick="selectNode(\'' + n.id + '\')"' +
       ' onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();selectNode(\'' + n.id + '\')}">' +
       '<div class="node-name">' + n.name + '</div>' +
       '<div class="node-sub">' + n.sub + '</div>' +
-      (n.open ? '<span class="open-flag">Open</span>' : '') +
+      (n.layer
+        ? '<div class="layer-instances" aria-hidden="true"><span class="layer-slice"></span><span class="layer-slice"></span><span class="layer-slice"></span></div>' +
+          '<div class="layer-caption">one layer · many instances</div>'
+        : '') +
+      (flag ? '<span class="open-flag">' + flag + '</span>' : '') +
       (n.depth === 'defined'
         ? '<button type="button" class="drill-btn" onclick="onDrillBtn(event, \'' + n.id + '\')" aria-label="Dig deeper">' +
           SHOVEL_SVG +
@@ -957,8 +1023,8 @@ var SPARK_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stro
   html += '<div class="band-label" style="left:32px;top:212px">Foundations</div>';
   html += '<div class="band-label" style="left:282px;top:22px">Delivery</div>';
   html += '<div class="band-label" style="left:532px;top:22px">Go to market</div>';
-  html += '<div class="band-label" style="left:282px;top:392px">The engagement</div>';
-  html += '<div class="band-label" style="left:282px;top:582px">Store &amp; flow</div>';
+  html += '<div class="band-label" style="left:282px;top:362px">The engagement</div>';
+  html += '<div class="band-label" style="left:282px;top:478px">Store &amp; flow</div>';
   html += '<div class="band-label" style="left:782px;top:362px">Client surface</div>';
   html += '<div class="band-label" style="left:782px;top:752px">Outside SparqOS</div>';
   canvas.insertAdjacentHTML('beforeend', html);
@@ -979,7 +1045,7 @@ var SPARK_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stro
   NODES.forEach(function (n) {
     var r = relations(n.id);
     html += '<div class="list-group">';
-    html += '<div class="list-group-name">' + n.name + '</div>';
+    html += '<div class="list-group-name">' + n.name + (n.tag ? ' · ' + n.tag.toLowerCase() : n.provisional ? ' · working name' : '') + '</div>';
     html += '<div class="list-group-sub">' + CATS[n.cat].label + ' · ' + n.sub + '</div>';
     if (r.out.length === 0 && r.inn.length === 0 && r.both.length === 0) {
       html += '<div class="rel-none">No relationships drawn.</div>';
@@ -1425,9 +1491,18 @@ function renderSelection() {
   var n = byId[currentNode];
   var r = relations(currentNode);
   var html = '<div class="detail-name">' + n.name + '</div>';
-  html += '<div class="detail-kind">' + CATS[n.cat].label + ' · ' + n.sub + '</div>';
+  html += '<div class="detail-kind">' + CATS[n.cat].label + ' · ' + n.sub + (n.tag ? ' · ' + n.tag.toLowerCase() : n.provisional ? ' · working name' : '') + '</div>';
   html += '<div class="detail-desc">' + n.desc + '</div>';
+  if (n.resolved && n.resolved.length) {
+    html += '<div class="meta-label" style="margin-bottom:8px">Resolved</div>';
+    html += '<ul class="detail-bullets">';
+    n.resolved.forEach(function (item) {
+      html += '<li>' + item + '</li>';
+    });
+    html += '</ul>';
+  }
   if (n.note) {
+    html += '<div class="meta-label" style="margin-bottom:8px">Still open</div>';
     html += '<ul class="detail-bullets"><li style="color:var(--amber)">' + n.note + '</li></ul>';
   }
   html += '<div class="detail-meta">';
