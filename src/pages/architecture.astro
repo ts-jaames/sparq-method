@@ -301,19 +301,10 @@ main:not(.view-list) .list-wrap { display: none; }
   border-radius: 6px;
   background: var(--bg3);
   color: var(--text3);
-  gap: 0; cursor: pointer;
-  overflow: hidden; white-space: nowrap;
-  transition: width .25s ease, padding .25s ease, gap .25s ease,
-              color .2s, background .2s, border-color .2s;
+  cursor: pointer;
+  transition: color .2s, background .2s, border-color .2s, box-shadow .2s;
 }
 .drill-btn svg { width: 12px; height: 12px; flex-shrink: 0; }
-.drill-btn .drill-label {
-  font-family: var(--mono); font-size: 8px; letter-spacing: .06em;
-  text-transform: uppercase;
-  opacity: 0; max-width: 0; overflow: hidden;
-  transition: opacity .2s ease, max-width .25s ease;
-}
-.drill-btn .drill-label-close { display: none; }
 
 .node-found .drill-btn {
   color: var(--amber);
@@ -331,26 +322,15 @@ main:not(.view-list) .list-wrap { display: none; }
   border-color: var(--domain-border);
 }
 
-.node.selected .drill-btn,
 .node.drilled .drill-btn {
-  width: 114px; padding: 0 8px 0 5px; gap: 5px;
-  justify-content: flex-start;
+  box-shadow: inset 0 1px 4px rgba(0,0,0,0.5);
+  transform: scale(0.92);
 }
-.node.selected .drill-btn .drill-label,
-.node.drilled .drill-btn .drill-label {
-  opacity: 1; max-width: 80px;
-}
-.node.drilled .drill-label-open { display: none; }
-.node.drilled .drill-label-close { display: inline; }
-
 .node-found:hover .drill-btn,
-.node-found.selected .drill-btn,
 .node-found.drilled .drill-btn { background: rgba(239,159,39,0.22); }
 .node-delivery:hover .drill-btn,
-.node-delivery.selected .drill-btn,
 .node-delivery.drilled .drill-btn { background: rgba(127,119,221,0.22); }
 .node-store:hover .drill-btn,
-.node-store.selected .drill-btn,
 .node-store.drilled .drill-btn { background: rgba(123,178,212,0.22); }
 
 .depth-key {
@@ -1044,9 +1024,7 @@ var SPARK_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stro
     html +=
       (n.depth === 'defined'
         ? '<button type="button" class="drill-btn" onclick="onDrillBtn(event, \'' + n.id + '\')" aria-label="Dig deeper">' +
-          SHOVEL_SVG +
-          '<span class="drill-label drill-label-open">Dig deeper</span>' +
-          '<span class="drill-label drill-label-close">Close</span></button>'
+          SHOVEL_SVG + '</button>'
         : '') +
       '</div>';
   });
