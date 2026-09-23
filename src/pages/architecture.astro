@@ -111,12 +111,6 @@ main:not(.view-list) .list-wrap { display: none; }
   width: 100%; height: 100%;
   z-index: 0; overflow: visible;
 }
-.band-label {
-  position: absolute; z-index: 0;
-  font-family: var(--mono); font-size: 9px; letter-spacing: .1em;
-  text-transform: uppercase; color: rgba(229,229,229,0.18);
-  white-space: nowrap; pointer-events: none;
-}
 
 /* ── EDGES ── */
 .edge-line { fill: none; stroke: rgba(229,229,229,0.22); stroke-width: 1; transition: stroke .2s, stroke-width .2s; }
@@ -1056,13 +1050,6 @@ var SPARK_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stro
         : '') +
       '</div>';
   });
-  html += '<div class="band-label" style="left:32px;top:212px">Foundations</div>';
-  html += '<div class="band-label" style="left:282px;top:22px">Delivery</div>';
-  html += '<div class="band-label" style="left:532px;top:22px">Go to market</div>';
-  html += '<div class="band-label" style="left:282px;top:362px">The engagement</div>';
-  html += '<div class="band-label" style="left:282px;top:478px">Store &amp; flow</div>';
-  html += '<div class="band-label" style="left:782px;top:362px">Client surface</div>';
-  html += '<div class="band-label" style="left:782px;top:752px">Outside SparqOS</div>';
   canvas.insertAdjacentHTML('beforeend', html);
 })();
 
