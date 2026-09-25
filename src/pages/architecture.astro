@@ -103,7 +103,7 @@ main:not(.view-list) .list-wrap { display: none; }
 
 .canvas {
   position: relative;
-  width: 990px; height: 1060px;
+  width: 990px; height: 1120px;
   margin: 0 auto;
 }
 #edges {
@@ -718,14 +718,14 @@ var NODES = [
   },
   {
     id: 'dw', name: 'Data Warehouse', sub: 'cross-engagement portfolio layer',
-    cat: 'store', x: 280, y: 780,
+    cat: 'store', x: 280, y: 830,
     desc: 'The structured relational engine that sits above SPOT and below Livestate. Many individual Livestate instances aggregate up into this one central structured layer. It allows leadership, system architects, and portfolio agents to run queries across every active client project simultaneously — e.g. "show all active projects currently in a given stage" or "find active metric breaches across all engagements." Structured operational snapshots dump down from here into SPOT as permanent history.',
     depth: 'none',
     needs: 'The schema — what a cross-project record looks like, what dimensions it carries, what queries it supports — is not written down yet.'
   },
   {
     id: 'spot', name: 'SPOT', sub: 'the data lake',
-    cat: 'store', x: 280, y: 900,
+    cat: 'store', x: 280, y: 960,
     desc: 'The bottomless raw storage sink — every artifact, transcript, commit, log, and structured snapshot from the Data Warehouse drops here in its native, uncleaned format. It is the raw record of everything Sparq has ever done. Universal historical storage. In a loop with institutional intelligence: the lake teaches, and what is learned is written back.',
     depth: 'defined',
     interior: {
