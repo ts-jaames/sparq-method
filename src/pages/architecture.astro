@@ -103,7 +103,7 @@ main:not(.view-list) .list-wrap { display: none; }
 
 .canvas {
   position: relative;
-  width: 990px; height: 1000px;
+  width: 990px; height: 1060px;
   margin: 0 auto;
 }
 #edges {
@@ -491,7 +491,7 @@ footer {
 <header>
   <div class="header-left">
     <h1>SparqOS relationships</h1>
-    <p>Not a hierarchy — a set of things that inform each other. Every line is a claim about direction: who feeds whom, and where the feed runs both ways. The engagement is what drives it; AI-native SDLC is the engine it moves through; Ingest routes raw inputs in; Livestate holds what is true now; SPOT is the history underneath; GTM is what delivery makes sellable. Click a node to isolate what it touches. Nodes with a shovel can be dug one altitude deeper — where an interior has actually been defined.</p>
+    <p>Not a hierarchy — a set of things that inform each other. Every line is a claim about direction: who feeds whom, and where the feed runs both ways. The engagement is what drives it; AI-native SDLC is the engine it moves through; Ingest routes raw inputs in; Livestate holds what is true now; the Data Warehouse is the cross-engagement portfolio view; SPOT is the history underneath; GTM is what delivery makes sellable. Click a node to isolate what it touches. Nodes with a shovel can be dug one altitude deeper — where an interior has actually been defined.</p>
   </div>
   <div class="header-right">
     <div class="legend" id="legend"></div>
@@ -521,20 +521,24 @@ footer {
     <div class="sidebar-section sidebar-context">
       <div class="sidebar-title">The stores</div>
       <div class="def-row">
-        <div class="def-term">Livestate — current state</div>
-        <div class="def-body">One queryable layer; one live-state instance per active engagement. Cross-engagement “what’s true right now” reads across instances, not from SPOT. Working name — not canonical.</div>
+        <div class="def-term">Livestate — per-engagement store</div>
+        <div class="def-body">The local engagement brain. One isolated instance per active project — holds active intent, specs, diffs, and project context. Working name — not canonical.</div>
+      </div>
+      <div class="def-row">
+        <div class="def-term">Data Warehouse — portfolio layer</div>
+        <div class="def-body">The structured cross-engagement view. Many Livestate instances aggregate up; leadership and portfolio agents query across all active projects here.</div>
       </div>
       <div class="def-row">
         <div class="def-term">SPOT — the data lake</div>
-        <div class="def-body">The store of what happened in Sparq history. Accumulated, settled evidence. The record, not the reading of it.</div>
+        <div class="def-body">The bottomless raw storage sink. Every artifact, transcript, commit, log, and structured snapshot drops here. Universal historical storage.</div>
       </div>
       <div class="def-row">
         <div class="def-term">Institutional intelligence</div>
-        <div class="def-body">The store of what the data lake teaches. The reading, not the record.</div>
+        <div class="def-body">The engine that analyzes SPOT’s raw history, extracts proven patterns, and turns them into machine-actionable IP.</div>
       </div>
       <div class="def-row">
         <div class="def-term">Context flow / retrieval</div>
-        <div class="def-body">Neither store — the layer that gets what is stored in front of the work. Live queries from Livestate; history from SPOT.</div>
+        <div class="def-body">The real-time context broker. Dynamically retrieves, trims, and formats live project data (Livestate) and firm IP (Institutional Intelligence) into machine-actionable context packages.</div>
       </div>
     </div>
     <div class="sidebar-section sidebar-context">
@@ -700,9 +704,9 @@ var NODES = [
     needs: 'The missing piece is not more sources. It is the ability for a routed input to declare which assumption it tests. That is the same unnamed forward loop as Livestate, and it is not drawn as if it exists.'
   },
   {
-    id: 'live', name: 'Livestate', sub: 'one queryable layer · one instance per active engagement',
+    id: 'live', name: 'Livestate', sub: 'per-engagement store · the local engagement brain',
     cat: 'store', x: 280, y: 660, provisional: true, layer: true,
-    desc: 'One queryable layer containing one live-state instance per active engagement — the way SPOT is one lake containing every project’s history. Open assumptions, decisions taken, confidence now. Ingest routes raw inputs into the right instance; the layer answers cross-engagement “what’s true right now” through the retrieval layer; settled and closed evidence deposits into SPOT as history.',
+    desc: 'A real-time, isolated query layer created for a single active client engagement. It holds the active intent, current specs, code diffs, and project-specific context so AI agents working on one engagement don\'t get context-polluted by another. Scoped to one project at a time. Many Livestate instances aggregate up into the Data Warehouse for cross-engagement portfolio queries.',
     resolved: [
       'It exists as a distinct node. Cross-engagement live query (“show every active engagement’s top open risk right now,” before anything settles into SPOT) is a capability of the layer, reading across all instances. Each individual engagement’s live state is one instance inside it — not a second node, not a second name.',
       'It holds current state. SPOT holds history. Settled and closed evidence deposits into the lake as it settles.',
@@ -713,9 +717,16 @@ var NODES = [
     needs: 'The missing interior is the forward Evidence Loop: Slice linked to the Signal it produces, and Assumption with an under-test / validated / invalidated axis. Until those exist, drilling in would describe the retrospective engine as if it were this node. It is not.'
   },
   {
+    id: 'dw', name: 'Data Warehouse', sub: 'cross-engagement portfolio layer',
+    cat: 'store', x: 280, y: 780,
+    desc: 'The structured relational engine that sits above SPOT and below Livestate. Many individual Livestate instances aggregate up into this one central structured layer. It allows leadership, system architects, and portfolio agents to run queries across every active client project simultaneously — e.g. "show all active projects currently in a given stage" or "find active metric breaches across all engagements." Structured operational snapshots dump down from here into SPOT as permanent history.',
+    depth: 'none',
+    needs: 'The schema — what a cross-project record looks like, what dimensions it carries, what queries it supports — is not written down yet.'
+  },
+  {
     id: 'spot', name: 'SPOT', sub: 'the data lake',
-    cat: 'store', x: 280, y: 840,
-    desc: 'The store of what happened in Sparq history. Livestate deposits settled and closed evidence into it; AI-native SDLC generates evidence that lands here; the client experience surface writes interactions into it. The retrieval layer reads history out of it. In a loop with institutional intelligence: the lake teaches, and what is learned is written back. It is not live state — that is Livestate.',
+    cat: 'store', x: 280, y: 900,
+    desc: 'The bottomless raw storage sink — every artifact, transcript, commit, log, and structured snapshot from the Data Warehouse drops here in its native, uncleaned format. It is the raw record of everything Sparq has ever done. Universal historical storage. In a loop with institutional intelligence: the lake teaches, and what is learned is written back.',
     depth: 'defined',
     interior: {
       summary: 'What the lake holds is the evidence ledger: the record of uncertainty reduction, engagement by engagement. Current state of active engagements is not this lake.',
@@ -733,7 +744,8 @@ var NODES = [
         {
           label: 'What writes the records',
           items: [
-            'Livestate: settled and closed evidence, deposited as it settles.',
+            'Data Warehouse: structured operational snapshots, deposited as they settle.',
+            'Livestate instances feed into the Data Warehouse; the warehouse feeds SPOT.',
             'Spikes: time-boxed experiments, instrumented to generate usable signal.',
             'Confidence gates: every promote / iterate / pivot call is itself a record.',
             'The client experience surface: client interactions arrive as signal.'
@@ -753,14 +765,14 @@ var NODES = [
   {
     id: 'ii', name: 'Institutional intelligence', sub: 'what the lake teaches',
     cat: 'store', x: 530, y: 430,
-    desc: 'The store of what the data lake teaches — the patterns, benchmarks and judgment extracted from the record. It is not the record. It informs Solutions, GTM IQs & accelerators, and commercials — pricing from historical actuals. It is in a loop with AI-native SDLC, and in a loop with the store it reads from. Commercials also feeds back what actually paid off.',
+    desc: 'The engine that continuously analyzes SPOT\'s raw historical data, extracts proven patterns, and turns them into machine-actionable IP — updating prompt libraries, standard rules, golden datasets, and playbooks. It is not the record; it is the synthesized intelligence extracted from it. It informs Solutions, GTM IQs & accelerators, and commercials — pricing from historical actuals. It is in a loop with AI-native SDLC, and in a loop with the store it reads from.',
     depth: 'none',
     needs: 'Described as a store, not yet as a structure. What a unit of institutional intelligence actually is — a pattern, a benchmark, a rule — is undefined, so there is nothing honest to open.'
   },
   {
-    id: 'flow', name: 'Context flow', sub: 'retrieval layer',
+    id: 'flow', name: 'Context flow', sub: 'real-time context broker',
     cat: 'store', x: 530, y: 620,
-    desc: 'The layer between what is stored and the work. Live “what’s true right now” reads come from Livestate; history reads come from SPOT. It puts that context in front of the client experience surface. It stores nothing itself — which is exactly why it is drawn separately from either store.',
+    desc: 'The real-time context broker. It dynamically retrieves, trims, and formats live project data from Livestate and firm IP from institutional intelligence into machine-actionable context packages for both internal AI agents and external client surfaces. It stores nothing itself — which is exactly why it is drawn separately from either store.',
     depth: 'none',
     needs: 'Its mechanism — what gets retrieved, on what trigger, and how relevance is decided — is not defined yet.'
   },
@@ -831,9 +843,14 @@ var EDGES = [
   ['sdlc', 'ii', '<>'],
   /* store and flow */
   ['ingest', 'live', '>', 'routes inputs into'],
-  ['live', 'spot', '>', 'deposits settled evidence into'],
+  ['live', 'dw', '>', 'aggregates into'],
   ['live', 'flow', '>', 'feeds live queries to'],
+  ['dw', 'spot', '>', 'dumps structured snapshots into'],
+  ['dw', 'talent', '>', 'informs resourcing from cross-project metrics'],
+  ['dw', 'comm', '>', 'informs pricing from cross-project metrics'],
+  ['dw', 'cap', '>', 'informs proven capabilities from cross-project metrics'],
   ['spot', 'flow', '>'],
+  ['ii', 'flow', '>', 'feeds firm IP to'],
   ['flow', 'cx', '>'],
   ['spot', 'ii', '<>'],
   /* client experience surface */
@@ -912,8 +929,8 @@ var LENSES = [
   {
     id: 'evidence',
     label: 'Evidence loop',
-    nodes: ['engage', 'sdlc', 'ingest', 'live', 'spot', 'flow', 'cx', 'ii'],
-    explanation: '<div class="detail-name">Evidence loop</div><div class="detail-kind">Lens</div><div class="detail-desc">The closed circuit: an engagement spins up, Ingest routes raw inputs into the right live-state instance, Livestate holds what is true now across every active engagement, settled evidence becomes history in the lake, the retrieval layer serves both, the client surface uses it — and what happens there goes back into the lake.</div><ul class="detail-bullets"><li><strong>The path:</strong> the engagement flows through AI-native SDLC and gives Ingest a destination. Ingest routes inputs into Livestate. Livestate answers live queries through the retrieval layer, and deposits settled evidence into SPOT. SPOT feeds historical retrieval. Retrieval feeds the client experience surface — which the same engagement instantiated. The surface writes interactions back into the lake. Institutional intelligence sits across the loop, reading the lake and being read by AI-native SDLC.</li><li><strong>Why it matters:</strong> this is the only loop on the map that closes without passing through a commercial or capability decision. It is the part of SparqOS that compounds on its own.</li><li><strong>Where it is thin:</strong> Livestate can hold current state and audit what was concluded. Ingest can route inputs to an engagement. Neither can yet run the forward Evidence Loop — a routed input declaring what it tests, Slice linked to Signal. That is a named gap inside the loop, not a missing node.</li></ul>'
+    nodes: ['engage', 'sdlc', 'ingest', 'live', 'dw', 'spot', 'flow', 'cx', 'ii'],
+    explanation: '<div class="detail-name">Evidence loop</div><div class="detail-kind">Lens</div><div class="detail-desc">The closed circuit: an engagement spins up, Ingest routes raw inputs into the right live-state instance, Livestate holds what is true now across every active engagement, settled evidence becomes history in the lake, the retrieval layer serves both, the client surface uses it — and what happens there goes back into the lake.</div><ul class="detail-bullets"><li><strong>The path:</strong> the engagement flows through AI-native SDLC and gives Ingest a destination. Ingest routes inputs into Livestate. Livestate answers live queries through the retrieval layer, and aggregates into the Data Warehouse. The Data Warehouse dumps structured snapshots into SPOT. SPOT feeds historical retrieval. Retrieval feeds the client experience surface — which the same engagement instantiated. The surface writes interactions back into the lake. Institutional intelligence sits across the loop, reading the lake and being read by AI-native SDLC.</li><li><strong>Why it matters:</strong> this is the only loop on the map that closes without passing through a commercial or capability decision. It is the part of SparqOS that compounds on its own.</li><li><strong>Where it is thin:</strong> Livestate can hold current state and audit what was concluded. Ingest can route inputs to an engagement. Neither can yet run the forward Evidence Loop — a routed input declaring what it tests, Slice linked to Signal. That is a named gap inside the loop, not a missing node.</li></ul>'
   },
   {
     id: 'spine',
@@ -930,8 +947,8 @@ var LENSES = [
   {
     id: 'compound',
     label: 'Compounding loop',
-    nodes: ['engage', 'sdlc', 'ingest', 'live', 'spot', 'ii', 'gtm', 'comm'],
-    explanation: '<div class="detail-name">Compounding loop</div><div class="detail-kind">Lens</div><div class="detail-desc">Why the more Sparq executes, the less the next execution costs — drawn, not implied.</div><ul class="detail-bullets"><li><strong>The circuit:</strong> commercials prices an engagement → the engagement flows through AI-native SDLC → Ingest routes inputs into Livestate → settled evidence deposits into the lake → the lake teaches institutional intelligence → that feeds commercials directly (pricing from historical actuals) and is packaged as IQs and accelerators → which also feed commercials → which prices the next engagement.</li><li><strong>The return edge:</strong> commercials also feeds institutional intelligence with what actually paid off. Without both directions, commercials is terminal — money in, nothing back — and the system has no way to learn which promises were worth making.</li><li><strong>What makes it compound:</strong> each pass through leaves something reusable behind. Nothing here is a new capability; it is the same work, cheaper, because the record of the last one is still available.</li></ul>'
+    nodes: ['engage', 'sdlc', 'ingest', 'live', 'dw', 'spot', 'ii', 'gtm', 'comm'],
+    explanation: '<div class="detail-name">Compounding loop</div><div class="detail-kind">Lens</div><div class="detail-desc">Why the more Sparq executes, the less the next execution costs — drawn, not implied.</div><ul class="detail-bullets"><li><strong>The circuit:</strong> commercials prices an engagement → the engagement flows through AI-native SDLC → Ingest routes inputs into Livestate → Livestate aggregates into the Data Warehouse → structured snapshots deposit into the lake → the lake teaches institutional intelligence → that feeds commercials directly (pricing from historical actuals) and is packaged as IQs and accelerators → which also feed commercials → which prices the next engagement.</li><li><strong>The return edge:</strong> commercials also feeds institutional intelligence with what actually paid off. Without both directions, commercials is terminal — money in, nothing back — and the system has no way to learn which promises were worth making.</li><li><strong>What makes it compound:</strong> each pass through leaves something reusable behind. Nothing here is a new capability; it is the same work, cheaper, because the record of the last one is still available.</li></ul>'
   },
   {
     id: 'open',
