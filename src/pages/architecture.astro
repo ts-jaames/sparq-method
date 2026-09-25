@@ -71,6 +71,22 @@ header {
   text-transform: uppercase; color: var(--text3);
 }
 .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.key-trigger {
+  position: relative; cursor: pointer;
+  font-family: var(--mono); font-size: 10px; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--text3);
+  padding: 4px 10px; border: 0.5px solid var(--border2); border-radius: 100px;
+  transition: color .2s, border-color .2s;
+}
+.key-trigger:hover { color: var(--text); border-color: rgba(229,229,229,0.3); }
+.key-tooltip {
+  display: none; position: absolute; top: calc(100% + 10px); right: 0;
+  width: 320px; padding: 14px 16px;
+  background: var(--bg3); border: 0.5px solid var(--border2); border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.45); z-index: 10;
+}
+.key-trigger:hover .key-tooltip,
+.key-trigger:focus-within .key-tooltip { display: block; }
 .control-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: flex-end; }
 .control-label {
   font-family: var(--mono); font-size: 9px; letter-spacing: .06em;
@@ -110,7 +126,9 @@ main:not(.view-list) .list-wrap { display: none; }
   position: absolute; inset: 0;
   width: 100%; height: 100%;
   z-index: 0; overflow: visible;
+  pointer-events: none;
 }
+#edges .edge-hit { pointer-events: stroke; }
 
 /* ── EDGES ── */
 .edge-line { fill: none; stroke: rgba(229,229,229,0.22); stroke-width: 1; transition: stroke .2s, stroke-width .2s; }
@@ -132,7 +150,7 @@ main:not(.view-list) .list-wrap { display: none; }
 
 /* ── AGENT NODES ── */
 .agent {
-  position: absolute; z-index: 2;
+  position: absolute; z-index: 3;
   width: 22px; height: 22px;
   margin-left: -11px; margin-top: -11px;
   padding: 0;
@@ -195,7 +213,7 @@ main:not(.view-list) .list-wrap { display: none; }
 
 /* ── NODES ── */
 .node {
-  position: absolute; z-index: 1;
+  position: absolute; z-index: 2;
   width: 170px;
   border-radius: 8px; padding: 10px 12px;
   border: 0.5px solid var(--border2);
@@ -491,12 +509,15 @@ footer {
 <header>
   <div class="header-left">
     <h1>SparqOS relationships</h1>
-    <p>Not a hierarchy — a set of things that inform each other. Every line is a claim about direction: who feeds whom, and where the feed runs both ways. The engagement is what drives it; AI-native SDLC is the engine it moves through; Ingest routes raw inputs in; Livestate holds what is true now; the Data Warehouse is the cross-engagement portfolio view; SPOT is the history underneath; GTM is what delivery makes sellable. Click a node to isolate what it touches. Nodes with a shovel can be dug one altitude deeper — where an interior has actually been defined.</p>
+    <p>Not a hierarchy — a set of things that inform each other. Click a node to isolate what it touches.</p>
   </div>
   <div class="header-right">
-    <div class="legend" id="legend"></div>
+    <div class="key-trigger" tabindex="0">Key
+      <div class="key-tooltip">
+        <div class="legend" id="legend"></div>
+      </div>
+    </div>
     <div class="control-row" id="view-select"></div>
-    <div class="control-row" id="lens-select"></div>
   </div>
 </header>
 
@@ -515,7 +536,7 @@ footer {
   <div class="sidebar">
     <div class="sidebar-section">
       <div class="sidebar-title">Selection</div>
-      <div id="node-placeholder" class="detail-empty">Click any node — or any lens — to see what it informs, what informs it, and where the relationship runs both ways.</div>
+      <div id="node-placeholder" class="detail-empty">Click any node to see what it informs, what informs it, and where the relationship runs both ways.</div>
       <div id="node-detail"></div>
     </div>
     <div class="sidebar-section sidebar-context">
@@ -1007,13 +1028,7 @@ var SPARK_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stro
     '<button class="pill view" data-view="list" onclick="setView(\'list\', this)">List</button>';
 })();
 
-(function renderLensButtons() {
-  var html = '<span class="control-label">Lenses</span>';
-  LENSES.forEach(function (l) {
-    html += '<button class="pill lens" data-lens="' + l.id + '" onclick="toggleLens(\'' + l.id + '\', this)">' + l.label + '</button>';
-  });
-  document.getElementById('lens-select').innerHTML = html;
-})();
+/* Lenses data retained but buttons hidden for now */
 
 (function renderNodes() {
   var canvas = document.getElementById('canvas');
